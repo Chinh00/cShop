@@ -1,0 +1,23 @@
+using System.Linq.Expressions;
+using cShop.Core.Domain;
+
+namespace Projections;
+
+public class CatalogProjection : ProjectionBase
+{
+    public string Name { get; set; }
+    public float CurrentCost { get; set; }
+}
+
+
+public interface IProjectionRepository<T>
+    where T : ProjectionBase
+{
+    public Task ReplaceOrInsertEventAsync(T replace, Expression<Func<T, bool>> filter, CancellationToken cancellationToken);
+
+    public Task UpdateFieldAsync<TField, TId>(TId id, long version, Expression<Func<T, TField>> field, TField value, CancellationToken cancellationToken);
+    
+    
+    public Task<T> FindByIdAsync<TId>(TId id, CancellationToken cancellationToken);
+    
+}

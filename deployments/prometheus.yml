@@ -1,0 +1,6 @@
+﻿scrape_configs:
+  - job_name: dice-service
+    scrape_interval: 5s
+    metrics_path: '/metrics
+    static_configs:
+      - targets: ["localhost:5000"]

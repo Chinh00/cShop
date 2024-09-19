@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>disable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <OutputType>Library</OutputType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Confluent.Kafka" Version="2.5.3" />
+        <PackageReference Include="MediatR" Version="12.4.0" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.6"/>
+        <PackageReference Include="Serilog" Version="4.0.1" />
+        <PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Properties\launchSettings.json" />
+      <None Remove="EventStore\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Validator\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\cShop.Core\cShop.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="EventStore\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="EventStore\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="EventStore\**" />
+    </ItemGroup>
+
+</Project>
