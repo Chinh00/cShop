@@ -1,5 +1,6 @@
 using System.Net;
 using cShop.Infrastructure.Bus;
+using cShop.Infrastructure.IdentityServer;
 using cShop.Infrastructure.Logging;
 using EventBus;
 using EventBus.Consumers;
@@ -11,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 
-builder.Services.AddLoggingCustom(builder.Configuration);
+builder.Services.AddLoggingCustom(builder.Configuration, "Catalog - Query");
 
 builder.Services.AddProjections(builder.Configuration);
 
@@ -26,9 +27,10 @@ builder.WebHost.ConfigureKestrel(options =>
     {
         listenOptions.Protocols = HttpProtocols.Http2;
         listenOptions.UseHttps();
-
     });
 });
+
+builder.Services.AddIdentityServerCustom(builder.Configuration);
 
 
 builder.Services.AddMediatR(e => e.RegisterServicesFromAssemblies([typeof(ProductCreatedDomainEventConsumer).Assembly, typeof(Program).Assembly]));
