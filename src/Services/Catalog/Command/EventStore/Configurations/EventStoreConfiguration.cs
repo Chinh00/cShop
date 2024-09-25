@@ -1,10 +1,8 @@
 
-using System.Text.Json;
 using cShop.Contracts.Abstractions;
-using cShop.Core.Domain;
+using cShop.Infrastructure.EventStore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
 namespace EventStore.Configurations;
 
@@ -20,12 +18,12 @@ public class EventStoreConfiguration : IEntityTypeConfiguration<StoreEvent>
 
         builder.Property(e => e.EventType).IsRequired();
 
-        builder.Property(e => e.Version).IsRequired();
+        builder.Property(e
+ => e.Version).IsRequired();
 
         builder.Property(e => e.CreatedAt).IsRequired();
         
         builder.Property(e => e.Event).HasConversion<StoreEventConverter>(
         ).IsRequired();
-
     }
 }

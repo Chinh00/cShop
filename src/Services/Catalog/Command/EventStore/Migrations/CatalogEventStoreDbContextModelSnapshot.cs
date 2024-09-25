@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EventStore.Migrations
 {
-    [DbContext(typeof(EventStoreDbContext))]
-    partial class EventStoreDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(CatalogEventStoreDbContext))]
+    partial class CatalogEventStoreDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -27,8 +27,8 @@ namespace EventStore.Migrations
                     b.Property<Guid>("AggregateId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Version")
-                        .HasColumnType("int");
+                    b.Property<long>("Version")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("AggregateType")
                         .IsRequired()

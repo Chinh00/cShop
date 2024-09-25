@@ -1,9 +1,8 @@
-using System.Linq.Expressions;
 using cShop.Core.Domain;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Newtonsoft.Json;
 
-namespace EventStore;
+namespace cShop.Infrastructure.EventStore;
 
 public class StoreEventConverter() : ValueConverter<IDomainEvent?, string>(
     @event => JsonConvert.SerializeObject(@event, typeof(IDomainEvent),

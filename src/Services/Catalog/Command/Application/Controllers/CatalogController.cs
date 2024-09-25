@@ -1,16 +1,14 @@
-using cShop.Contracts.Services.Catalog;
+using Application.UseCases.Commands;
 using cShop.Infrastructure.Controller;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Controllers;
 
-[Authorize]
 public class CatalogController : BaseController
  {
      [HttpPost]
-     public async Task<IActionResult> HandleCreateCatalogAsync(Command.CreateCatalog command, CancellationToken cancellationToken)
+     public async Task<IActionResult> HandleCreateCatalogAsync(Commands.CreateCatalog command, CancellationToken cancellationToken)
      {
-         return Ok(await Mediator.Send());
+         return Ok(await Mediator.Send(command, cancellationToken));
      }
  }

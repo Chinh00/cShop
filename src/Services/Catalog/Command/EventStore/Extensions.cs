@@ -1,3 +1,4 @@
+using cShop.Infrastructure.EventStore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
@@ -7,21 +8,15 @@ public static class Extensions
 {
     public static IServiceCollection AddEventStore(this IServiceCollection services, IConfiguration configuration, Action<IServiceCollection>? action = null)
     {
-        
-        services.AddDbContext<EventStoreDbContext>((provider, builder) =>
-        {
-            builder.UseSqlServer(configuration.GetConnectionString("EventStore"), sqlOptions =>
-            {
-                sqlOptions.EnableRetryOnFailure();
-            });
-        });
 
-        services.AddHostedService<EventStoreHostedService>();
+        services
+            .AddEventStoreDbContext<CatalogEventStoreDbContext>(configuration)
+            .AddHostedService<DbContextMigrateHostedService<CatalogEventStoreDbContext>>();
+
         
-        services.AddScoped<IEventStoreRepository, EventStoreRepository>();
-        services.AddScoped(e => e.GetService<DatabaseFacade>());
-        
-        
+        //services.AddScoped(e => e.GetService<DatabaseFacade>());
+
+        services.AddScoped<IEventStoreRepository, CatalogEventStoreRepository>();
         action?.Invoke(services);   
         return services;
     }

@@ -1,4 +1,5 @@
 ﻿using cShop.Contracts.Events.DomainEvents;
+using cShop.Contracts.Services.Catalog;
 using cShop.Core.Domain;
 using Domain.Enumrations;
 
@@ -17,14 +18,13 @@ public class Product : AggregateBase
     public virtual Category Category { get; set; }
     
 
-    public void CreateProduct(string name, float currentCost, string imageSrc, Guid categoryId)
+    public void CreateProduct(Command.CreateCatalog createCatalog)
     {
-        Name = name;
-        CurrentCost = currentCost;
-        ImageSrc = imageSrc;
-        CategoryId = categoryId;
-        
-        RaiseEvent(version => new ProductCreatedDomainEvent(Id, name, currentCost, imageSrc, CategoryId, (int)version));
+        Name = createCatalog.Name;
+        CurrentCost = createCatalog.Price;
+        ImageSrc = createCatalog.ImageSrc;
+        CategoryId = createCatalog.CategoryId;
+        RaiseEvent(version => new ProductCreatedDomainEvent(Id, Name, CurrentCost, ImageSrc, CategoryId, version));
     }
 
     public void UpdateProductName(string name)

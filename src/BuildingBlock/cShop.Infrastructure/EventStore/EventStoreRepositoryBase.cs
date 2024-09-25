@@ -2,13 +2,14 @@ using cShop.Contracts.Abstractions;
 using cShop.Core.Domain;
 using Microsoft.EntityFrameworkCore;
 
-namespace EventStore;
+namespace cShop.Infrastructure.EventStore;
 
-public class EventStoreRepository : IEventStoreRepository
+public class EventStoreRepositoryBase<TDbContext> : IEventStoreRepository
+    where TDbContext : EventStoreDbContextBase
 {
-    private readonly EventStoreDbContext _context;
+    private readonly TDbContext _context;
 
-    public EventStoreRepository(EventStoreDbContext context)
+    public EventStoreRepositoryBase(TDbContext context)
     {
         _context = context;
     }

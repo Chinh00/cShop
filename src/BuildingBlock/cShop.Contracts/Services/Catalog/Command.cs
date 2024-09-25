@@ -5,5 +5,5 @@ namespace cShop.Contracts.Services.Catalog;
 
 public static class Command
 {
-    public record CreateCatalog(string Name, string Price, string Quantity, Guid CategoryId) : Message;
+    public record CreateCatalog(string Name, float Price, string ImageSrc, Guid CategoryId) : Message;
 }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EventStore.Migrations
 {
     /// <inheritdoc />
-    public partial class InitDbEventStore : Migration
+    public partial class InitDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,7 +16,7 @@ namespace EventStore.Migrations
                 columns: table => new
                 {
                     AggregateId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Version = table.Column<int>(type: "int", nullable: false),
+                    Version = table.Column<long>(type: "bigint", nullable: false),
                     AggregateType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EventType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Event = table.Column<string>(type: "nvarchar(max)", nullable: false),

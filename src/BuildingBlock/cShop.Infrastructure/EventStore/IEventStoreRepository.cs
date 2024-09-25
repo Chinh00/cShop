@@ -1,7 +1,7 @@
 using cShop.Contracts.Abstractions;
 using cShop.Core.Domain;
 
-namespace EventStore;
+namespace cShop.Infrastructure.EventStore;
 
 public interface IEventStoreRepository
 {

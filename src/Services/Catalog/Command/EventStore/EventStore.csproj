@@ -13,7 +13,11 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.3" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.8.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -24,6 +28,7 @@
       <ProjectReference Include="..\..\..\..\BuildingBlock\cShop.Contracts\cShop.Contracts.csproj" />
       <ProjectReference Include="..\..\..\..\BuildingBlock\cShop.Core\cShop.Core.csproj" />
       <ProjectReference Include="..\..\..\..\BuildingBlock\cShop.Infrastructure.EfCore\cShop.Infrastructure.EfCore.csproj" />
+      <ProjectReference Include="..\..\..\..\BuildingBlock\cShop.Infrastructure\cShop.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>
