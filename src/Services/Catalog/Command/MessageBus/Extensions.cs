@@ -1,5 +1,6 @@
 using Confluent.Kafka;
 using cShop.Contracts.Events.DomainEvents;
+using cShop.Infrastructure.Bus;
 using MassTransit;
 
 namespace MessageBus;
@@ -7,17 +8,11 @@ namespace MessageBus;
 public static class Extensions
 {
 
-    public static IServiceCollection AddMessageBus(this IServiceCollection services, IConfiguration configuration)
-    {
-
-        services.AddTransient<IMasstransitBus, MasstransitBus>();
-        
-        return services;
-    }
-    
     public static IServiceCollection AddCustomMasstransit(this IServiceCollection services, IConfiguration config)
     {
 
+        services.AddMessageBus(config);
+        
         services.AddMassTransit(cfg =>
         {
             cfg.SetKebabCaseEndpointNameFormatter();

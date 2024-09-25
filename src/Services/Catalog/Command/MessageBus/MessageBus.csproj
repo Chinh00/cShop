@@ -24,10 +24,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\..\..\BuildingBlock\cShop.Contracts\cShop.Contracts.csproj" />
       <ProjectReference Include="..\..\..\..\BuildingBlock\cShop.Core\cShop.Core.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Consumer\Events\" />
+      <ProjectReference Include="..\..\..\..\BuildingBlock\cShop.Infrastructure\cShop.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

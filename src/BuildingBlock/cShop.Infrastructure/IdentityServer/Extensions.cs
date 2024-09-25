@@ -13,6 +13,9 @@ public static class Extensions
             options.Authority = identityUrl;
             options.TokenValidationParameters.ValidateAudience = false;
         });
+
+        services.AddHttpContextAccessor();
+        services.AddScoped<IClaimContextAccessor, ClaimContextAccessor>();
         
         action?.Invoke(services);
         return services;

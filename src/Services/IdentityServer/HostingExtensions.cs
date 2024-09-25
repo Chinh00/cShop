@@ -1,3 +1,4 @@
+using IdentityServer.Data.Domain;
 using Serilog;
 
 namespace IdentityServer;
@@ -17,6 +18,7 @@ internal static class HostingExtensions
             .AddInMemoryIdentityResources(Config.IdentityResources)
             .AddInMemoryApiScopes(Config.ApiScopes)
             .AddInMemoryClients(Config.Clients)
+            .AddAspNetIdentity<User>()
             .AddTestUsers(Config.Users.ToList())
             ;
 

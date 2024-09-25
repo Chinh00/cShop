@@ -1,4 +1,8 @@
 ﻿using IdentityServer;
+using IdentityServer.Data;
+using IdentityServer.Data.Domain;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -6,6 +10,9 @@ Log.Logger = new LoggerConfiguration()
     .CreateBootstrapLogger();
 
 Log.Information("Starting up");
+
+
+
 
 try
 {
@@ -16,11 +23,29 @@ try
         .Enrich.FromLogContext()
         .ReadFrom.Configuration(ctx.Configuration));
 
+
+
+    builder.Services.AddDbContext<UserDbContext>((provider, optionsBuilder) =>
+    {
+        optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("db"));    
+    });
+    builder.Services
+        .AddIdentity<User, IdentityRole<Guid>>()
+        .AddEntityFrameworkStores<UserDbContext>()
+        .AddUserManager<UserManager<User>>()
+        .AddSignInManager<SignInManager<User>>()
+        .AddDefaultTokenProviders();
+
+    builder.Services.AddHostedService<SeedData>();
+    
+    
     var app = builder
         .ConfigureServices()
         .ConfigurePipeline();
     
     app.Run();
+
+
 }
 catch (Exception ex)
 {

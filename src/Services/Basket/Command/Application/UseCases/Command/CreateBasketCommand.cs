@@ -1,25 +1,34 @@
+using Application.UseCases.Dto;
+using cShop.Core.Domain;
+using cShop.Infrastructure.IdentityServer;
+using Domain.Entities;
 using MediatR;
-using GrpServices;
 namespace Application.UseCases.Command;
 
-public class CreateBasketCommand(Guid productId) : IRequest<Guid>
+public class CreateBasketCommand : ICreateCommand<cShop.Contracts.Services.Basket.Command.CreateBasket,BasketDto>
 {
-
-    private readonly Guid _productId = productId;
-    public class Handler : IRequestHandler<CreateBasketCommand, Guid>
+    public cShop.Contracts.Services.Basket.Command.CreateBasket Model { get; }
+    
+    public class Handler : IRequestHandler<CreateBasketCommand, ResultModel<BasketDto>>
     {
-        private readonly Catalog.CatalogClient _catalogClient;
+        private readonly IClaimContextAccessor _contextAccessor;
 
-        public Handler(Catalog.CatalogClient catalogClient)
+        public Handler(IClaimContextAccessor contextAccessor)
         {
-            _catalogClient = catalogClient;
+            _contextAccessor = contextAccessor;
         }
 
-        public async Task<Guid> Handle(CreateBasketCommand request, CancellationToken cancellationToken)
+        public async Task<ResultModel<BasketDto>> Handle(CreateBasketCommand request, CancellationToken cancellationToken)
         {
-            var res = await _catalogClient.getProductByIdAsync(
-                new GetProductByIdRequest() {Id = request._productId.ToString()});
-            return Guid.Parse(res.ProductId);
+            var basket = new Basket();
+            basket.CreateBasket(request.Model);
+            
+            foreach (var basketDomainEvent in basket.DomainEvents)
+            {
+                
+            }
+            
         }
     }
+    
 }

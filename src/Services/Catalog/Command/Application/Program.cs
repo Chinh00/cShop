@@ -1,12 +1,10 @@
+using cShop.Infrastructure.Bus;
 using cShop.Infrastructure.IdentityServer;
 using cShop.Infrastructure.Logging;
 using EventStore;
 using MessageBus;
 
 var builder = WebApplication.CreateBuilder(args);
-
-
-
 
 builder.Services.AddCors(options =>
 {
@@ -16,28 +14,19 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddLoggingCustom(builder.Configuration, "Catalog - Command");
+
+builder.Services
+    .AddLoggingCustom(builder.Configuration, "Catalog - Command")
+    .AddEventStore(builder.Configuration)
+    .AddCustomMasstransit(builder.Configuration)
+    .AddIdentityServerCustom(builder.Configuration)
+    .AddMediatR(e => e.RegisterServicesFromAssembly(typeof(Program).Assembly));
+
 
 builder.Services.AddControllers();
 
-builder.Services.AddEventStore(builder.Configuration);
-
-
-
-builder.Services.AddCustomMasstransit(builder.Configuration);
-builder.Services.AddMessageBus(builder.Configuration);
-
-builder.Services.AddIdentityServerCustom(builder.Configuration);
-
-
-
 builder.Services.AddSwaggerGen();
 
-
-
-
-
-builder.Services.AddMediatR(e => e.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
 
 var app = builder.Build();

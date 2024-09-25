@@ -9,7 +9,7 @@ public class BasketController : BaseController
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetBasket(Guid id, CancellationToken cancellationToken = default)
     {
-        return Ok(await Mediator.Send(new CreateBasketCommand(id), cancellationToken));
+        return Ok(await Mediator.Send(new CreateBasketCommand(), cancellationToken));
     }
 
 }

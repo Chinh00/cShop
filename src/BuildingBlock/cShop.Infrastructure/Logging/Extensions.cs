@@ -9,7 +9,7 @@ public static class Extensions
         Action<IServiceCollection>? action = null)
     {
 
-        var logger = new LoggerConfiguration().Enrich.WithProperty("Application Name", applicationName).WriteTo.Console().CreateLogger();    
+        var logger = new LoggerConfiguration().Enrich.FromLogContext().Enrich.WithProperty("Application Name", applicationName).WriteTo.Console().CreateLogger();    
         
         Log.Logger = logger;
         services.AddSerilog();

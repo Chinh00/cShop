@@ -5,8 +5,9 @@ using Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddLoggingCustom(builder.Configuration, "Basket - Command");
-builder.Services.AddControllers();
+builder.Services
+    .AddLoggingCustom(builder.Configuration, "Basket - Command")
+    .AddControllers();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(e => e.RegisterServicesFromAssembly(typeof(Program).Assembly));
 builder.Services.AddGrpcClientCustom(builder.Configuration);

@@ -2,7 +2,7 @@ using cShop.Core.Domain;
 
 namespace Domain.Entities;
 
-public class BasketItem : AggregateBase
+public class BasketItem : EntityBase
 {
     
     public Guid BasketId { get; set; }
@@ -12,9 +12,4 @@ public class BasketItem : AggregateBase
     public int Quantity { get; set; }
     
     public float Price { get; set; }
-    
-    public override void ApplyEvent(IDomainEvent @event)
-    {
-        throw new NotImplementedException();
-    }
 }
