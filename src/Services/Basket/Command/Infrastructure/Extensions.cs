@@ -9,9 +9,6 @@ public static class Extensions
 
         services.AddGrpcClient<Catalog.CatalogClient>(e => e.Address = new Uri("https://localhost:3000"));
         
-        
-        
-        
         action?.Invoke(services);
         return services;
     }

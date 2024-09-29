@@ -1,0 +1,10 @@
+﻿/Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Contracts/Abstractions/StoreEvent.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Contracts/Events/DomainEvents/PartialClasses.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Contracts/Services/Basket/Command.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Contracts/Services/Basket/DomainEvent.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Contracts/Services/Catalog/Command.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Contracts/obj/Debug/net8.0/cShop.Contracts.GlobalUsings.g.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Contracts/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Contracts/obj/Debug/net8.0/cShop.Contracts.AssemblyInfo.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Contracts/Avro/ProductCreated.avsc
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Contracts/Protos/Product/product.proto

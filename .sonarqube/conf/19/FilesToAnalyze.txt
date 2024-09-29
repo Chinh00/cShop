@@ -1,0 +1,6 @@
+﻿/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Basket/Command/Application/Anchor.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Basket/Command/Application/UseCases/Commands/CommandHandler.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Basket/Command/Application/UseCases/Dto/BasketDto.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Basket/Command/Application/obj/Debug/net8.0/Application.GlobalUsings.g.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Basket/Command/Application/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Basket/Command/Application/obj/Debug/net8.0/Application.AssemblyInfo.cs

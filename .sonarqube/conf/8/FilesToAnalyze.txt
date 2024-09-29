@@ -1,0 +1,9 @@
+﻿/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Projections/Extensions.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Projections/IProjectionDbContext.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Projections/IProjectionRepository.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Projections/MongoDbOptions.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Projections/ProjectionDbContext.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Projections/ProjectionRepository.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Projections/obj/Debug/net8.0/Projections.GlobalUsings.g.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Projections/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Projections/obj/Debug/net8.0/Projections.AssemblyInfo.cs

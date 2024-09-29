@@ -1,0 +1,221 @@
+{
+  "$schema": "http://json.schemastore.org/sarif-1.0.0",
+  "version": "1.0.0",
+  "runs": [
+    {
+      "tool": {
+        "name": "Microsoft (R) Visual C# Compiler",
+        "version": "4.11.0.0",
+        "fileVersion": "4.11.0-3.24365.8 (9e9c7c1d)",
+        "semanticVersion": "4.11.0",
+        "language": "en-VN"
+      },
+      "results": [
+        {
+          "ruleId": "S3878",
+          "level": "warning",
+          "message": "Remove this array creation and simply pass the elements.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Application/Program.cs",
+                "region": {
+                  "startLine": 35,
+                  "startColumn": 67,
+                  "endLine": 35,
+                  "endColumn": 145
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S6678",
+          "level": "warning",
+          "message": "Use PascalCase for named placeholders.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Application/UseCases/Events/ProductCreateDomainEventInternal.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 32,
+                  "endLine": 20,
+                  "endColumn": 61
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Application/UseCases/Events/ProductCreateDomainEventInternal.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 50,
+                  "endLine": 20,
+                  "endColumn": 59
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": null
+            }
+          }
+        },
+        {
+          "ruleId": "S2629",
+          "level": "warning",
+          "message": "Don't use string interpolation in logging message templates.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Application/UseCases/Events/ProductUpdatedDomainEventInternal.cs",
+                "region": {
+                  "startLine": 21,
+                  "startColumn": 32,
+                  "endLine": 21,
+                  "endColumn": 89
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA2254",
+          "level": "note",
+          "message": "The logging message template should not vary between calls to 'LoggerExtensions.LogInformation(ILogger, string?, params object?[])'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Application/UseCases/Events/ProductUpdatedDomainEventInternal.cs",
+                "region": {
+                  "startLine": 21,
+                  "startColumn": 32,
+                  "endLine": 21,
+                  "endColumn": 89
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S6966",
+          "level": "warning",
+          "message": "Await RunAsync instead.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Application/Program.cs",
+                "region": {
+                  "startLine": 48,
+                  "startColumn": 1,
+                  "endLine": 48,
+                  "endColumn": 10
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        }
+      ],
+      "rules": {
+        "CA2254": {
+          "id": "CA2254",
+          "shortDescription": "Template should be a static expression",
+          "fullDescription": "The logging message template should not vary between calls.",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2254",
+          "properties": {
+            "category": "Usage",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Telemetry",
+              "EnabledRuleInAggressiveMode"
+            ]
+          }
+        },
+        "S2629": {
+          "id": "S2629",
+          "shortDescription": "Logging templates should be constant",
+          "fullDescription": "Logging arguments should not require evaluation in order to avoid unnecessary performance overhead. When passing concatenated strings or string interpolations directly into a logging method, the evaluation of these expressions occurs every time the logging method is called, regardless of the log level. This can lead to inefficient code execution and increased resource consumption.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-2629",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S3878": {
+          "id": "S3878",
+          "shortDescription": "Arrays should not be created for params parameters",
+          "fullDescription": "There’s no point in creating an array solely for the purpose of passing it to a params parameter. Simply pass the elements directly. They will be consolidated into an array automatically.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-3878",
+          "properties": {
+            "category": "Minor Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S6678": {
+          "id": "S6678",
+          "shortDescription": "Use PascalCase for named placeholders",
+          "fullDescription": "Within a message template each named placeholder should be in PascalCase.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-6678",
+          "properties": {
+            "category": "Minor Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S6966": {
+          "id": "S6966",
+          "shortDescription": "Awaitable method should be used",
+          "fullDescription": "In an async method, any blocking operations should be avoided.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-6966",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

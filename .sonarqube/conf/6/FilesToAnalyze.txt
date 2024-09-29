@@ -1,0 +1,16 @@
+﻿/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Config.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/CustomProfileService.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Domain/User.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.Designer.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/UserDbContextModelSnapshot.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/UserDbContext.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/HostingExtensions.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Program.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/SeedData.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/obj/Debug/net8.0/IdentityServer.GlobalUsings.g.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/obj/Debug/net8.0/IdentityServer.AssemblyInfo.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/appsettings.json
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/keys/is-signing-key-003F48C390B019814AA393A1D2DF98A4.json
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Properties/launchSettings.json

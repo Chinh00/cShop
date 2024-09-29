@@ -14,7 +14,7 @@ public class ClaimContextAccessor : IClaimContextAccessor
     public Guid GetUserId()
     {
         
-        return new Guid(_httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty);
+        return Guid.Parse(_httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier));
         
         
     }

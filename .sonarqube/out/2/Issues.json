@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json.schemastore.org/sarif-1.0.0",
+  "version": "1.0.0",
+  "runs": [
+    {
+      "tool": {
+        "name": "Microsoft (R) Visual C# Compiler",
+        "version": "4.11.0.0",
+        "fileVersion": "4.11.0-3.24365.8 (9e9c7c1d)",
+        "semanticVersion": "4.11.0",
+        "language": "en-VN"
+      },
+      "results": [
+        {
+          "ruleId": "S3442",
+          "level": "warning",
+          "message": "Change the visibility of this constructor to 'protected'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Core/Domain/Event.cs",
+                "region": {
+                  "startLine": 48,
+                  "startColumn": 5,
+                  "endLine": 48,
+                  "endColumn": 11
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1859",
+          "level": "note",
+          "message": "Change type of field '_events' from 'System.Collections.Generic.ICollection<cShop.Core.Domain.IDomainEvent>' to 'System.Collections.Generic.List<cShop.Core.Domain.IDomainEvent>' for improved performance",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Core/Domain/Event.cs",
+                "region": {
+                  "startLine": 44,
+                  "startColumn": 39,
+                  "endLine": 44,
+                  "endColumn": 46
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        }
+      ],
+      "rules": {
+        "CA1859": {
+          "id": "CA1859",
+          "shortDescription": "Use concrete types when possible for improved performance",
+          "fullDescription": "Using concrete types avoids virtual or interface call overhead and enables inlining.",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1859",
+          "properties": {
+            "category": "Performance",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Telemetry",
+              "EnabledRuleInAggressiveMode"
+            ]
+          }
+        },
+        "S3442": {
+          "id": "S3442",
+          "shortDescription": "\"abstract\" classes should not have \"public\" constructors",
+          "fullDescription": "The abstract modifier in a class declaration is used to indicate that a class is intended only to be a base class of other classes, not instantiated on its own.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-3442",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

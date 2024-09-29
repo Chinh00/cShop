@@ -23,7 +23,6 @@ public class CommandHandlers : IRequestHandler<Commands.CreateCatalog, Guid>
     public async Task<Guid> Handle(Commands.CreateCatalog request, CancellationToken cancellationToken)
     {
         Product product = new();
-        product.CreateProduct(request.Command(request.Name, request.CurrentCost, request.ImageSrc, request.CategoryId));
         
         foreach (var productDomainEvent in product.DomainEvents)
         {

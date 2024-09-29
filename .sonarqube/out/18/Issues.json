@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json.schemastore.org/sarif-1.0.0",
+  "version": "1.0.0",
+  "runs": [
+    {
+      "tool": {
+        "name": "Microsoft (R) Visual C# Compiler",
+        "version": "4.11.0.0",
+        "fileVersion": "4.11.0-3.24365.8 (9e9c7c1d)",
+        "semanticVersion": "4.11.0",
+        "language": "en-VN"
+      },
+      "results": [
+        {
+          "ruleId": "CS8632",
+          "level": "warning",
+          "message": "The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Command/EventStore/Extensions.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 142,
+                  "endLine": 9,
+                  "endColumn": 143
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Command/EventStore/Extensions.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 9,
+                  "endLine": 17,
+                  "endColumn": 67
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        }
+      ],
+      "rules": {
+        "CS8632": {
+          "id": "CS8632",
+          "shortDescription": "The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.",
+          "defaultLevel": "warning",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS8632)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry"
+            ]
+          }
+        },
+        "S125": {
+          "id": "S125",
+          "shortDescription": "Sections of code should not be commented out",
+          "fullDescription": "Commented-out code distracts the focus from the actual executed code. It creates a noise that increases maintenance code. And because it is never executed, it quickly becomes out of date and invalid.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-125",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+﻿/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Command/EventStore/CatalogDesignTimeDbContext.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Command/EventStore/CatalogEventStoreDbContext.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Command/EventStore/CatalogEventStoreRepository.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Command/EventStore/Configurations/EventStoreConfiguration.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Command/EventStore/Extensions.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Command/EventStore/Migrations/20240925073137_InitDb.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Command/EventStore/Migrations/20240925073137_InitDb.Designer.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Command/EventStore/Migrations/CatalogEventStoreDbContextModelSnapshot.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Command/EventStore/obj/Debug/net8.0/EventStore.GlobalUsings.g.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Command/EventStore/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Command/EventStore/obj/Debug/net8.0/EventStore.AssemblyInfo.cs

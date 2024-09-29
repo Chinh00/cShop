@@ -1,0 +1,392 @@
+{
+  "$schema": "http://json.schemastore.org/sarif-1.0.0",
+  "version": "1.0.0",
+  "runs": [
+    {
+      "tool": {
+        "name": "Microsoft (R) Visual C# Compiler",
+        "version": "4.11.0.0",
+        "fileVersion": "4.11.0-3.24365.8 (9e9c7c1d)",
+        "semanticVersion": "4.11.0",
+        "language": "en-VN"
+      },
+      "results": [
+        {
+          "ruleId": "CS8632",
+          "level": "warning",
+          "message": "The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Infrastructure/Auth/Extensions.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 35,
+                  "endLine": 11,
+                  "endColumn": 36
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8632",
+          "level": "warning",
+          "message": "The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Infrastructure/Bus/Extensions.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 35,
+                  "endLine": 9,
+                  "endColumn": 36
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8632",
+          "level": "warning",
+          "message": "The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Infrastructure/Auth/Extensions.cs",
+                "region": {
+                  "startLine": 38,
+                  "startColumn": 136,
+                  "endLine": 38,
+                  "endColumn": 137
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8632",
+          "level": "warning",
+          "message": "The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Infrastructure/Logging/Extensions.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 35,
+                  "endLine": 9,
+                  "endColumn": 36
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8632",
+          "level": "warning",
+          "message": "The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Infrastructure/Mediator/Extensions.cs",
+                "region": {
+                  "startLine": 6,
+                  "startColumn": 35,
+                  "endLine": 6,
+                  "endColumn": 36
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8632",
+          "level": "warning",
+          "message": "The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Infrastructure/Swagger/Extensions.cs",
+                "region": {
+                  "startLine": 10,
+                  "startColumn": 35,
+                  "endLine": 10,
+                  "endColumn": 36
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8632",
+          "level": "warning",
+          "message": "The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Infrastructure/Swagger/Extensions.cs",
+                "region": {
+                  "startLine": 34,
+                  "startColumn": 128,
+                  "endLine": 34,
+                  "endColumn": 129
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8632",
+          "level": "warning",
+          "message": "The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Infrastructure/EventStore/Extensions.cs",
+                "region": {
+                  "startLine": 8,
+                  "startColumn": 35,
+                  "endLine": 8,
+                  "endColumn": 36
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8632",
+          "level": "warning",
+          "message": "The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Infrastructure/EventStore/StoreEventConverter.cs",
+                "region": {
+                  "startLine": 7,
+                  "startColumn": 65,
+                  "endLine": 7,
+                  "endColumn": 66
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S5122",
+          "level": "warning",
+          "message": "Make sure this permissive CORS policy is safe here.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Infrastructure/Auth/Extensions.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 17,
+                  "endLine": 20,
+                  "endColumn": 41
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Infrastructure/Auth/Extensions.cs",
+                "region": {
+                  "startLine": 26,
+                  "startColumn": 95,
+                  "endLine": 26,
+                  "endColumn": 142
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2068",
+          "level": "warning",
+          "message": "\"password\" detected here, make sure this is not a hard-coded credential.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Infrastructure/EventStore/DesignTimeDbContextBase.cs",
+                "region": {
+                  "startLine": 21,
+                  "startColumn": 27,
+                  "endLine": 21,
+                  "endColumn": 111
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2068",
+          "level": "warning",
+          "message": "\"password\" detected here, make sure this is not a hard-coded credential.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Infrastructure/EventStore/DesignTimeDbContextBase.cs",
+                "region": {
+                  "startLine": 22,
+                  "startColumn": 78,
+                  "endLine": 22,
+                  "endColumn": 162
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1481",
+          "level": "warning",
+          "message": "Remove the unused local variable 'conn'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Infrastructure/EventStore/DesignTimeDbContextBase.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 13,
+                  "endLine": 20,
+                  "endColumn": 17
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        }
+      ],
+      "rules": {
+        "CS8632": {
+          "id": "CS8632",
+          "shortDescription": "The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.",
+          "defaultLevel": "warning",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS8632)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry"
+            ]
+          }
+        },
+        "S112": {
+          "id": "S112",
+          "shortDescription": "General or reserved exceptions should never be thrown",
+          "fullDescription": "This rule raises an issue when a general or reserved exception is thrown.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-112",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S1481": {
+          "id": "S1481",
+          "shortDescription": "Unused local variables should be removed",
+          "fullDescription": "An unused local variable is a variable that has been declared but is not used anywhere in the block of code where it is defined. It is dead code, contributing to unnecessary complexity and leading to confusion when reading the code. Therefore, it should be removed from your code to maintain clarity and efficiency.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-1481",
+          "properties": {
+            "category": "Minor Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S2068": {
+          "id": "S2068",
+          "shortDescription": "Hard-coded credentials are security-sensitive",
+          "fullDescription": "Because it is easy to extract strings from an application source code or binary, credentials should not be hard-coded. This is particularly true for applications that are distributed or that are open-source.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-2068",
+          "properties": {
+            "category": "Blocker Security Hotspot",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S5122": {
+          "id": "S5122",
+          "shortDescription": "Having a permissive Cross-Origin Resource Sharing policy is security-sensitive",
+          "fullDescription": "Having a permissive Cross-Origin Resource Sharing policy is security-sensitive. It has led in the past to the following vulnerabilities:",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-5122",
+          "properties": {
+            "category": "Minor Security Hotspot",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "SonarWay"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

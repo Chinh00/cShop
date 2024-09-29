@@ -30,7 +30,6 @@ builder.WebHost.ConfigureKestrel(options =>
     });
 });
 
-builder.Services.AddIdentityServerCustom(builder.Configuration);
 
 
 builder.Services.AddMediatR(e => e.RegisterServicesFromAssemblies([typeof(ProductCreatedDomainEventConsumer).Assembly, typeof(Program).Assembly]));

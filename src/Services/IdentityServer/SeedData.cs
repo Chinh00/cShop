@@ -21,7 +21,6 @@ public class SeedData : IHostedService
         var dbContext = scope.ServiceProvider.GetRequiredService<UserDbContext>();
         await dbContext.Database.MigrateAsync(cancellationToken);
         
-        
         if (!dbContextUserManager.Users.Any())
         {
             

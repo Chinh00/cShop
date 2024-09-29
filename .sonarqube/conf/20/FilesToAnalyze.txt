@@ -1,0 +1,13 @@
+﻿/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Application/Program.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Application/UseCases/Events/ProductCreateDomainEventInternal.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Application/UseCases/Events/ProductUpdatedDomainEventInternal.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Application/obj/Debug/net8.0/Application.GlobalUsings.g.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Application/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Application/obj/Debug/net8.0/Application.AssemblyInfo.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Application/obj/Debug/net8.0/Application.MvcApplicationPartsAssemblyInfo.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Application/appsettings.Development.json
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Application/appsettings.json
+/Users/bachviet/Documents/Personal/dotnet/cShop/.dockerignore
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Application/Application.http
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Application/Dockerfile
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Application/Properties/launchSettings.json

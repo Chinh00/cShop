@@ -1,0 +1,12 @@
+è
+É/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Command/EventStore/obj/Debug/net8.0/EventStore.AssemblyInfo.csutf-8£
+ó/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Command/EventStore/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.csutf-8ë
+Ö/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Command/EventStore/obj/Debug/net8.0/EventStore.GlobalUsings.g.csutf-8ô
+ç/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Command/EventStore/Migrations/CatalogEventStoreDbContextModelSnapshot.csutf-8ê
+Ñ/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Command/EventStore/Migrations/20240925073137_InitDb.Designer.csutf-8Ñ
+{/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Command/EventStore/Migrations/20240925073137_InitDb.csutf-8n
+e/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Command/EventStore/Extensions.csutf-8ã
+Å/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Command/EventStore/Configurations/EventStoreConfiguration.csutf-8
+v/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Command/EventStore/CatalogEventStoreRepository.csutf-8~
+u/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Command/EventStore/CatalogEventStoreDbContext.csutf-8~
+u/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Command/EventStore/CatalogDesignTimeDbContext.csutf-8

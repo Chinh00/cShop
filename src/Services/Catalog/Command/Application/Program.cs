@@ -1,3 +1,4 @@
+using cShop.Infrastructure.Auth;
 using cShop.Infrastructure.Bus;
 using cShop.Infrastructure.IdentityServer;
 using cShop.Infrastructure.Logging;
@@ -17,9 +18,10 @@ builder.Services.AddCors(options =>
 
 builder.Services
     .AddLoggingCustom(builder.Configuration, "Catalog - Command")
+    .AddAuthenticationDefault(builder.Configuration)
     .AddEventStore(builder.Configuration)
     .AddCustomMasstransit(builder.Configuration)
-    .AddIdentityServerCustom(builder.Configuration)
+    
     .AddMediatR(e => e.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
 

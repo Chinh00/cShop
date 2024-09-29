@@ -25,7 +25,7 @@ public class CustomProfileService : IProfileService
         
         var claims = new List<Claim>()
         {
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+            new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString())
         };
         context.IssuedClaims.AddRange(claims);
     }

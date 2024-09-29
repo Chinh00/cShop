@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProjectInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sonarsource.com/msbuild/integration/2015/1">
+  <ProjectName>EventStore</ProjectName>
+  <ProjectLanguage>C#</ProjectLanguage>
+  <ProjectType>Product</ProjectType>
+  <ProjectGuid>46ab2656-5250-4f62-9296-cf079978d2b9</ProjectGuid>
+  <FullPath>/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Command/EventStore/EventStore.csproj</FullPath>
+  <IsExcluded>false</IsExcluded>
+  <AnalysisResults>
+    <AnalysisResult Id="FilesToAnalyze" Location="/Users/bachviet/Documents/Personal/dotnet/cShop/.sonarqube/conf/18/FilesToAnalyze.txt" />
+  </AnalysisResults>
+  <AnalysisSettings>
+    <Property Name="sonar.cs.roslyn.reportFilePaths">/Users/bachviet/Documents/Personal/dotnet/cShop/.sonarqube/out/18/Issues.json</Property>
+    <Property Name="sonar.cs.analyzer.projectOutPaths">/Users/bachviet/Documents/Personal/dotnet/cShop/.sonarqube/out/18</Property>
+  </AnalysisSettings>
+  <Configuration>Debug</Configuration>
+  <Platform>AnyCPU</Platform>
+  <TargetFramework>net8.0</TargetFramework>
+</ProjectInfo>

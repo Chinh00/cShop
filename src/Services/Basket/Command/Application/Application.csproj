@@ -4,6 +4,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>disable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <OutputType>Library</OutputType>
     </PropertyGroup>
 
     <ItemGroup>
@@ -15,6 +16,10 @@
       <ProjectReference Include="..\..\..\..\BuildingBlock\cShop.Infrastructure\cShop.Infrastructure.csproj" />
       <ProjectReference Include="..\Domain\Domain.csproj" />
       <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Properties\launchSettings.json" />
     </ItemGroup>
 
 </Project>

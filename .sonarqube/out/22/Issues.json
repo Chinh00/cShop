@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json.schemastore.org/sarif-1.0.0",
+  "version": "1.0.0",
+  "runs": [
+    {
+      "tool": {
+        "name": "Microsoft (R) Visual C# Compiler",
+        "version": "4.11.0.0",
+        "fileVersion": "4.11.0-3.24365.8 (9e9c7c1d)",
+        "semanticVersion": "4.11.0",
+        "language": "en-VN"
+      },
+      "results": [
+        {
+          "ruleId": "S6966",
+          "level": "warning",
+          "message": "Await RunAsync instead.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Basket/Command/WebApi/Program.cs",
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 1,
+                  "endLine": 24,
+                  "endColumn": 10
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        }
+      ],
+      "rules": {
+        "S6966": {
+          "id": "S6966",
+          "shortDescription": "Awaitable method should be used",
+          "fullDescription": "In an async method, any blocking operations should be avoided.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-6966",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+﻿/Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Core/Domain/Cqrs.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Core/Domain/Entities.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Core/Domain/Event.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Core/obj/Debug/net8.0/cShop.Core.GlobalUsings.g.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Core/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Core/obj/Debug/net8.0/cShop.Core.AssemblyInfo.cs

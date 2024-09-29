@@ -1,0 +1,14 @@
+﻿/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Basket/Command/WebApi/Apis/BasketApi.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Basket/Command/WebApi/Application/ApplicationApi.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Basket/Command/WebApi/Application/IApplicationApi.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Basket/Command/WebApi/Commands.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Basket/Command/WebApi/Program.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Basket/Command/WebApi/RequestDispatcher.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Basket/Command/WebApi/obj/Debug/net8.0/WebApi.GlobalUsings.g.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Basket/Command/WebApi/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Basket/Command/WebApi/obj/Debug/net8.0/WebApi.AssemblyInfo.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Basket/Command/WebApi/obj/Debug/net8.0/WebApi.MvcApplicationPartsAssemblyInfo.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Basket/Command/WebApi/appsettings.Development.json
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Basket/Command/WebApi/appsettings.json
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Basket/Command/WebApi/WebApi.http
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Basket/Command/WebApi/Properties/launchSettings.json

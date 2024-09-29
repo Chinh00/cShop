@@ -1,0 +1,851 @@
+{
+  "$schema": "http://json.schemastore.org/sarif-1.0.0",
+  "version": "1.0.0",
+  "runs": [
+    {
+      "tool": {
+        "name": "Microsoft (R) Visual C# Compiler",
+        "version": "4.11.0.0",
+        "fileVersion": "4.11.0-3.24365.8 (9e9c7c1d)",
+        "semanticVersion": "4.11.0",
+        "language": "en-VN"
+      },
+      "results": [
+        {
+          "ruleId": "S2068",
+          "level": "warning",
+          "message": "\"password\" detected here, make sure this is not a hard-coded credential.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/appsettings.json",
+                "region": {
+                  "startLine": 14,
+                  "startColumn": 16,
+                  "endLine": 14,
+                  "endColumn": 102
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/HostingExtensions.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 9,
+                  "endLine": 11,
+                  "endColumn": 44
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/HostingExtensions.cs",
+                "region": {
+                  "startLine": 39,
+                  "startColumn": 9,
+                  "endLine": 39,
+                  "endColumn": 32
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/HostingExtensions.cs",
+                "region": {
+                  "startLine": 45,
+                  "startColumn": 9,
+                  "endLine": 45,
+                  "endColumn": 34
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1192",
+          "level": "warning",
+          "message": "Define a constant instead of using this literal 'AspNetRoles' 5 times.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 23,
+                  "endLine": 15,
+                  "endColumn": 36
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 69,
+                  "startColumn": 41,
+                  "endLine": 69,
+                  "endColumn": 54
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 128,
+                  "startColumn": 41,
+                  "endLine": 128,
+                  "endColumn": 54
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 166,
+                  "startColumn": 24,
+                  "endLine": 166,
+                  "endColumn": 37
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 218,
+                  "startColumn": 23,
+                  "endLine": 218,
+                  "endColumn": 36
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": null,
+              "1": null,
+              "2": null,
+              "3": null
+            }
+          }
+        },
+        {
+          "ruleId": "S1192",
+          "level": "warning",
+          "message": "Define a constant instead of using this literal 'uniqueidentifier' 8 times.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 51,
+                  "endLine": 18,
+                  "endColumn": 69
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 32,
+                  "startColumn": 51,
+                  "endLine": 32,
+                  "endColumn": 69
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 59,
+                  "startColumn": 55,
+                  "endLine": 59,
+                  "endColumn": 73
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 80,
+                  "startColumn": 55,
+                  "endLine": 80,
+                  "endColumn": 73
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 102,
+                  "startColumn": 55,
+                  "endLine": 102,
+                  "endColumn": 73
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 119,
+                  "startColumn": 55,
+                  "endLine": 119,
+                  "endColumn": 73
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 120,
+                  "startColumn": 55,
+                  "endLine": 120,
+                  "endColumn": 73
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 143,
+                  "startColumn": 55,
+                  "endLine": 143,
+                  "endColumn": 73
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": null,
+              "1": null,
+              "2": null,
+              "3": null,
+              "4": null,
+              "5": null,
+              "6": null
+            }
+          }
+        },
+        {
+          "ruleId": "S1192",
+          "level": "warning",
+          "message": "Define a constant instead of using this literal 'nvarchar(256)' 6 times.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 55,
+                  "endLine": 19,
+                  "endColumn": 70
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 65,
+                  "endLine": 20,
+                  "endColumn": 80
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 33,
+                  "startColumn": 59,
+                  "endLine": 33,
+                  "endColumn": 74
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 34,
+                  "startColumn": 69,
+                  "endLine": 34,
+                  "endColumn": 84
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 35,
+                  "startColumn": 56,
+                  "endLine": 35,
+                  "endColumn": 71
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 36,
+                  "startColumn": 66,
+                  "endLine": 36,
+                  "endColumn": 81
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": null,
+              "1": null,
+              "2": null,
+              "3": null,
+              "4": null
+            }
+          }
+        },
+        {
+          "ruleId": "S1192",
+          "level": "warning",
+          "message": "Define a constant instead of using this literal 'nvarchar(max)' 11 times.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 21,
+                  "startColumn": 67,
+                  "endLine": 21,
+                  "endColumn": 82
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 38,
+                  "startColumn": 63,
+                  "endLine": 38,
+                  "endColumn": 78
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 39,
+                  "startColumn": 64,
+                  "endLine": 39,
+                  "endColumn": 79
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 40,
+                  "startColumn": 67,
+                  "endLine": 40,
+                  "endColumn": 82
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 41,
+                  "startColumn": 62,
+                  "endLine": 41,
+                  "endColumn": 77
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 60,
+                  "startColumn": 60,
+                  "endLine": 60,
+                  "endColumn": 75
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 61,
+                  "startColumn": 61,
+                  "endLine": 61,
+                  "endColumn": 76
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 81,
+                  "startColumn": 60,
+                  "endLine": 81,
+                  "endColumn": 75
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 82,
+                  "startColumn": 61,
+                  "endLine": 82,
+                  "endColumn": 76
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 101,
+                  "startColumn": 70,
+                  "endLine": 101,
+                  "endColumn": 85
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 146,
+                  "startColumn": 56,
+                  "endLine": 146,
+                  "endColumn": 71
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": null,
+              "1": null,
+              "2": null,
+              "3": null,
+              "4": null,
+              "5": null,
+              "6": null,
+              "7": null,
+              "8": null,
+              "9": null
+            }
+          }
+        },
+        {
+          "ruleId": "S1192",
+          "level": "warning",
+          "message": "Define a constant instead of using this literal 'AspNetUsers' 8 times.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 29,
+                  "startColumn": 23,
+                  "endLine": 29,
+                  "endColumn": 36
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 90,
+                  "startColumn": 41,
+                  "endLine": 90,
+                  "endColumn": 54
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 110,
+                  "startColumn": 41,
+                  "endLine": 110,
+                  "endColumn": 54
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 134,
+                  "startColumn": 41,
+                  "endLine": 134,
+                  "endColumn": 54
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 154,
+                  "startColumn": 41,
+                  "endLine": 154,
+                  "endColumn": 54
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 188,
+                  "startColumn": 24,
+                  "endLine": 188,
+                  "endColumn": 37
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 193,
+                  "startColumn": 24,
+                  "endLine": 193,
+                  "endColumn": 37
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 221,
+                  "startColumn": 23,
+                  "endLine": 221,
+                  "endColumn": 36
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": null,
+              "1": null,
+              "2": null,
+              "3": null,
+              "4": null,
+              "5": null,
+              "6": null
+            }
+          }
+        },
+        {
+          "ruleId": "S1192",
+          "level": "warning",
+          "message": "Define a constant instead of using this literal 'nvarchar(450)' 4 times.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 99,
+                  "startColumn": 64,
+                  "endLine": 99,
+                  "endColumn": 79
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 100,
+                  "startColumn": 62,
+                  "endLine": 100,
+                  "endColumn": 77
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 144,
+                  "startColumn": 64,
+                  "endLine": 144,
+                  "endColumn": 79
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Data/Migrations/20240923074619_InitDb.cs",
+                "region": {
+                  "startLine": 145,
+                  "startColumn": 55,
+                  "endLine": 145,
+                  "endColumn": 70
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": null,
+              "1": null,
+              "2": null
+            }
+          }
+        },
+        {
+          "ruleId": "S6966",
+          "level": "warning",
+          "message": "Await AnyAsync instead.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/SeedData.cs",
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 14,
+                  "endLine": 24,
+                  "endColumn": 46
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.Exception' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/CustomProfileService.cs",
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 33,
+                  "endLine": 24,
+                  "endColumn": 99
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S6966",
+          "level": "warning",
+          "message": "Await RunAsync instead.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Program.cs",
+                "region": {
+                  "startLine": 46,
+                  "startColumn": 5,
+                  "endLine": 46,
+                  "endColumn": 14
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S6966",
+          "level": "warning",
+          "message": "Await CloseAndFlushAsync instead.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/IdentityServer/Program.cs",
+                "region": {
+                  "startLine": 57,
+                  "startColumn": 5,
+                  "endLine": 57,
+                  "endColumn": 24
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        }
+      ],
+      "rules": {
+        "S112": {
+          "id": "S112",
+          "shortDescription": "General or reserved exceptions should never be thrown",
+          "fullDescription": "This rule raises an issue when a general or reserved exception is thrown.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-112",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S1192": {
+          "id": "S1192",
+          "shortDescription": "String literals should not be duplicated",
+          "fullDescription": "Duplicated string literals make the process of refactoring complex and error-prone, as any change would need to be propagated on all occurrences.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-1192",
+          "properties": {
+            "category": "Minor Code Smell",
+            "isEnabledByDefault": false,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S125": {
+          "id": "S125",
+          "shortDescription": "Sections of code should not be commented out",
+          "fullDescription": "Commented-out code distracts the focus from the actual executed code. It creates a noise that increases maintenance code. And because it is never executed, it quickly becomes out of date and invalid.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-125",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S2068": {
+          "id": "S2068",
+          "shortDescription": "Hard-coded credentials are security-sensitive",
+          "fullDescription": "Because it is easy to extract strings from an application source code or binary, credentials should not be hard-coded. This is particularly true for applications that are distributed or that are open-source.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-2068",
+          "properties": {
+            "category": "Blocker Security Hotspot",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S6966": {
+          "id": "S6966",
+          "shortDescription": "Awaitable method should be used",
+          "fullDescription": "In an async method, any blocking operations should be avoided.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-6966",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

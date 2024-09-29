@@ -1,0 +1,7 @@
+﻿/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/GrpcService/Extensions.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/GrpcService/Implements/CatalogGrpcService.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/GrpcService/obj/Debug/net8.0/GrpcService.GlobalUsings.g.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/GrpcService/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/GrpcService/obj/Debug/net8.0/Product.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/GrpcService/obj/Debug/net8.0/ProductGrpc.cs
+/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/GrpcService/obj/Debug/net8.0/GrpcService.AssemblyInfo.cs

@@ -1,0 +1,112 @@
+{
+  "$schema": "http://json.schemastore.org/sarif-1.0.0",
+  "version": "1.0.0",
+  "runs": [
+    {
+      "tool": {
+        "name": "Microsoft (R) Visual C# Compiler",
+        "version": "4.11.0.0",
+        "fileVersion": "4.11.0-3.24365.8 (9e9c7c1d)",
+        "semanticVersion": "4.11.0",
+        "language": "en-VN"
+      },
+      "results": [
+        {
+          "ruleId": "CS8632",
+          "level": "warning",
+          "message": "The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Projections/Extensions.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 143,
+                  "endLine": 9,
+                  "endColumn": 144
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8632",
+          "level": "warning",
+          "message": "The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Projections/MongoDbOptions.cs",
+                "region": {
+                  "startLine": 7,
+                  "startColumn": 18,
+                  "endLine": 7,
+                  "endColumn": 19
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S6672",
+          "level": "warning",
+          "message": "Update this logger to use its enclosing type.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Projections/ProjectionRepository.cs",
+                "region": {
+                  "startLine": 12,
+                  "startColumn": 41,
+                  "endLine": 12,
+                  "endColumn": 52
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        }
+      ],
+      "rules": {
+        "CS8632": {
+          "id": "CS8632",
+          "shortDescription": "The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.",
+          "defaultLevel": "warning",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS8632)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry"
+            ]
+          }
+        },
+        "S6672": {
+          "id": "S6672",
+          "shortDescription": "Generic logger injection should match enclosing type",
+          "fullDescription": "In most logging frameworks, it’s good practice to set the logger name to match its enclosing type, as enforced by {rule:csharpsquid:S3416}.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-6672",
+          "properties": {
+            "category": "Minor Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "SonarWay"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

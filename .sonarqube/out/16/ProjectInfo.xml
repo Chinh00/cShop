@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProjectInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sonarsource.com/msbuild/integration/2015/1">
+  <ProjectName>EventBus</ProjectName>
+  <ProjectLanguage>C#</ProjectLanguage>
+  <ProjectType>Product</ProjectType>
+  <ProjectGuid>da15fb0c-d5ee-4e92-aade-36c9e1731eda</ProjectGuid>
+  <FullPath>/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/EventBus/EventBus.csproj</FullPath>
+  <IsExcluded>false</IsExcluded>
+  <AnalysisResults>
+    <AnalysisResult Id="FilesToAnalyze" Location="/Users/bachviet/Documents/Personal/dotnet/cShop/.sonarqube/conf/16/FilesToAnalyze.txt" />
+  </AnalysisResults>
+  <AnalysisSettings>
+    <Property Name="sonar.cs.roslyn.reportFilePaths">/Users/bachviet/Documents/Personal/dotnet/cShop/.sonarqube/out/16/Issues.json</Property>
+    <Property Name="sonar.cs.analyzer.projectOutPaths">/Users/bachviet/Documents/Personal/dotnet/cShop/.sonarqube/out/16</Property>
+  </AnalysisSettings>
+  <Configuration>Debug</Configuration>
+  <Platform>AnyCPU</Platform>
+  <TargetFramework>net8.0</TargetFramework>
+</ProjectInfo>

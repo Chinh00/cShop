@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json.schemastore.org/sarif-1.0.0",
+  "version": "1.0.0",
+  "runs": [
+    {
+      "tool": {
+        "name": "Microsoft (R) Visual C# Compiler",
+        "version": "4.11.0.0",
+        "fileVersion": "4.11.0-3.24365.8 (9e9c7c1d)",
+        "semanticVersion": "4.11.0",
+        "language": "en-VN"
+      },
+      "results": [
+        {
+          "ruleId": "CS8632",
+          "level": "warning",
+          "message": "The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Basket/Command/Infrastructure/Extensions.cs",
+                "region": {
+                  "startLine": 7,
+                  "startColumn": 35,
+                  "endLine": 7,
+                  "endColumn": 36
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1075",
+          "level": "warning",
+          "message": "Refactor your code not to use hardcoded absolute paths or URIs.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Basket/Command/Infrastructure/Extensions.cs",
+                "region": {
+                  "startLine": 10,
+                  "startColumn": 80,
+                  "endLine": 10,
+                  "endColumn": 104
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        }
+      ],
+      "rules": {
+        "CS8632": {
+          "id": "CS8632",
+          "shortDescription": "The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.",
+          "defaultLevel": "warning",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS8632)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry"
+            ]
+          }
+        },
+        "S1075": {
+          "id": "S1075",
+          "shortDescription": "URIs should not be hardcoded",
+          "fullDescription": "Hard-coding a URI makes it difficult to test a program for a variety of reasons:",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-1075",
+          "properties": {
+            "category": "Minor Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "SonarWay"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

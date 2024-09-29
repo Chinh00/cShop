@@ -42,7 +42,7 @@ public static class Config
     {
         new TestUser()
         {
-            SubjectId = "ab",
+            SubjectId = Guid.NewGuid().ToString(),
             Username = "admin", 
             Password = "password"
         },

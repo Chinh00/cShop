@@ -1,0 +1,10 @@
+è
+É/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Projections/obj/Debug/net8.0/Projections.AssemblyInfo.csutf-8¢
+ñ/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Projections/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.csutf-8ë
+Ö/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Projections/obj/Debug/net8.0/Projections.GlobalUsings.g.csutf-8w
+n/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Projections/ProjectionRepository.csutf-8v
+m/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Projections/ProjectionDbContext.csutf-8q
+h/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Projections/MongoDbOptions.csutf-8x
+o/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Projections/IProjectionRepository.csutf-8w
+n/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Projections/IProjectionDbContext.csutf-8m
+d/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/Projections/Extensions.csutf-8
