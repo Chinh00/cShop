@@ -1,9 +1,0 @@
-é
-Ç/Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Contracts/obj/Debug/net8.0/cShop.Contracts.AssemblyInfo.csutf-8ù
-ë/Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Contracts/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.csutf-8ê
-Ñ/Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Contracts/obj/Debug/net8.0/cShop.Contracts.GlobalUsings.g.csutf-8v
-m/Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Contracts/Services/Catalog/Command.csutf-8y
-p/Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Contracts/Services/Basket/DomainEvent.csutf-8u
-l/Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Contracts/Services/Basket/Command.csutf-8Ä
-w/Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Contracts/Events/DomainEvents/PartialClasses.csutf-8u
-l/Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Contracts/Abstractions/StoreEvent.csutf-8

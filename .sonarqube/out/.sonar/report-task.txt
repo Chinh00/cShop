@@ -1,6 +1,0 @@
-projectKey=cshop-sonarqube
-serverUrl=http://100.92.80.33:9000
-serverVersion=10.6.0.92116
-dashboardUrl=http://100.92.80.33:9000/dashboard?id=cshop-sonarqube
-ceTaskId=cc21a3e4-b59c-4539-829c-5a79c1a90a1a
-ceTaskUrl=http://100.92.80.33:9000/api/ce/task?id=cc21a3e4-b59c-4539-829c-5a79c1a90a1a

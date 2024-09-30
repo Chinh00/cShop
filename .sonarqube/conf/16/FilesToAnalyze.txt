@@ -1,6 +1,0 @@
-﻿/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/EventBus/Consumers/ProductCreatedDomainEventConsumer.cs
-/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/EventBus/Consumers/ProductUpdatedDomainEvent.cs
-/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/EventBus/Extensions.cs
-/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/EventBus/obj/Debug/net8.0/EventBus.GlobalUsings.g.cs
-/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/EventBus/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
-/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/Query/EventBus/obj/Debug/net8.0/EventBus.AssemblyInfo.cs
