@@ -3,6 +3,7 @@ using MediatR;
 namespace cShop.Core.Domain;
 
 public interface ICommand<TResponse> : IRequest<ResultModel<TResponse>>
+    where TResponse : notnull
 {
     
 }

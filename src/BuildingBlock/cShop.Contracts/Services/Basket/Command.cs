@@ -5,7 +5,7 @@ namespace cShop.Contracts.Services.Basket;
 
 public static class Command
 {
-    public record CreateBasket(Guid UserId) : Message, IRequest<Guid>
+    public record CreateBasket(Guid UserId) : Message
     {
     }
     

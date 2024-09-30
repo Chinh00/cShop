@@ -17,7 +17,24 @@ public static class Extensions
             });
         });
 
+        
+        services.AddHostedService<DbContextMigrateHostedService<TDbContext>>();
+        
         action?.Invoke(services);
         return services;
     }
+
+    public static IServiceCollection AddRepository(this IServiceCollection services, Type type,
+        Action<IServiceCollection>? action = null)
+    {
+        services.Scan(e =>
+        {
+            e.FromTypes(type).AddClasses(t => t.AssignableTo<IEventStoreRepository>()).AsImplementedInterfaces().WithTransientLifetime();
+        });
+        
+        
+        action?.Invoke(services);
+        return services;
+    }
+    
 }

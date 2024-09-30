@@ -2,13 +2,11 @@
 
 namespace cShop.Infrastructure.EventStore;
 
-public class EventStoreDbContextBase : DbContext
+public class EventStoreDbContextBase(DbContextOptions options) : DbContext(options)
 {
-    public EventStoreDbContextBase(DbContextOptions options) : base(options)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(EventStoreDbContextBase).Assembly);
     }
-    
-    
-    
 }
