@@ -1,6 +1,0 @@
-﻿/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Basket/Command/Infrastructure/Extensions.cs
-/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Basket/Command/Infrastructure/obj/Debug/net8.0/Infrastructure.GlobalUsings.g.cs
-/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Basket/Command/Infrastructure/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
-/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Basket/Command/Infrastructure/obj/Debug/net8.0/Product.cs
-/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Basket/Command/Infrastructure/obj/Debug/net8.0/ProductGrpc.cs
-/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Basket/Command/Infrastructure/obj/Debug/net8.0/Infrastructure.AssemblyInfo.cs

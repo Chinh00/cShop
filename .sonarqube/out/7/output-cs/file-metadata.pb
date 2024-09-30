@@ -1,4 +1,0 @@
- 
-”/Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Infrastructure.Ole/obj/Debug/net8.0/cShop.Infrastructure.Ole.AssemblyInfo.csutf-8¦
-š/Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Infrastructure.Ole/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.csutf-8¢
-–/Users/bachviet/Documents/Personal/dotnet/cShop/src/BuildingBlock/cShop.Infrastructure.Ole/obj/Debug/net8.0/cShop.Infrastructure.Ole.GlobalUsings.g.csutf-8
