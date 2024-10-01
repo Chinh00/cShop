@@ -3,11 +3,6 @@ using cShop.Core.Domain;
 
 namespace cShop.Infrastructure.Projection;
 
-public class CatalogProjection : ProjectionBase
-{
-    public string Name { get; set; }
-    public float CurrentCost { get; set; }
-}
 
 
 public interface IProjectionRepository<T>

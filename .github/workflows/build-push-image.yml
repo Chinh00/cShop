@@ -32,16 +32,16 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: src/Services/Catalog/Command/Application/Dockerfile
+          file: src/Services/Catalog/WebApi/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_COMMAND_SERVICE_NAME}}:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_CATALOG_SERVICE_NAME}}:latest
       - name: Build and push Docker image Catalog Service - Query Service
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: src/Services/Catalog/Query/Application/Dockerfile
+          file: src/Services/Basket/WebApi/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_QUERY_SERVICE_NAME}}:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_BASKET_SERVICE_NAME}}:latest
       
 
       

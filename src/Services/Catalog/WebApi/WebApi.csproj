@@ -17,7 +17,7 @@
       <ProjectReference Include="..\Application\Application.csproj" />
       <ProjectReference Include="..\Bus\Bus.csproj" />
       <ProjectReference Include="..\EventStore\EventStore.csproj" />
-      <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+      <ProjectReference Include="..\GrpcService\GrpcService.csproj" />
       <ProjectReference Include="..\Projection\Projection.csproj" />
     </ItemGroup>
 

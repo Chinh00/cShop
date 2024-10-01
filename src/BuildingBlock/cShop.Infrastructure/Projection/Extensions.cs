@@ -10,8 +10,6 @@ public static class Extensions
     {
 
         services.Configure<MongoDbOptions>(configuration.GetSection(MongoDbOptions.MongoDb));
-        services.AddScoped<IProjectionDbContext, ProjectionDbContext>();
-        services.AddScoped(typeof(IProjectionRepository<>), typeof(ProjectionRepository<>));
         BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.String));
         action?.Invoke(services);
         return services;

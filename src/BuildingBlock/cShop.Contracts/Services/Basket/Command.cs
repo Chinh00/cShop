@@ -5,9 +5,10 @@ namespace cShop.Contracts.Services.Basket;
 
 public static class Command
 {
-    public record CreateBasket(Guid UserId) : Message
-    {
-    }
+    public record CreateBasket(Guid UserId) : Message;
+
+    public record AddBasketItem(Guid BasketId, Guid UserId, Guid ProductId, int Quantity, float Price)
+        : Message, IRequest;
     
-    public record AddBasketItem(Guid BasketId, Guid UserId, Guid ProductId, int Quantity, float Price) : Message, IRequest {}
+    
 }

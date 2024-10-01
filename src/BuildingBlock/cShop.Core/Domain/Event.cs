@@ -33,7 +33,7 @@ public interface IMessage
 
 
 
-public abstract record Message : IMessage
+public abstract record Message : IMessage, INotification
 {
     public DateTime CreateAt { get; } = DateTime.UtcNow;
 }
