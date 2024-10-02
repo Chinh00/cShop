@@ -29,4 +29,8 @@
       <ProjectReference Include="..\cShop.Core\cShop.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Services\Order\" />
+    </ItemGroup>
+
 </Project>

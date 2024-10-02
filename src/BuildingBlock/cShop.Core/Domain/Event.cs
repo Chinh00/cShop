@@ -15,6 +15,7 @@ public interface IEvent
     
 }
 
+public interface IIntegrationEvent : IEvent {}
 
 public interface IVersion
 {
