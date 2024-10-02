@@ -6,5 +6,5 @@ namespace cShop.Infrastructure.Bus;
 
 public interface IBusEvent
 {
-    Task PublishAsync(string [] topics, IEvent @event, CancellationToken cancellationToken = default);
+    public Task Publish<TMessage>(TMessage message, CancellationToken cancellationToken = default) where TMessage : Message;
 }

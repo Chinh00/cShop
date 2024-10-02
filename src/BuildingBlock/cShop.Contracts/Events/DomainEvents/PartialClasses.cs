@@ -15,12 +15,12 @@ public record ProductCreatedDomainEvent(
     float CurrentCost,
     string ImageSrc,
     Guid? CategoryId,
-    int Version) : Message, IDomainEvent, INotification
+    long Version) : Message, IDomainEvent, INotification
 {
     
 }
 
 
-public record ProductNameUpdatedDomainEvent(Guid ProductId, string Name, int Version) : Message, IDomainEvent, INotification
+public record ProductNameUpdatedDomainEvent(Guid ProductId, string Name, long Version) : Message, IDomainEvent, INotification
 {
 }

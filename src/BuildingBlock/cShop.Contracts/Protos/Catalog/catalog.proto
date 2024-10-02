@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option csharp_namespace="GrpcServices";
+
+service Catalog {
+  rpc getProductById (GetCatalogByIdRequest) returns (GetCatalogByIdResponse) {};
+}
+
+message GetCatalogByIdRequest {
+  string id = 1;
+}
+
+message GetCatalogByIdResponse {
+  string productId = 1;
+  string productName = 2;
+  double currentCost = 3;
+  
+  
+}

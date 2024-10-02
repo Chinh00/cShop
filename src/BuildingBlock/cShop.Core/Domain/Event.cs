@@ -18,12 +18,13 @@ public interface IEvent
 
 public interface IVersion
 {
-    int Version { get; }
+    long Version { get; }
 }
 
 public interface IDomainEvent : IEvent, IVersion, IMessage
 {
 }
+
 
 public interface IMessage
 {
@@ -32,9 +33,9 @@ public interface IMessage
 
 
 
-public abstract record Message : IMessage
+public abstract record Message : IMessage, INotification
 {
-    public DateTime CreateAt { get; }
+    public DateTime CreateAt { get; } = DateTime.UtcNow;
 }
 
 
@@ -79,6 +80,5 @@ public abstract class AggregateBase : EntityBase, IAggregateRoot
     public abstract void ApplyEvent(IDomainEvent @event);
 
 }
-public interface ITxRequest {}
 
 

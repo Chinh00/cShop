@@ -3,10 +3,12 @@
 on:
   workflow_dispatch:
   push:
+    branches:
+      - main
 
 jobs:
   main:
-    name: Build server for movie
+    name: Build and push services
 
     runs-on: ubuntu-latest
     
@@ -30,19 +32,56 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: src/Services/Catalog/Command/Application/Dockerfile
+          file: src/Services/Catalog/WebApi/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_COMMAND_SERVICE_NAME}}:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_CATALOG_SERVICE_NAME}}:latest
       - name: Build and push Docker image Catalog Service - Query Service
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: src/Services/Catalog/Query/Application/Dockerfile
+          file: src/Services/Basket/WebApi/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_QUERY_SERVICE_NAME}}:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_BASKET_SERVICE_NAME}}:latest
       
 
       
         
         
- 
+        
+  build:
+    name: Build and analyze
+    runs-on: windows-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Set up JDK 17
+        uses: actions/setup-java@v1
+        with:
+          java-version: 17
+      - name: Cache SonarQube packages
+        uses: actions/cache@v1
+        with:
+          path: ~\.sonar\cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Cache SonarQube scanner
+        id: cache-sonar-scanner
+        uses: actions/cache@v1
+        with:
+          path: .\.sonar\scanner
+          key: ${{ runner.os }}-sonar-scanner
+          restore-keys: ${{ runner.os }}-sonar-scanner
+      - name: Install SonarQube scanner
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+        shell: powershell
+        run: |
+          New-Item -Path .\.sonar\scanner -ItemType Directory
+          dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
+      - name: Build and analyze
+        shell: powershell
+        run: |
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Chinh00_cShop_0e245bf5-43ba-420e-a9a0-62558f2a0217" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}"
+          dotnet build
+          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
