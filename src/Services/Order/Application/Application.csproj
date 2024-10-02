@@ -16,8 +16,4 @@
       <None Remove="Properties\launchSettings.json" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="StateMachine\" />
-    </ItemGroup>
-
 </Project>
