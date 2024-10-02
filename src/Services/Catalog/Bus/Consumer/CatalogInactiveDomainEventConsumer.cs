@@ -20,5 +20,10 @@ public class CatalogInactiveDomainEventConsumer : IConsumer<DomainEvents.Catalog
     {
         await _catalogProjectionRepository.UpdateFieldAsync(context.Message.Id, context.Message.Version,
             e => e.IsActive, false, default);
+        
+        await _catalogProjectionRepository.UpdateFieldAsync(context.Message.Id, context.Message.Version,
+            e => e.Version, context.Message.Version, default);
+        
+        
     }
 }

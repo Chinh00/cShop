@@ -32,14 +32,32 @@ public class Basket : AggregateBase
         });
         RaiseEvent(version => new DomainEvents.BasketItemAdded(Id, UserId, command.ProductId, command.Quantity, command.Price, version));
     }
-    
 
 
-    
-    
-    
-    public override void ApplyEvent(IDomainEvent @event)
+
+
+
+
+    public override void ApplyEvent(IDomainEvent @event) => With(@event as dynamic);
+
+    void With(DomainEvents.BasketCreated @event)
     {
-        throw new NotImplementedException();
+        Id = @event.BasketId;
+        UserId = @event.UserId;
+
+        Version = @event.Version;
+    }
+
+    void With(DomainEvents.BasketItemAdded @event)
+    {
+        BasketItems ??= [];
+        BasketItems.Add(new BasketItem()
+        {
+            ProductId = @event.ProductId,
+            Quantity = @event.Quantity,
+            Price = @event.Price
+        });
+        
+        Version = @event.Version;
     }
 }

@@ -12,12 +12,8 @@ public static class BasketApi
     {
         var group = endpoints.MapGroup(BaseUrl).HasApiVersion(1).RequireAuthorization();
 
-        group.MapPost(string.Empty, async (ISender sender) =>
-        {
-            var result = await sender.Send(new Commands.CreateBasket());
-            return Results.Ok(result);
-
-        });
+        group.MapPost(string.Empty, async (ISender sender, CancellationToken cancellationToken) => Results.Ok(await sender.Send(new Commands.CreateBasket(), cancellationToken)));
+        group.MapPost("add-item", async (ISender sender, Commands.AddBasketItem item, CancellationToken cancellation) => Results.Ok(await sender.Send(item, cancellation)));
         
         
         return endpoints;

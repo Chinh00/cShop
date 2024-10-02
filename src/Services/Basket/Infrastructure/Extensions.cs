@@ -7,7 +7,7 @@ public static class Extensions
         Action<IServiceCollection>? action = null)
     {
 
-        services.AddGrpcClient<Catalog.CatalogClient>(); 
+        services.AddGrpcClient<Catalog.CatalogClient>(o => o.Address = new Uri(configuration.GetValue<string>("CatalogGrpc:Url"))); 
         action?.Invoke(services);
         return services;
     }

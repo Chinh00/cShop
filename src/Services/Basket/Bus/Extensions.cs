@@ -25,6 +25,8 @@ public static class Extensions
 
 
                 r.AddConsumer<BasketCreatedDomainEventConsumer>();
+                r.AddConsumer<BasketItemAddedDomainEventConsumer>();
+                
                 
                 r.UsingKafka((context, o) =>
                 {
@@ -35,6 +37,14 @@ public static class Extensions
                         c.CreateIfMissing(t => t.NumPartitions = 1);
                         c.ConfigureConsumer<BasketCreatedDomainEventConsumer>(context);
                     });
+                    o.TopicEndpoint<DomainEvents.BasketItemAdded>(nameof(DomainEvents.BasketItemAdded), "basket", c =>
+                    {
+                        c.AutoOffsetReset = AutoOffsetReset.Earliest;
+                        c.CreateIfMissing(t => t.NumPartitions = 1);
+                        c.ConfigureConsumer<BasketItemAddedDomainEventConsumer>(context);
+                    });
+                    
+                    
                     
                     
                 }); 

@@ -1,4 +1,5 @@
-﻿using IdentityServer;
+﻿using cShop.Infrastructure.Ole;
+using IdentityServer;
 using IdentityServer.Data;
 using IdentityServer.Data.Domain;
 using Microsoft.AspNetCore.Identity;
@@ -30,6 +31,7 @@ try
         optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("db"));    
     });
     builder.Services
+        .AddOpenTelemetryCustom("IdentityService")
         .AddIdentity<User, IdentityRole<Guid>>()
         .AddEntityFrameworkStores<UserDbContext>()
         .AddUserManager<UserManager<User>>()

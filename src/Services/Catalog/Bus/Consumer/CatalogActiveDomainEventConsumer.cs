@@ -21,5 +21,10 @@ public class CatalogActiveDomainEventConsumer : IConsumer<DomainEvents.CatalogAc
         _logger.LogInformation("Catalog active domain event: {@context}", context.Message);
         await _catalogProjectionRepository.UpdateFieldAsync(context.Message.Id, context.Message.Version,
             e => e.IsActive, true, default);
+        
+        await _catalogProjectionRepository.UpdateFieldAsync(context.Message.Id, context.Message.Version,
+            e => e.Version, context.Message.Version, default);
+        
+        
     }
 }

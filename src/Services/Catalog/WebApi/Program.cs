@@ -4,6 +4,7 @@ using cShop.Infrastructure.Auth;
 using cShop.Infrastructure.Bus;
 using cShop.Infrastructure.Logging;
 using cShop.Infrastructure.Mediator;
+using cShop.Infrastructure.Ole;
 using cShop.Infrastructure.Swagger;
 using EventStore;
 using GrpcService.Implements;
@@ -13,6 +14,7 @@ using WebApi.Apis;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddLoggingCustom(builder.Configuration, "Catalog")
+    .AddOpenTelemetryCustom("CatalogService")
     .AddAuthenticationDefault(builder.Configuration)
     .AddSwaggerCustom(builder.Configuration)
     .AddMediatorDefault([typeof(Program), typeof(Anchor)])
