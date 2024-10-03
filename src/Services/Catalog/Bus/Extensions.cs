@@ -24,6 +24,8 @@ public static class Extensions
                 t.AddProducer<DomainEvents.CatalogActivated>(nameof(DomainEvents.CatalogActivated));
                 t.AddProducer<DomainEvents.CatalogInactivated>(nameof(DomainEvents.CatalogInactivated));
                 
+                t.AddProducer<IntegrationEvent.CatalogCreatedIntegration>(nameof(IntegrationEvent.CatalogCreatedIntegration));
+                
                 
                 t.AddConsumer<CatalogCreatedDomainEventConsumer>();
                 t.AddConsumer<CatalogActiveDomainEventConsumer>();

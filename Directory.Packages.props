@@ -1,0 +1,16 @@
+<Project>
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>disable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+    
+    <ItemGroup> 
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="*" /> 
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="*"/> 
+    </ItemGroup> 
+    
+    
+    
+</Project>

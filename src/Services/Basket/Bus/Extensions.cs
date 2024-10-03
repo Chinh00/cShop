@@ -22,11 +22,15 @@ public static class Extensions
                 r.AddProducer<DomainEvents.BasketCreated>(nameof(DomainEvents.BasketCreated));
                 r.AddProducer<DomainEvents.BasketItemAdded>(nameof(DomainEvents.BasketItemAdded));
 
+                r.AddProducer<IntegrationEvent.BasketCheckoutSuccess>(nameof(IntegrationEvent.BasketCheckoutSuccess));
+                r.AddProducer<IntegrationEvent.BasketCheckoutFail>(nameof(IntegrationEvent.BasketCheckoutFail));
+                
 
 
                 r.AddConsumer<BasketCreatedDomainEventConsumer>();
                 r.AddConsumer<BasketItemAddedDomainEventConsumer>();
-                
+
+                r.AddConsumer<OrderValidateIntegrationEventConsumer>();
                 
                 r.UsingKafka((context, o) =>
                 {
@@ -44,7 +48,13 @@ public static class Extensions
                         c.ConfigureConsumer<BasketItemAddedDomainEventConsumer>(context);
                     });
                     
-                    
+                    o.TopicEndpoint<cShop.Contracts.Services.Order.DomainEvents.MakeOrderValidate>(nameof(cShop.Contracts.Services.Order.DomainEvents.MakeOrderValidate), "order-group",
+                        c =>
+                        {
+                            c.AutoOffsetReset = AutoOffsetReset.Earliest;
+                            c.CreateIfMissing(e => e.NumPartitions = 1);
+                            c.ConfigureConsumer<OrderValidateIntegrationEventConsumer>(context);
+                        });
                     
                     
                 }); 

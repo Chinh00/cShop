@@ -1,10 +1,10 @@
 ﻿using cShop.Infrastructure.Ole;
 using IdentityServer;
+using IdentityServer.Apis;
 using IdentityServer.Data;
 using IdentityServer.Data.Domain;
+using IdentityServer.Infrastructure;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Serilog;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -24,12 +24,21 @@ try
         .Enrich.FromLogContext()
         .ReadFrom.Configuration(ctx.Configuration));
 
-
+    
 
     builder.Services.AddDbContext<UserDbContext>((provider, optionsBuilder) =>
     {
         optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("db"));    
     });
+
+    builder.Services
+        .AddSwaggerCustom(builder.Configuration)
+        .AddMediatorDefault([typeof(Program)])
+        .AddMessageBus(builder.Configuration)
+        .AddMasstransitCustom(builder.Configuration)
+        .AddHostedService<SeedData>()
+        ;
+    
     builder.Services
         .AddOpenTelemetryCustom("IdentityService")
         .AddIdentity<User, IdentityRole<Guid>>()
@@ -38,12 +47,13 @@ try
         .AddSignInManager<SignInManager<User>>()
         .AddDefaultTokenProviders();
 
-    builder.Services.AddHostedService<SeedData>();
-    
+
     
     var app = builder
         .ConfigureServices()
-        .ConfigurePipeline();
+        .ConfigurePipeline()
+        .MapIdentityServerApiV1()
+        .ConfigureSwagger(builder.Configuration);
     
     app.Run();
 

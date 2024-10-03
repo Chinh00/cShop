@@ -1,4 +1,5 @@
 using cShop.Contracts.Abstractions;
+using cShop.Contracts.Services.Catalog;
 using cShop.Core.Domain;
 using cShop.Infrastructure.Bus;
 using cShop.Infrastructure.EventStore;
@@ -32,6 +33,8 @@ public class CreateCatalogCommandHandler
                 cancellationToken);
             await _messageBus.Publish((dynamic)catalogDomainEvent, cancellationToken);
         }
+        await _messageBus.Publish(new IntegrationEvent.CatalogCreatedIntegration(catalog.Id, catalog.Name, catalog.Price), cancellationToken);
+        
         return ResultModel<Guid>.Create(catalog.Id);
     }
 }
