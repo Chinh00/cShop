@@ -3,6 +3,7 @@ using Bus.Consumer;
 using Confluent.Kafka;
 using cShop.Contracts.Services.IdentityServer;
 using cShop.Contracts.Services.Order;
+using cShop.Infrastructure.Projection;
 using MassTransit;
 
 namespace Bus;
@@ -12,7 +13,8 @@ public static class Extensions
     public static IServiceCollection AddMasstransitCustom(this IServiceCollection services, IConfiguration configuration,
         Action<IServiceCollection>? action = null)
     {
-
+        
+        var mongodb = configuration.GetSection(MongoDbOptions.MongoDb).Get<MongoDbOptions>();
         services.AddMassTransit(t =>
         {
             t.SetKebabCaseEndpointNameFormatter();
@@ -23,11 +25,16 @@ public static class Extensions
             {
                 r.AddProducer<DomainEvents.OrderSubmitted>(nameof(DomainEvents.OrderSubmitted));
                 r.AddProducer<DomainEvents.MakeOrderValidate>(nameof(DomainEvents.MakeOrderValidate));
-
+                r.AddProducer<IntegrationEvents.PaymentProcessSuccess>(nameof(IntegrationEvents.PaymentProcessSuccess));                
+                
                 r.AddConsumer<CustomerCreatedIntegrationConsumer>();
                 r.AddConsumer<ProductCreatedIntegrationConsumer>();
-                
-                r.AddSagaStateMachine<OrderStateMachine, OrderState>();
+
+                r.AddSagaStateMachine<OrderStateMachine, OrderState, OrderStateMachineDefinition>()
+                    .MongoDbRepository(e =>
+                {
+                    e.Connection = mongodb.ToString();
+                });
                 
                 r.UsingKafka((context, configurator) =>
                 {
