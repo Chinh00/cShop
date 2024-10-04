@@ -26,9 +26,16 @@ public static class Extensions
                 r.AddProducer<DomainEvents.OrderSubmitted>(nameof(DomainEvents.OrderSubmitted));
                 r.AddProducer<DomainEvents.MakeOrderValidate>(nameof(DomainEvents.MakeOrderValidate));
                 r.AddProducer<IntegrationEvents.PaymentProcessSuccess>(nameof(IntegrationEvents.PaymentProcessSuccess));                
+                r.AddProducer<IntegrationEvents.PaymentProcessFail>(nameof(IntegrationEvents.PaymentProcessFail));                
+                
+                r.AddProducer<DomainEvents.OrderConfirmed>(nameof(DomainEvents.OrderConfirmed));
+                r.AddProducer<DomainEvents.OrderCancelled>(nameof(DomainEvents.OrderCancelled));
+                
                 
                 r.AddConsumer<CustomerCreatedIntegrationConsumer>();
                 r.AddConsumer<ProductCreatedIntegrationConsumer>();
+                
+                
 
                 r.AddSagaStateMachine<OrderStateMachine, OrderState, OrderStateMachineDefinition>()
                     .MongoDbRepository(e =>
@@ -57,6 +64,49 @@ public static class Extensions
                     
                     
                     configurator.TopicEndpoint<DomainEvents.OrderSubmitted>(nameof(DomainEvents.OrderSubmitted), "orders-group",
+                        c =>
+                        {
+                            c.AutoOffsetReset = AutoOffsetReset.Earliest;
+                            c.CreateIfMissing(e => e.NumPartitions = 1);
+                            c.ConfigureSaga<OrderState>(context);
+                        });
+                    
+                    configurator.TopicEndpoint<cShop.Contracts.Services.Basket.IntegrationEvent.BasketCheckoutSuccess>(nameof(cShop.Contracts.Services.Basket.IntegrationEvent.BasketCheckoutSuccess), "basket-group",
+                        c =>
+                        {
+                            c.AutoOffsetReset = AutoOffsetReset.Earliest;
+                            c.CreateIfMissing(e => e.NumPartitions = 1);
+                            c.ConfigureSaga<OrderState>(context);
+                        });
+                    configurator.TopicEndpoint<cShop.Contracts.Services.Basket.IntegrationEvent.BasketCheckoutFail>(nameof(cShop.Contracts.Services.Basket.IntegrationEvent.BasketCheckoutFail), "basket-group",
+                        c =>
+                        {
+                            c.AutoOffsetReset = AutoOffsetReset.Earliest;
+                            c.CreateIfMissing(e => e.NumPartitions = 1);
+                            c.ConfigureSaga<OrderState>(context);
+                        });
+                    configurator.TopicEndpoint<IntegrationEvents.PaymentProcessSuccess>(nameof(IntegrationEvents.PaymentProcessSuccess), "payment-group",
+                        c =>
+                        {
+                            c.AutoOffsetReset = AutoOffsetReset.Earliest;
+                            c.CreateIfMissing(e => e.NumPartitions = 1);
+                            c.ConfigureSaga<OrderState>(context);
+                        });
+                    configurator.TopicEndpoint<IntegrationEvents.PaymentProcessFail>(nameof(IntegrationEvents.PaymentProcessFail), "payment-group",
+                        c =>
+                        {
+                            c.AutoOffsetReset = AutoOffsetReset.Earliest;
+                            c.CreateIfMissing(e => e.NumPartitions = 1);
+                            c.ConfigureSaga<OrderState>(context);
+                        });
+                    configurator.TopicEndpoint<DomainEvents.OrderConfirmed>(nameof(DomainEvents.OrderConfirmed), "order-group",
+                        c =>
+                        {
+                            c.AutoOffsetReset = AutoOffsetReset.Earliest;
+                            c.CreateIfMissing(e => e.NumPartitions = 1);
+                            c.ConfigureSaga<OrderState>(context);
+                        });
+                    configurator.TopicEndpoint<DomainEvents.OrderCancelled>(nameof(DomainEvents.OrderCancelled), "order-group",
                         c =>
                         {
                             c.AutoOffsetReset = AutoOffsetReset.Earliest;

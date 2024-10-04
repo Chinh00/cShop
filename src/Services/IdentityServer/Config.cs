@@ -8,7 +8,8 @@ public static class Config
     public static IEnumerable<IdentityResource> IdentityResources =>
         new IdentityResource[]
         { 
-            new IdentityResources.OpenId()
+            new IdentityResources.OpenId(),
+            new IdentityResources.Profile(),
         };
 
     public static IEnumerable<ApiScope> ApiScopes =>
@@ -28,12 +29,10 @@ public static class Config
 
                 AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
 
-                ClientSecrets =
-                {
-                    new Secret("secret".Sha256())
-                },
+                
+                RequireClientSecret = false,
 
-                AllowedScopes = { "api" },
+                AllowedScopes = { "openid", "api", "offline_access" },
                 AllowOfflineAccess = true
             }
         };

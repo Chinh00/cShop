@@ -35,5 +35,4 @@ app.NewVersionedApi("Basket").MapBasketApiV1();
 app.UseAuthenticationDefault(builder.Configuration)
     .ConfigureSwagger(builder.Configuration);
 
-
 app.Run();

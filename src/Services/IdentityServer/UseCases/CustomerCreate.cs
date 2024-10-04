@@ -1,3 +1,4 @@
+using System.Text.Json;
 using cShop.Contracts.Services.IdentityServer;
 using IdentityServer.Data.Domain;
 using MassTransit;
@@ -24,8 +25,13 @@ public class CustomerCreate
                 var user = new User()
                 {
                     UserName = request.Model.Username,
+                    Email = $"{request.Model.Username}ascas@gmail.com"
                 };
-                await _userManager.CreateAsync(user, request.Model.Password);
+                var result = await _userManager.CreateAsync(user, request.Model.Password);
+                if (!result.Succeeded)
+                {
+                    return ResultModel<Guid>.Create(Guid.NewGuid(), true, JsonSerializer.Serialize(result.Errors));
+                }
                 await _integrationEventProducer.Produce(new IntegrationEvent.CustomerCreatedIntegration(user.Id), cancellationToken);
                 return ResultModel<Guid>.Create(user.Id);
             }

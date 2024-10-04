@@ -7,8 +7,11 @@ namespace Application.StateMachine;
 
 public class OrderStateMachine : MassTransitStateMachine<OrderState>
 {
-    public OrderStateMachine()
+    private readonly ILogger<OrderStateMachine> _logger;
+    
+    public OrderStateMachine(ILogger<OrderStateMachine> logger)
     {
+        _logger = logger;
         Event(() => OrderSubmitted, c => c.CorrelateById(x => x.Message.OrderId));
         Event(() => MakeOrderValidate, c => c.CorrelateById(x => x.Message.OrderId));
         Event(() => BasketCheckoutSuccess, c => c.CorrelateById(x => x.Message.OrderId));
@@ -21,44 +24,71 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
         
         InstanceState(e => e.CurrentState);
         
+        
         Initially(
             When(OrderSubmitted)
                 .ThenAsync(async context =>
                 {
-                    context.Instance.UpdatedTime = context.Message.CreateAt;
+                    _logger.LogInformation($"Order submitted {context.Saga.CorrelationId}");
+
+
+                    await SendAuditLog();
                 })
                 .Produce(context => context.Init<DomainEvents.MakeOrderValidate>(new
                 {
-                    OrderId = context.Message.OrderId,
+                    OrderId = context.Saga.CorrelationId,
                 }))
                 .TransitionTo(Submitted)
         );
+        
         During(Submitted,
             Ignore(OrderSubmitted),
             When(BasketCheckoutSuccess).ThenAsync(async context =>
             {
-                
+                _logger.LogInformation($"Order validated {context.Saga.CorrelationId}");
+
+                await SendAuditLog();
             }).TransitionTo(Process),
             When(BasketCheckoutFail).ThenAsync(async context =>
                 {
-                    
+                    _logger.LogInformation("Order checkout failed");
+
+                    await SendAuditLog();
                 }).TransitionTo(Cancel)
         );
         During(Process,
             Ignore(OrderSubmitted),
             Ignore(BasketCheckoutSuccess),
-            When(PaymentProcessSuccess).Produce(context => context.Init<DomainEvents.OrderConfirmed>(new {context.Message.OrderId})).TransitionTo(Complete),
-            When(PaymentProcessFail).Produce(context => context.Init<DomainEvents.OrderCancelled>(new {context.Message.OrderId})).TransitionTo(Cancel)
+            When(PaymentProcessSuccess)
+                .ThenAsync(async context =>
+                {
+                    _logger.LogInformation("Payment processing success");
+                    context.Saga.TransactionId = context.Message.TransactionId;
+                    await SendAuditLog();
+                })
+                .Produce(
+                    context => context.Init<DomainEvents.OrderConfirmed>(new {OrderId = context.Saga.CorrelationId, context.Saga.TransactionId}))
+                .TransitionTo(Complete),
+            When(PaymentProcessFail).Produce(context => context.Init<DomainEvents.OrderCancelled>(new {context.Saga.CorrelationId})).TransitionTo(Cancel)
         );
         
         During(Complete,
             Ignore(PaymentProcessSuccess),
-            When(OrderConfirmed).ThenAsync(async context => {}).Finalize()
+            When(OrderConfirmed)
+                .ThenAsync(async context =>
+                {
+                    _logger.LogInformation("Order confirmed");
+                    await SendAuditLog();
+                }).Finalize()
             );
-        During(Cancel, Ignore(BasketCheckoutFail), Ignore(PaymentProcessFail), When(OrderCanceled).ThenAsync(
-            async context =>
+        During(Cancel, 
+            Ignore(BasketCheckoutFail), 
+            Ignore(PaymentProcessFail), 
+            When(OrderCanceled)
+                .ThenAsync(async context =>
             {
-                
+                _logger.LogInformation($"Order cancelled {context.Saga.CorrelationId}");
+                await SendAuditLog();
             }).Finalize());
         
         SetCompletedWhenFinalized();
@@ -79,4 +109,10 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
     public Event<IntegrationEvents.PaymentProcessFail> PaymentProcessFail { get; private set; } = null!;
     public Event<DomainEvents.OrderCancelled> OrderCanceled { get; private set; } = null!;
     public Event<DomainEvents.OrderConfirmed> OrderConfirmed { get; private set; } = null!;
+
+
+    public async Task SendAuditLog()
+    {
+        await Task.CompletedTask;
+    }
 }

@@ -25,6 +25,7 @@ public static class Extensions
                 r.AddProducer<IntegrationEvent.BasketCheckoutSuccess>(nameof(IntegrationEvent.BasketCheckoutSuccess));
                 r.AddProducer<IntegrationEvent.BasketCheckoutFail>(nameof(IntegrationEvent.BasketCheckoutFail));
                 
+                
 
 
                 r.AddConsumer<BasketCreatedDomainEventConsumer>();

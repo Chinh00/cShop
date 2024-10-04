@@ -14,14 +14,17 @@ internal static class HostingExtensions
             {
                 // https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/api_scopes#authorization-based-on-scopes
                 options.EmitStaticAudienceClaim = true;
+                options.Events.RaiseErrorEvents = true;
+                options.Events.RaiseInformationEvents = true;
+                options.Events.RaiseFailureEvents = true;
+                options.Events.RaiseSuccessEvents = true;
             })
             .AddInMemoryIdentityResources(Config.IdentityResources)
             .AddInMemoryApiScopes(Config.ApiScopes)
             .AddInMemoryClients(Config.Clients)
-            .AddAspNetIdentity<User>()
-            .AddProfileService<CustomProfileService>()
+            //.AddProfileService<CustomProfileService>()
             .AddTestUsers(Config.Users.ToList())
-            ;
+            .AddAspNetIdentity<User>();
 
         return builder.Build();
     }

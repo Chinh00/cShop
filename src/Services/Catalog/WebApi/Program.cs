@@ -8,7 +8,6 @@ using Projection;
 using WebApi.Apis;
 
 var builder = WebApplication.CreateBuilder(args);
-
 builder.Services.AddLoggingCustom(builder.Configuration, "Catalog")
     .AddOpenTelemetryCustom("CatalogService")
     .AddAuthenticationDefault(builder.Configuration)

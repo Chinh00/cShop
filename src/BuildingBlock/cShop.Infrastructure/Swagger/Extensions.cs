@@ -46,7 +46,7 @@ public static class Extensions
             }
         });
         
-        app.MapGet("/", () => Results.Redirect("/swagger"));
+        app.MapFallback("/", () => Results.Redirect("/swagger"));
         
         
         action?.Invoke(app);
