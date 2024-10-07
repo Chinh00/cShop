@@ -1,6 +1,26 @@
 version: "3.8"
 
 services:
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: always
+    ports:
+      - "3001:3000"  
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin 
+    volumes:
+      - grafana-storage:/var/lib/grafana  
+  
+  
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+  
   jaeger:
     image: jaegertracing/all-in-one
     container_name: jaeger
@@ -80,3 +100,4 @@ services:
 
 volumes:
   data:
+  grafana-storage:

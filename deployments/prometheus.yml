@@ -1,6 +1,8 @@
-﻿scrape_configs:
-  - job_name: dice-service
-    scrape_interval: 5s
-    metrics_path: '/metrics
+﻿global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'yarp-proxy'
+    metrics_path: '/metrics'
     static_configs:
-      - targets: ["localhost:5000"]
+      - targets: ['host.docker.internal:5000'] 

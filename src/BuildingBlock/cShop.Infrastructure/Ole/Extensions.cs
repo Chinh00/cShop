@@ -1,7 +1,8 @@
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
 namespace cShop.Infrastructure.Ole;
 
 public static class Extensions
@@ -21,8 +22,8 @@ public static class Extensions
                              .AddSource("MassTransit")
                              .AddJaegerExporter(options =>
                              {
-                                 options.AgentHost = "localhost"; 
-                                 options.AgentPort = 6831;       
+                                 options.AgentHost = "localhost";
+                                 options.AgentPort = 6831;
                              });
                      });
 
