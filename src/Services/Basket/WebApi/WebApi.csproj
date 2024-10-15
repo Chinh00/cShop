@@ -12,10 +12,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\..\BuildingBlock\cShop.Infrastructure\cShop.Infrastructure.csproj" />
       <ProjectReference Include="..\Application\Application.csproj" />
-      <ProjectReference Include="..\Bus\Bus.csproj" />
-      <ProjectReference Include="..\EventStore\EventStore.csproj" />
       <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
-      <ProjectReference Include="..\Projection\Projection.csproj" />
     </ItemGroup>
 
     <ItemGroup>

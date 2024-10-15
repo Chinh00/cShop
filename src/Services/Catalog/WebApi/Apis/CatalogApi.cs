@@ -1,6 +1,5 @@
 using Application.UseCases.Command;
 using Asp.Versioning.Builder;
-using MediatR;
 
 namespace WebApi.Apis;
 
@@ -12,9 +11,9 @@ public static class CatalogApi
     {
         var group = endpoints.MapGroup(BaseUrl).HasApiVersion(1);
 
-        group.MapPost(string.Empty, async (ISender sender, Commands.CreateCatalog command) => await sender.Send(command));
-        group.MapPut("/{id:guid}/active", async (ISender sender, Guid id) => await sender.Send(new Commands.ActiveCatalog(id)));
-        group.MapPut("/{id:guid}/inactive", async (ISender sender, Guid id) => await sender.Send(new Commands.InActiveCatalog(id)));
+        group.MapPost(string.Empty, async (ISender sender, CreateCatalogCommand command) => await sender.Send(command));
+        group.MapPut("/{id:guid}/active", async (ISender sender, Guid id) => await sender.Send(new ActiveCatalogCommand(id)));
+        group.MapPut("/{id:guid}/inactive", async (ISender sender, Guid id) => await sender.Send(new InactiveCatalogCommand(id)));
         
         
         return endpoints;

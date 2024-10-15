@@ -9,14 +9,14 @@
 
 
     <ItemGroup>
-      <Folder Include="UseCases\Events\" />
+      <Folder Include="UseCases\Queries\" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\BuildingBlock\cShop.Contracts\cShop.Contracts.csproj" />
       <ProjectReference Include="..\..\..\BuildingBlock\cShop.Core\cShop.Core.csproj" />
+      <ProjectReference Include="..\..\..\BuildingBlock\cShop.Infrastructure\cShop.Infrastructure.csproj" />
       <ProjectReference Include="..\Domain\Domain.csproj" />
-      <ProjectReference Include="..\EventStore\EventStore.csproj" />
       <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
     </ItemGroup>
 

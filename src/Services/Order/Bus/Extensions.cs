@@ -23,8 +23,8 @@ public static class Extensions
             
             t.AddRider(r =>
             {
-                r.AddProducer<DomainEvents.OrderSubmitted>(nameof(DomainEvents.OrderSubmitted));
-                r.AddProducer<DomainEvents.MakeOrderValidate>(nameof(DomainEvents.MakeOrderValidate));
+                r.AddProducer<OrderSubmitted>(nameof(OrderSubmitted));
+                r.AddProducer<MakeOrderValidate>(nameof(MakeOrderValidate));
                 r.AddProducer<IntegrationEvents.PaymentProcessSuccess>(nameof(IntegrationEvents.PaymentProcessSuccess));                
                 r.AddProducer<IntegrationEvents.PaymentProcessFail>(nameof(IntegrationEvents.PaymentProcessFail));                
                 
@@ -63,7 +63,7 @@ public static class Extensions
                         });
                     
                     
-                    configurator.TopicEndpoint<DomainEvents.OrderSubmitted>(nameof(DomainEvents.OrderSubmitted), "orders-group",
+                    configurator.TopicEndpoint<OrderSubmitted>(nameof(OrderSubmitted), "orders-group",
                         c =>
                         {
                             c.AutoOffsetReset = AutoOffsetReset.Earliest;

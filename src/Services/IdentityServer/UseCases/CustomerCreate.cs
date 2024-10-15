@@ -7,9 +7,9 @@ namespace IdentityServer.UseCases;
 
 public class CustomerCreate
 {
-    public record Command(CustomerCreateModel Model) : ICommand<Guid>
+    public record Command(CustomerCreateModel Model) : ICommand<IResult>
     {
-        public class Handler : IRequestHandler<Command, ResultModel<Guid>>
+        public class Handler : IRequestHandler<Command, IResult>
         {
             private readonly UserManager<User> _userManager;
             private readonly ITopicProducer<IntegrationEvent.CustomerCreatedIntegration> _integrationEventProducer;
@@ -20,7 +20,7 @@ public class CustomerCreate
                 _integrationEventProducer = integrationEventProducer;
             }
 
-            public async Task<ResultModel<Guid>> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<IResult> Handle(Command request, CancellationToken cancellationToken)
             {
                 var user = new User()
                 {
@@ -30,10 +30,10 @@ public class CustomerCreate
                 var result = await _userManager.CreateAsync(user, request.Model.Password);
                 if (!result.Succeeded)
                 {
-                    return ResultModel<Guid>.Create(Guid.NewGuid(), true, JsonSerializer.Serialize(result.Errors));
+                    return Results.Ok(ResultModel<Guid>.Create(Guid.NewGuid(), true, JsonSerializer.Serialize(result.Errors)));
                 }
                 await _integrationEventProducer.Produce(new IntegrationEvent.CustomerCreatedIntegration(user.Id), cancellationToken);
-                return ResultModel<Guid>.Create(user.Id);
+                return Results.Ok(ResultModel<Guid>.Create(user.Id));
             }
         }
     }

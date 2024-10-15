@@ -34,7 +34,7 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
 
                     await SendAuditLog();
                 })
-                .Produce(context => context.Init<DomainEvents.MakeOrderValidate>(new
+                .Produce(context => context.Init<MakeOrderValidate>(new
                 {
                     OrderId = context.Saga.CorrelationId,
                 }))
@@ -101,8 +101,8 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
     public State Complete { get; private set; }
     public State Cancel { get; private set; }
     
-    public Event<DomainEvents.OrderSubmitted> OrderSubmitted { get; private set; } = null!;
-    public Event<DomainEvents.MakeOrderValidate> MakeOrderValidate { get; private set; } = null!;
+    public Event<OrderSubmitted> OrderSubmitted { get; private set; } = null!;
+    public Event<MakeOrderValidate> MakeOrderValidate { get; private set; } = null!;
     public Event<IntegrationEvent.BasketCheckoutSuccess> BasketCheckoutSuccess { get; private set; } = null!;
     public Event<IntegrationEvent.BasketCheckoutFail> BasketCheckoutFail { get; private set; } = null!;
     public Event<IntegrationEvents.PaymentProcessSuccess> PaymentProcessSuccess { get; private set; } = null!;

@@ -2,11 +2,15 @@ using MediatR;
 
 namespace cShop.Core.Domain;
 
-public interface ICommand<TResponse> : IRequest<ResultModel<TResponse>>
+public interface ICommand<TResponse> : IRequest<IResult>
     where TResponse : notnull
 {
     
 }
+
+public interface ICommandV1 : IRequest<IResult>{}
+
+
 
 public interface ICreateCommand<TModel, TResponse> : ICommand<TResponse>   
 {

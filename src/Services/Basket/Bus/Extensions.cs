@@ -1,67 +1,45 @@
-using Bus.Consumer;
+using Bus.Consumers;
 using Confluent.Kafka;
 using cShop.Contracts.Services.Basket;
+using cShop.Contracts.Services.Order;
 using MassTransit;
 
 namespace Bus;
 
 public static class Extensions
 {
-    public static IServiceCollection AddMasstransitCustom(this IServiceCollection services, IConfiguration configuration,
+    public static IServiceCollection AddCustomMasstransit(this IServiceCollection services, IConfiguration configuration,
         Action<IServiceCollection>? action = null)
     {
-        services.AddMassTransit(k =>
+
+        services.AddMassTransit(e =>
         {
-            k.SetKebabCaseEndpointNameFormatter();
+            e.SetKebabCaseEndpointNameFormatter();
 
-            k.UsingInMemory();
+            e.UsingInMemory();
             
-            
-            k.AddRider(r =>
+            e.AddRider(t =>
             {
-                r.AddProducer<DomainEvents.BasketCreated>(nameof(DomainEvents.BasketCreated));
-                r.AddProducer<DomainEvents.BasketItemAdded>(nameof(DomainEvents.BasketItemAdded));
+                t.AddProducer<IntegrationEvent.BasketCheckoutSuccess>(nameof(IntegrationEvent.BasketCheckoutSuccess));
+                t.AddProducer<IntegrationEvent.BasketCheckoutFail>(nameof(IntegrationEvent.BasketCheckoutFail));
 
-                r.AddProducer<IntegrationEvent.BasketCheckoutSuccess>(nameof(IntegrationEvent.BasketCheckoutSuccess));
-                r.AddProducer<IntegrationEvent.BasketCheckoutFail>(nameof(IntegrationEvent.BasketCheckoutFail));
+                t.AddConsumer<MakeOrderValidateConsumer>();
                 
-                
-
-
-                r.AddConsumer<BasketCreatedDomainEventConsumer>();
-                r.AddConsumer<BasketItemAddedDomainEventConsumer>();
-
-                r.AddConsumer<OrderValidateIntegrationEventConsumer>();
-                
-                r.UsingKafka((context, o) =>
+                t.UsingKafka((context, k) =>
                 {
-                    o.Host(configuration.GetValue<string>("Kafka:BootstrapServers"));
-                    o.TopicEndpoint<DomainEvents.BasketCreated>(nameof(DomainEvents.BasketCreated), "basket", c =>
+                    k.Host(configuration.GetValue<string>("Kafka:BootstrapServers"));
+
+
+                    k.TopicEndpoint<MakeOrderValidate>(nameof(MakeOrderValidate), "basket-group", c =>
                     {
+                        c.CreateIfMissing(n => n.NumPartitions = 1);
                         c.AutoOffsetReset = AutoOffsetReset.Earliest;
-                        c.CreateIfMissing(t => t.NumPartitions = 1);
-                        c.ConfigureConsumer<BasketCreatedDomainEventConsumer>(context);
+                        c.ConfigureConsumer<MakeOrderValidateConsumer>(context);
                     });
-                    o.TopicEndpoint<DomainEvents.BasketItemAdded>(nameof(DomainEvents.BasketItemAdded), "basket", c =>
-                    {
-                        c.AutoOffsetReset = AutoOffsetReset.Earliest;
-                        c.CreateIfMissing(t => t.NumPartitions = 1);
-                        c.ConfigureConsumer<BasketItemAddedDomainEventConsumer>(context);
-                    });
-                    
-                    o.TopicEndpoint<cShop.Contracts.Services.Order.DomainEvents.MakeOrderValidate>(nameof(cShop.Contracts.Services.Order.DomainEvents.MakeOrderValidate), "order-group",
-                        c =>
-                        {
-                            c.AutoOffsetReset = AutoOffsetReset.Earliest;
-                            c.CreateIfMissing(e => e.NumPartitions = 1);
-                            c.ConfigureConsumer<OrderValidateIntegrationEventConsumer>(context);
-                        });
-                    
-                    
-                }); 
+                });
             });
 
-        });  
+        });
         
         action?.Invoke(services);
         return services;

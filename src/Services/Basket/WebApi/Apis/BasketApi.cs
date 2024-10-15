@@ -1,5 +1,6 @@
-using Application.UseCases.Command;
+using Application.UseCases.Commands;
 using Asp.Versioning.Builder;
+using cShop.Contracts.Services.Basket;
 using MediatR;
 
 namespace WebApi.Apis;
@@ -12,8 +13,9 @@ public static class BasketApi
     {
         var group = endpoints.MapGroup(BaseUrl).HasApiVersion(1).RequireAuthorization();
 
-        group.MapPost(string.Empty, async (ISender sender, CancellationToken cancellationToken) => Results.Ok(await sender.Send(new Commands.CreateBasket(), cancellationToken)));
-        group.MapPost("add-item", async (ISender sender, Commands.AddBasketItem item, CancellationToken cancellation) => Results.Ok(await sender.Send(item, cancellation)));
+        group.MapPost(string.Empty, async (ISender sender, CancellationToken cancellationToken) => await sender.Send(new CreateBasketCommand(), cancellationToken));
+        group.MapPost("add-item", async (ISender sender, AddBasketItemCommand item, CancellationToken cancellation) => await sender.Send(item, cancellation));
+        
         
         
         return endpoints;

@@ -1,4 +1,5 @@
 using GrpcServices;
+
 namespace Infrastructure;
 
 public static class Extensions
@@ -11,4 +12,14 @@ public static class Extensions
         action?.Invoke(services);
         return services;
     }
+
+    public static IServiceCollection AddBasketService(this IServiceCollection services, IConfiguration configuration,
+        Action<IServiceCollection>? action = null)
+    {
+
+        action?.Invoke(services);
+        return services;
+    }
+    
+    
 }
