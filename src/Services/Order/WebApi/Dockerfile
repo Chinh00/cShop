@@ -7,16 +7,17 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["src/Services/Basket/WebApi/WebApi.csproj", "src/Services/Basket/WebApi/"]
+COPY ["src/Services/Order/WebApi/WebApi.csproj", "src/Services/Order/WebApi/"]
 COPY ["src/BuildingBlock/cShop.Infrastructure/cShop.Infrastructure.csproj", "src/BuildingBlock/cShop.Infrastructure/"]
 COPY ["src/BuildingBlock/cShop.Contracts/cShop.Contracts.csproj", "src/BuildingBlock/cShop.Contracts/"]
 COPY ["src/BuildingBlock/cShop.Core/cShop.Core.csproj", "src/BuildingBlock/cShop.Core/"]
-COPY ["src/Services/Basket/Application/Application.csproj", "src/Services/Basket/Application/"]
-COPY ["src/Services/Basket/Domain/Domain.csproj", "src/Services/Basket/Domain/"]
-COPY ["src/Services/Basket/Infrastructure/Infrastructure.csproj", "src/Services/Basket/Infrastructure/"]
-RUN dotnet restore "src/Services/Basket/WebApi/WebApi.csproj"
+COPY ["src/Services/Order/Application/Application.csproj", "src/Services/Order/Application/"]
+COPY ["src/Services/Order/Infrastructure/Infrastructure.csproj", "src/Services/Order/Infrastructure/"]
+COPY ["src/Services/Order/Domain/Domain.csproj", "src/Services/Order/Domain/"]
+COPY ["src/Services/Order/Bus/Bus.csproj", "src/Services/Order/Bus/"]
+RUN dotnet restore "src/Services/Order/WebApi/WebApi.csproj"
 COPY . .
-WORKDIR "/src/src/Services/Basket/WebApi"
+WORKDIR "/src/src/Services/Order/WebApi"
 RUN dotnet build "WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish

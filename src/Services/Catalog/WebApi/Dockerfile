@@ -9,14 +9,14 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/Services/Catalog/WebApi/WebApi.csproj", "src/Services/Catalog/WebApi/"]
 COPY ["src/BuildingBlock/cShop.Infrastructure/cShop.Infrastructure.csproj", "src/BuildingBlock/cShop.Infrastructure/"]
-COPY ["src/BuildingBlock/cShop.Core/cShop.Core.csproj", "src/BuildingBlock/cShop.Core/"]
 COPY ["src/BuildingBlock/cShop.Contracts/cShop.Contracts.csproj", "src/BuildingBlock/cShop.Contracts/"]
-COPY ["src/Services/Catalog/Projection/Projection.csproj", "src/Services/Catalog/Projection/"]
-COPY ["src/Services/Catalog/GrpcService/GrpcService.csproj", "src/Services/Catalog/GrpcService/"]
-COPY ["src/Services/Catalog/EventStore/EventStore.csproj", "src/Services/Catalog/EventStore/"]
-COPY ["src/Services/Catalog/Bus/Bus.csproj", "src/Services/Catalog/Bus/"]
+COPY ["src/BuildingBlock/cShop.Core/cShop.Core.csproj", "src/BuildingBlock/cShop.Core/"]
 COPY ["src/Services/Catalog/Application/Application.csproj", "src/Services/Catalog/Application/"]
 COPY ["src/Services/Catalog/Domain/Domain.csproj", "src/Services/Catalog/Domain/"]
+COPY ["src/Services/Catalog/EventStore/EventStore.csproj", "src/Services/Catalog/EventStore/"]
+COPY ["src/Services/Catalog/Bus/Bus.csproj", "src/Services/Catalog/Bus/"]
+COPY ["src/Services/Catalog/Projection/Projection.csproj", "src/Services/Catalog/Projection/"]
+COPY ["src/Services/Catalog/GrpcService/GrpcService.csproj", "src/Services/Catalog/GrpcService/"]
 RUN dotnet restore "src/Services/Catalog/WebApi/WebApi.csproj"
 COPY . .
 WORKDIR "/src/src/Services/Catalog/WebApi"

@@ -28,7 +28,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push Docker image Catalog Service - Command Service
+      - name: Build and push Docker image Catalog Service
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -42,6 +42,35 @@ jobs:
           file: src/Services/Basket/WebApi/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_BASKET_SERVICE_NAME}}:latest
+      
+      - name: Build and push Docker image Gateway Service
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: src/Services/Proxy/AppGateway/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_GATEWAY_SERVICE_NAME}}:latest
+      
+      - name: Build and push Docker image Order Service
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: src/Services/Order/WebApi/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_ORDER_SERVICE_NAME}}:latest
+          
+      - name: Build and push Docker image Identity Service
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: src/Services/IdentityServer/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_IDENTITY_SERVICE_NAME}}:latest
+          
+      
+      
+      
+      
       
 
       
