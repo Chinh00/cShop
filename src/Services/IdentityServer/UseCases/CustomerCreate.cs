@@ -1,7 +1,10 @@
 using System.Text.Json;
 using cShop.Contracts.Services.IdentityServer;
+using cShop.Core.Domain;
 using IdentityServer.Data.Domain;
 using MassTransit;
+using MediatR;
+using Microsoft.AspNetCore.Identity;
 
 namespace IdentityServer.UseCases;
 

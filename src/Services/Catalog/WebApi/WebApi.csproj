@@ -1,13 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-    <Import Project="..\..\..\..\GlobalUsing.props" />
-    
-    
     <PropertyGroup>
-        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <TargetFramework>net8.0</TargetFramework>
+        <Nullable>disable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
+    
+
+
 
     <ItemGroup>
+      <PackageReference Include="Swashbuckle.AspNetCore" Version="*" />
+      <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="*"/>
       <ProjectReference Include="..\..\..\BuildingBlock\cShop.Infrastructure\cShop.Infrastructure.csproj" />
       <ProjectReference Include="..\Application\Application.csproj" />
       <ProjectReference Include="..\Bus\Bus.csproj" />
@@ -15,6 +19,9 @@
       <ProjectReference Include="..\GrpcService\GrpcService.csproj" />
       <ProjectReference Include="..\Projection\Projection.csproj" />
     </ItemGroup>
+    
+
+
 
     <ItemGroup>
       <Content Include="..\..\..\..\.dockerignore">

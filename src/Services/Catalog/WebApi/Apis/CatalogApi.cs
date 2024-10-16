@@ -1,5 +1,6 @@
 using Application.UseCases.Command;
 using Asp.Versioning.Builder;
+using MediatR;
 
 namespace WebApi.Apis;
 

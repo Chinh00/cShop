@@ -1,8 +1,10 @@
 using cShop.Contracts.Services.Order;
+using cShop.Core.Domain;
 using cShop.Infrastructure.IdentityServer;
 using Domain;
 using Infrastructure.Data;
 using MassTransit;
+using MediatR;
 
 namespace Application.UseCases.Commands;
 

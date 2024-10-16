@@ -2,7 +2,6 @@ using cShop.Core.Domain;
 using cShop.Infrastructure.Cache.Redis;
 using cShop.Infrastructure.IdentityServer;
 using Domain.Entities;
-using Domain.Repository;
 using GrpcServices;
 using MediatR;
 

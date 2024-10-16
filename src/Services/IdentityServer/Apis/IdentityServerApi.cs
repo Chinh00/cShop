@@ -1,5 +1,6 @@
 using Asp.Versioning.Builder;
 using IdentityServer.UseCases;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityServer.Apis;

@@ -1,6 +1,7 @@
 using Application.UseCases;
 using Application.UseCases.Commands;
 using Asp.Versioning.Builder;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Apis;

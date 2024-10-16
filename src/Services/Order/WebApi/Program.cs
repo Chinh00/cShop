@@ -1,5 +1,11 @@
 using Application;
 using Bus;
+using cShop.Infrastructure.Auth;
+using cShop.Infrastructure.Bus;
+using cShop.Infrastructure.Logging;
+using cShop.Infrastructure.Mediator;
+using cShop.Infrastructure.Ole;
+using cShop.Infrastructure.Swagger;
 using Infrastructure.Data;
 using WebApi.Apis;
 

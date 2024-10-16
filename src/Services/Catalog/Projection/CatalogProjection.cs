@@ -1,3 +1,5 @@
+using cShop.Core.Domain;
+
 namespace Projection;
 
 public class CatalogProjection : ProjectionBase

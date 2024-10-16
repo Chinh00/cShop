@@ -1,5 +1,7 @@
 using cShop.Contracts.Services.Order;
+using cShop.Core.Domain;
 using MassTransit;
+using MediatR;
 
 namespace Application.UseCases.Commands;
 

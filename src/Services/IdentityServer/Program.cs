@@ -1,10 +1,15 @@
-﻿using cShop.Infrastructure.Ole;
+﻿using cShop.Infrastructure.Bus;
+using cShop.Infrastructure.Mediator;
+using cShop.Infrastructure.Ole;
+using cShop.Infrastructure.Swagger;
 using IdentityServer;
 using IdentityServer.Apis;
 using IdentityServer.Data;
 using IdentityServer.Data.Domain;
 using IdentityServer.Infrastructure;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
