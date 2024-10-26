@@ -1,6 +1,8 @@
 version: "3.8"
 
 services:
+  
+ 
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
@@ -42,14 +44,14 @@ services:
       - "8001:8001"
   
   
-  sqslserver:
+  sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
     ports:
       - "1433:1433"
     environment:
       SA_PASSWORD: "@P@ssw0rd02"
       ACCEPT_EULA: "Y"
-      MSSQL_PID: "Express"
+      MSSQL_PID: "Standard"
     volumes:
       - data:/var/opt/mssql
 
@@ -85,7 +87,7 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1,
 
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
