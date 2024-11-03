@@ -1,5 +1,3 @@
-using Bus.Consumer;
-using Confluent.Kafka;
 using cShop.Contracts.Services.Catalog;
 using MassTransit;
 
@@ -26,36 +24,12 @@ public static class Extensions
                 
                 t.AddProducer<IntegrationEvent.CatalogCreatedIntegration>(nameof(IntegrationEvent.CatalogCreatedIntegration));
                 
-                
-                t.AddConsumer<CatalogCreatedDomainEventConsumer>();
-                t.AddConsumer<CatalogActiveDomainEventConsumer>();
-                t.AddConsumer<CatalogInactiveDomainEventConsumer>();
+              
                 
                 t.UsingKafka((context, config) =>
                 {
                     config.Host(configuration.GetValue<string>("Kafka:BootstrapServers"));
                     
-                    config.TopicEndpoint<DomainEvents.CatalogCreated>(nameof(DomainEvents.CatalogCreated), "catalog-group",
-                        c =>
-                        {
-                            c.AutoOffsetReset = AutoOffsetReset.Earliest;
-                            c.CreateIfMissing(e => e.NumPartitions = 1);
-                            c.ConfigureConsumer<CatalogCreatedDomainEventConsumer>(context);
-                        });
-                    config.TopicEndpoint<DomainEvents.CatalogActivated>(nameof(DomainEvents.CatalogActivated), "catalog-group",
-                        c =>
-                        {
-                            c.AutoOffsetReset = AutoOffsetReset.Earliest;
-                            c.CreateIfMissing(e => e.NumPartitions = 1);
-                            c.ConfigureConsumer<CatalogActiveDomainEventConsumer>(context);
-                        });
-                    config.TopicEndpoint<DomainEvents.CatalogInactivated>(nameof(DomainEvents.CatalogInactivated), "catalog-group",
-                        c =>
-                        {
-                            c.AutoOffsetReset = AutoOffsetReset.Earliest;
-                            c.CreateIfMissing(e => e.NumPartitions = 1);
-                            c.ConfigureConsumer<CatalogInactiveDomainEventConsumer>(context);
-                        });
                     
                 });
             });

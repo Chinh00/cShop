@@ -1,33 +1,22 @@
-using cShop.Contracts.Services.Order;
+using cShop.Contracts.Services.Payment;
 using cShop.Core.Domain;
 using MassTransit;
 using MediatR;
 
 namespace Application.UseCases.Commands;
 
-public record PaymentOrderCommand(Guid OrderId, Guid TransactionId) : ICommand<IResult>
+public record PaymentOrderCommand(Guid UserId, Guid OrderId, Guid TransactionId) : ICommand<IResult>
 {
-    internal class Handler : IRequestHandler<PaymentOrderCommand, IResult>
+    internal record Handler(
+        ITopicProducer<PaymentProcessSuccess> PaymentProcessSuccess,
+        ITopicProducer<PaymentProcessFail> PaymentProcessFailTopic)
+        : IRequestHandler<PaymentOrderCommand, IResult>
     {
-        private readonly ITopicProducer<IntegrationEvents.PaymentProcessSuccess> _paymentProcessSuccess;
-        private readonly ITopicProducer<IntegrationEvents.PaymentProcessFail> _paymentProcessFail;
-        private readonly ILogger<PaymentOrderCommand> _logger;
-
-        public Handler(ITopicProducer<IntegrationEvents.PaymentProcessSuccess> paymentProcessSuccess, ITopicProducer<IntegrationEvents.PaymentProcessFail> paymentProcessFail, ILogger<PaymentOrderCommand> logger)
-        {
-            _paymentProcessSuccess = paymentProcessSuccess;
-            _paymentProcessFail = paymentProcessFail;
-            _logger = logger;
-        }
 
         public async Task<IResult> Handle(PaymentOrderCommand request, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("PaymentOrderCommandHandler invoked");
-            await _paymentProcessSuccess.Produce(new
-            {
-                request.OrderId,    
-            }, cancellationToken);
-            return Results.Ok(ResultModel<Guid>.Create(Guid.NewGuid()));
+            await PaymentProcessSuccess.Produce(new { request.UserId, request.OrderId, request.TransactionId }, cancellationToken);
+            return TypedResults.Ok(request.OrderId);
         }
     }
 }

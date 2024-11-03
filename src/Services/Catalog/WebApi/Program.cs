@@ -7,10 +7,10 @@ using cShop.Infrastructure.Bus;
 using cShop.Infrastructure.Logging;
 using cShop.Infrastructure.Mediator;
 using cShop.Infrastructure.Ole;
+using cShop.Infrastructure.SchemaRegistry;
 using cShop.Infrastructure.Swagger;
-using EventStore;
 using GrpcService.Implements;
-using Projection;
+using Infrastructure.Data;
 using WebApi.Apis;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,10 +19,10 @@ builder.Services.AddLoggingCustom(builder.Configuration, "Catalog")
     .AddAuthenticationDefault(builder.Configuration)
     .AddSwaggerCustom(builder.Configuration)
     .AddMediatorDefault([typeof(Program), typeof(Anchor)])
-    .AddEventStoreCustom(builder.Configuration)
-    .AddProjectionCustom(builder.Configuration)
+    .AddDbContextService(builder.Configuration)
     .AddMessageBus(builder.Configuration)
     .AddMasstransitCustom(builder.Configuration)
+    .AddSchemaRegistry(builder.Configuration)
     .AddGrpc();
 
 

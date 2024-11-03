@@ -79,6 +79,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<Guid?>("ProductInfoId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 

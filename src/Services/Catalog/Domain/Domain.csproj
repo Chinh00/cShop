@@ -12,6 +12,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\..\BuildingBlock\cShop.Contracts\cShop.Contracts.csproj" />
       <ProjectReference Include="..\..\..\BuildingBlock\cShop.Core\cShop.Core.csproj" />
+      <ProjectReference Include="..\..\..\BuildingBlock\cShop.Infrastructure\cShop.Infrastructure.csproj" />
     </ItemGroup>
 
 

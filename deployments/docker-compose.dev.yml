@@ -52,9 +52,32 @@ services:
       SA_PASSWORD: "@P@ssw0rd02"
       ACCEPT_EULA: "Y"
       MSSQL_PID: "Standard"
+      MSSQL_AGENT_ENABLED: true
     volumes:
       - data:/var/opt/mssql
 
+  debezium:
+    image: quay.io/debezium/connect
+    ports:
+      - "8083:8083"
+    environment:
+      BOOTSTRAP_SERVERS: kafka:29092
+      GROUP_ID: 1
+      CONFIG_STORAGE_TOPIC: debezium_config
+      OFFSET_STORAGE_TOPIC: debezium_offset
+      STATUS_STORAGE_TOPIC: debezium_status
+      KEY_CONVERTER: org.apache.kafka.connect.storage.StringConverter
+      VALUE_CONVERTER: io.debezium.converters.BinaryDataConverter
+      INTERNAL_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      KAFKA_CONNECT_PLUGIN_PATH: /kafka/connect
+    volumes:
+      - ./connectors/confluentinc-kafka-connect-avro-converter-7.7.1/:/kafka/connect/lib/
+      - ./connectors/confluentinc-kafka-connect-jdbc-10.8.0/:/kafka/connect/lib-db/
+    depends_on:
+      - kafka
+  
+  
   mongodb:
     image: mongo
     ports:
@@ -62,6 +85,27 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=@P@ssw0rd02
+
+
+  schema-registry-ui:
+    image: landoop/schema-registry-ui
+    ports:
+      - 8000:8000
+    environment:
+      - SCHEMAREGISTRY_URL=http://schema-registry:8085
+      - PROXY=true
+  schema-registry:
+    image: confluentinc/cp-schema-registry
+    hostname: schema-registry
+    depends_on:
+      - kafka
+    environment:
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://kafka:29092
+      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8085
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_LOG4J_ROOT_LOGLEVEL: 'INFO'
+    ports:
+      - "8085:8085"
 
   zookeeper:
     image: confluentinc/cp-zookeeper
@@ -87,7 +131,7 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1,
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
   kafka-ui:
     image: provectuslabs/kafka-ui:latest

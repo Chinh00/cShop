@@ -1,0 +1,11 @@
+### GET request to example server
+
+@userId = bf83150a-5320-47cc-992a-160b774c58aa
+
+POST http://localhost:5000/api/v1/basket
+Content-Type: application/json
+
+{
+  "userId": "{{userId}}"
+}
+###

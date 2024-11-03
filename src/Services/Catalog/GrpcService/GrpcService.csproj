@@ -20,7 +20,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\BuildingBlock\cShop.Contracts\cShop.Contracts.csproj" />
-      <ProjectReference Include="..\Projection\Projection.csproj" />
     </ItemGroup>
     
     <ItemGroup>

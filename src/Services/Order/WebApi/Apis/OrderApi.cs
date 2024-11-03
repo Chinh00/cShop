@@ -11,7 +11,7 @@ public static class OrderApi
     private const string BaseUrl = "/api/v{version:apiVersion}/order";
     public static IVersionedEndpointRouteBuilder MapOrderV1Api(this IVersionedEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup(BaseUrl).HasApiVersion(1).RequireAuthorization();
+        var group = endpoints.MapGroup(BaseUrl).HasApiVersion(1);
 
         group.MapPost(string.Empty, async ([FromServices] ISender sender,[FromBody] CreateOrderCommand createOrder, CancellationToken cancellationToken) => await sender.Send(createOrder, cancellationToken));
         

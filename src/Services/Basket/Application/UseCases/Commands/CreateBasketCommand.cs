@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Application.UseCases.Commands;
 
-public record CreateBasketCommand : ICommand<IResult>
+public record CreateBasketCommand(Guid UserId) : ICommand<IResult>
 {
     
 
@@ -14,19 +14,17 @@ public record CreateBasketCommand : ICommand<IResult>
     {
         
         private readonly IRedisService _redisService;
-        private readonly IClaimContextAccessor _claimContextAccessor;
 
-        public Handler(IRedisService redisService, IClaimContextAccessor claimContextAccessor)
+        public Handler(IRedisService redisService)
         {
             _redisService = redisService;
-            _claimContextAccessor = claimContextAccessor;
         }
         public async Task<IResult> Handle(CreateBasketCommand request, CancellationToken cancellationToken)
         {
             var basket = await _redisService.HashGetOrSetAsync(nameof(Basket),
-                _claimContextAccessor.GetUserId().ToString(), () => Task.FromResult(new Basket()
+                request.UserId.ToString(), () => Task.FromResult(new Basket()
                 {
-                    UserId = _claimContextAccessor.GetUserId(),
+                    UserId = request.UserId,
                 }), cancellationToken);
             return Results.Ok(ResultModel<Guid>.Create(basket.Id));
         }

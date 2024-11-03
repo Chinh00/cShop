@@ -1,0 +1,31 @@
+### Start order
+@userId = bf83150a-5320-47cc-992a-160b774c58aa
+@orderId = 7c6b45b9-9a5d-40e7-8892-2b582b248322
+
+
+POST http://localhost:5057/api/v1/order HTTP/1.1
+Content-Type: application/json
+
+{
+  "userId": "{{userId}}",
+  "items": [
+    {
+      "productId": "bd77727a-13eb-489d-b872-d9d672cf547a",
+      "quantity": 0
+    }
+  ]
+}
+
+
+
+
+
+### 
+POST http://localhost:5057/api/v1/payment/payment
+Content-Type: application/json
+
+{
+  "userId": "{{userId}}",
+  "orderId": "{{orderId}}",
+  "transactionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+}

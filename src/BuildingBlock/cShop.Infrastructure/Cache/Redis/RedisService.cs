@@ -60,7 +60,8 @@ public class RedisService : IRedisService
 
     public async Task<T> HashGetAsync<T>(string key, string keyField, CancellationToken cancellationToken)
     {
-        return JsonSerializer.Deserialize<T>(await Database.HashGetAsync(key, keyField));
+        var redisValue = await Database.HashGetAsync(key, keyField);
+        return redisValue.HasValue ? JsonSerializer.Deserialize<T>(redisValue) : default;
     }
 
     public async Task<bool> HashRemoveAsync(string key, string keyField, CancellationToken cancellationToken)

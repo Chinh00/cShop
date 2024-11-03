@@ -16,7 +16,6 @@
     <ItemGroup>
       <ProjectReference Include="..\..\..\BuildingBlock\cShop.Core\cShop.Core.csproj" />
       <ProjectReference Include="..\Domain\Domain.csproj" />
-      <ProjectReference Include="..\EventStore\EventStore.csproj" />
     </ItemGroup>
 
 </Project>

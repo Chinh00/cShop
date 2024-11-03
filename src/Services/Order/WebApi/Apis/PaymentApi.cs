@@ -12,7 +12,7 @@ public static class PaymentApi
     
     public static IVersionedEndpointRouteBuilder MapPaymentApiV1(this IVersionedEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup(BaseUrl).HasApiVersion(1).RequireAuthorization();
+        var group = endpoints.MapGroup(BaseUrl).HasApiVersion(1);
         group.MapPost("/payment", async ([FromServices] ISender sender,[FromBody] PaymentOrderCommand payment, CancellationToken cancellationToken) => await sender.Send(payment, cancellationToken));
         return endpoints;
     }

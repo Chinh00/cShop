@@ -1,0 +1,19 @@
+{
+  "name": "ProductCreated",
+  "type": "record",
+  "namespace": "IntegrationEvents",
+  "fields": [
+    {
+      "name": "Id",
+      "type": "string"
+    },
+    {
+      "name": "Name",
+      "type": "string"
+    },
+    {
+      "name": "Price",
+      "type": "float"
+    }
+  ],
+}

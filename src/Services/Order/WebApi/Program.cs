@@ -1,11 +1,12 @@
 using Application;
-using Bus;
 using cShop.Infrastructure.Auth;
 using cShop.Infrastructure.Bus;
 using cShop.Infrastructure.Logging;
 using cShop.Infrastructure.Mediator;
 using cShop.Infrastructure.Ole;
+using cShop.Infrastructure.SchemaRegistry;
 using cShop.Infrastructure.Swagger;
+using Infrastructure;
 using Infrastructure.Data;
 using WebApi.Apis;
 
@@ -18,9 +19,10 @@ builder.Services.AddLoggingCustom(builder.Configuration, "Order")
     .AddMediatorDefault([typeof(Program), typeof(Anchor)])
     .AddMessageBus(builder.Configuration)
     .AddMasstransitCustom(builder.Configuration)
-    .AddDbContextCustom(builder.Configuration)
-    .AddOpenTelemetryCustom("Order")
-    ;
+    .AddDbContextService(builder.Configuration)
+    .AddSchemaRegistry(builder.Configuration)
+    .AddCdcConsumer(builder.Configuration)
+    .AddOpenTelemetryCustom("Order");
 
 var app = builder.Build();
 

@@ -15,7 +15,12 @@ public static class CatalogApi
         group.MapPost(string.Empty, async (ISender sender, CreateCatalogCommand command) => await sender.Send(command));
         group.MapPut("/{id:guid}/active", async (ISender sender, Guid id) => await sender.Send(new ActiveCatalogCommand(id)));
         group.MapPut("/{id:guid}/inactive", async (ISender sender, Guid id) => await sender.Send(new InactiveCatalogCommand(id)));
-        
+
+
+        group.MapGet(string.Empty, async (ISender sender) =>
+        {
+            
+        });
         
         return endpoints;
     }

@@ -17,7 +17,9 @@ builder.Services.AddLoggingCustom(builder.Configuration, "Basket")
     .AddSwaggerCustom(builder.Configuration)
     .AddMediatorDefault([typeof(Program), typeof(Anchor)])
     .AddRedisCache(builder.Configuration)
-    .AddCatalogGrpcClient(builder.Configuration);
+    .AddCatalogGrpcClient(builder.Configuration)
+    .AddCustomMasstransit(builder.Configuration)
+    ;
 var app = builder.Build();
 
 

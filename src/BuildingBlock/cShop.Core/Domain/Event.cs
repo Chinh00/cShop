@@ -1,6 +1,6 @@
 ﻿
+using System.Text.Json.Serialization;
 using MediatR;
-using Newtonsoft.Json;
 
 namespace cShop.Core.Domain;
 

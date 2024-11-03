@@ -7,11 +7,11 @@ using MediatR;
 
 namespace Application.UseCases.Commands;
 
-public record AddBasketItemCommand(Guid BasketId, Guid ProductId) : ICommand<IResult>
+public record AddBasketItemCommand(Guid UserId, Guid BasketId, Guid ProductId) : ICommand<IResult>
 {
 
     
-    internal class Handler(IRedisService redisService, IClaimContextAccessor claimContextAccessor, Catalog.CatalogClient catalogClient)
+    internal class Handler(IRedisService redisService, Catalog.CatalogClient catalogClient)
         : IRequestHandler<AddBasketItemCommand, IResult>
     {
         public async Task<IResult> Handle(AddBasketItemCommand request, CancellationToken cancellationToken)
@@ -23,10 +23,10 @@ public record AddBasketItemCommand(Guid BasketId, Guid ProductId) : ICommand<IRe
                 return Results.BadRequest(ResultModel<string>.Create("Catalog Not Found"));
             }
             
-            var basket = await redisService.HashGetOrSetAsync(nameof(Basket), claimContextAccessor.GetUserId().ToString(),
+            var basket = await redisService.HashGetOrSetAsync(nameof(Basket), request.UserId.ToString(),
                 () => Task.FromResult(new Basket()
                 {
-                    UserId = claimContextAccessor.GetUserId()
+                    UserId = request.UserId
                 }), cancellationToken);
             
                basket.AddBasketItem(new BasketItem()
@@ -34,7 +34,7 @@ public record AddBasketItemCommand(Guid BasketId, Guid ProductId) : ICommand<IRe
                    BasketId = basket.Id,
                    ProductId = request.ProductId,
                });
-               await redisService.HashSetAsync(nameof(Basket), claimContextAccessor.GetUserId().ToString(),
+               await redisService.HashSetAsync(nameof(Basket), request.UserId.ToString(),
                    () => Task.FromResult(basket), cancellationToken);
             return Results.Ok(ResultModel<Guid>.Create(basket.Id));
 

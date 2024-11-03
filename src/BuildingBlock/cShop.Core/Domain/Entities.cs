@@ -9,6 +9,14 @@ public class EntityBase
     public DateTime? UpdatedDate { get; set; } 
 }
 
+public class OutboxEntity : EntityBase
+{
+    public string AggregateType { get; set; }
+    public string AggregateId { get; set; }
+    public string Type { get; set; }
+    public byte[] Payload { get; set; }
+}
+
 public class ProjectionBase
 {
     [BsonId]
