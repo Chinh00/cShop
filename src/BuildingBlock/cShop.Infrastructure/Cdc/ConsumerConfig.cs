@@ -17,6 +17,7 @@ public class ConsumerConfig : Confluent.Kafka.ConsumerConfig
     public ConsumerConfig()
     {
         AutoOffsetReset = Confluent.Kafka.AutoOffsetReset.Earliest;
+        AllowAutoCreateTopics = true;
 
     }
 }

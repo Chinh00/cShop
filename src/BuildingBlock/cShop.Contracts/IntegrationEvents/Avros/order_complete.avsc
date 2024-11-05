@@ -1,0 +1,15 @@
+{
+  "name": "OrderComplete",
+  "type": "record",
+  "namespace": "IntegrationEvents",
+  "fields": [
+    {
+      "name": "OrderId",
+      "type": "string"
+    },
+    {
+      "name": "UserId",
+      "type": "string"
+    },
+  ],
+}

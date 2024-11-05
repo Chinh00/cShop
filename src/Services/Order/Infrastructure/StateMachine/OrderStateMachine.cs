@@ -1,6 +1,13 @@
+using Avro.Specific;
+using Confluent.Kafka;
+using Confluent.SchemaRegistry;
+using Confluent.SchemaRegistry.Serdes;
 using cShop.Contracts.Services.Basket;
 using cShop.Contracts.Services.Order;
 using cShop.Contracts.Services.Payment;
+using cShop.Core.Repository;
+using Domain.Outbox;
+using IntegrationEvents;
 using MassTransit;
 
 namespace Infrastructure.StateMachine;
@@ -9,7 +16,7 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
 {
     private readonly ILogger<OrderStateMachine> _logger;
     
-    public OrderStateMachine(ILogger<OrderStateMachine> logger)
+    public OrderStateMachine(ILogger<OrderStateMachine> logger, IServiceScopeFactory serviceScopeFactory)
     {
         _logger = logger;
         Event(() => OrderSubmitted, c => c.CorrelateById(x => x.Message.OrderId));
@@ -31,6 +38,7 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
             When(OrderSubmitted)
                 .ThenAsync(async context =>
                 {
+                    context.Saga.CorrelationId = context.Message.OrderId;
                     _logger.LogInformation($"Order submitted {context.Message.OrderId}");
                     context.Saga.UserId = context.Message.UserId;
 
@@ -80,6 +88,31 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
                 .ThenAsync(async context =>
                 {
                     _logger.LogInformation("Order confirmed");
+                    using var scope = serviceScopeFactory.CreateScope();
+                    var schemaRegistryClient = scope.ServiceProvider.GetService<ISchemaRegistryClient>();
+                    var repository = scope.ServiceProvider.GetRequiredService<IRepository<OrderOutbox>>();
+
+                    var serialize = new AvroSerializer<OrderComplete>(schemaRegistryClient,
+                        new AvroSerializerConfig() { SubjectNameStrategy = SubjectNameStrategy.Topic });
+
+                    var bytes = await serialize.SerializeAsync(new OrderComplete()
+                        {
+                            OrderId = context.Saga.CorrelationId.ToString(),
+                            UserId = context.Saga.UserId.ToString()
+                        },
+                        new SerializationContext(MessageComponentType.Value, "order_cdc_events"));
+                    await repository.AddAsync(new OrderOutbox()
+                    {
+                        Id = Guid.NewGuid(),
+                        AggregateType = nameof(OrderOutbox),
+                        AggregateId = context.Saga.CorrelationId.ToString(),
+                        Type = nameof(OrderComplete),
+                        Payload = bytes
+                    }, default);
+                    
+                    
+                    
+                    
                     await SendAuditLog();
                 }).Finalize()
             );
@@ -90,9 +123,12 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
                 .ThenAsync(async context =>
             {
                 
+                
+                
                 _logger.LogInformation($"Order cancelled {context.Saga.CorrelationId}");
                 await SendAuditLog();
             }).Finalize());
+
         SetCompletedWhenFinalized();
     }
     
@@ -113,8 +149,10 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
     public Event<OrderConfirmed> OrderConfirmed { get; private set; } = null!;
 
 
-    public async Task SendAuditLog()
+    async Task SendAuditLog()
     {
         await Task.CompletedTask;
     }
+    
+    
 }

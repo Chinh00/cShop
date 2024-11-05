@@ -3,6 +3,7 @@ POST https://localhost:7000/api/v1/catalog
 Content-Type: application/json
 
 {
+  
   "name": "string",
   "quantity": 0,
   "price": 0,

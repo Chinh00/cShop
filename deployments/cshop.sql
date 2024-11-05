@@ -1,3 +1,8 @@
+CREATE DATABASE Db;
+GO
+
+
+
 USE Db;
 GO
 

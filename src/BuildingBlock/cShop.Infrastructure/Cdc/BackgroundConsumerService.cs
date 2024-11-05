@@ -11,7 +11,6 @@ namespace cShop.Infrastructure.Cdc;
 
 public class BackgroundConsumerService(
     ILogger<BackgroundConsumerService> logger, 
-    ISchemaRegistryClient schemaRegistryClient, 
     IOptions<ConsumerConfig> config,
     IServiceScopeFactory scopeFactory) : BackgroundService
 {
@@ -24,9 +23,14 @@ public class BackgroundConsumerService(
     {
         using var scope = scopeFactory.CreateScope();
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-        
-        
+
+        using var schemaRegistryClient = new CachedSchemaRegistryClient(new SchemaRegistryConfig()
+        {
+            Url = "http://localhost:8085"
+        });
         var consumerBuilder = new ConsumerBuilder<string, GenericRecord>(config.Value)
+            .SetErrorHandler((_, e) => logger.LogError($"Error: {e.Reason}"))
+            .SetStatisticsHandler((_, json) => logger.LogInformation($"Statistics: {json}"))
             .SetValueDeserializer(new AvroDeserializer<GenericRecord>(schemaRegistryClient).AsSyncOverAsync())
             .Build();
         consumerBuilder.Subscribe(config.Value.TopicName);
@@ -34,28 +38,40 @@ public class BackgroundConsumerService(
         {
             while (stoppingToken.IsCancellationRequested == false)
             {
-                var result = consumerBuilder.Consume();
+                logger.LogInformation("Starting consumer...");
 
-                if (result is null) continue;
-                var eventName = result.Message.Value.Schema?.Name;
-                var bytes = await (new AvroSerializer<GenericRecord>(schemaRegistryClient)).SerializeAsync(result.Message.Value, new SerializationContext());
-                var res = await config.Value.HandlePayload(schemaRegistryClient, eventName, bytes);
-
-
-                if (res is INotification)
+                try
                 {
-                    logger.LogInformation("Kafka message received");
-                    await mediator.Publish(res, stoppingToken);
+                    var result = consumerBuilder.Consume();
+                    if (result is null) continue;
+                    var eventName = result.Message.Value.Schema?.Name;
+                    
+                    logger.LogInformation(result.Message.Value.ToString());
+                    var bytes = await (new AvroSerializer<GenericRecord>(schemaRegistryClient, new AvroSerializerConfig()
+                    {
+                        SubjectNameStrategy = SubjectNameStrategy.Topic
+                    })).SerializeAsync(result.Message.Value, new SerializationContext(MessageComponentType.Value, $"{config.Value.TopicName}-anchor"));
+                    var res = await config.Value.HandlePayload(schemaRegistryClient, eventName, bytes);
+
+                    if (res is INotification)
+                    {
+                        logger.LogInformation("Kafka message received");
+                        await mediator.Publish(res, stoppingToken);
+                    }
+
+                    consumerBuilder.Commit(result);
+                }
+                catch (Exception e)
+                {
+                    logger.LogInformation(e.Message);
                 }
 
-
-                consumerBuilder.Commit(result);
+                
             }
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            throw;
+            logger.LogError(e.Message);
         }
         finally
         {

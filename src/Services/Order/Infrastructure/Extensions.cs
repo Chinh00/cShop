@@ -117,6 +117,7 @@ public static class Extensions
         Action<IServiceCollection>? action = null)
     {
 
+        
         services.AddKafkaConsumer(e =>
         {
             e.TopicName = "catalog_cdc_events";
