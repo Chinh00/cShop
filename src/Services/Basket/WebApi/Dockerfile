@@ -12,8 +12,8 @@ COPY ["src/BuildingBlock/cShop.Infrastructure/cShop.Infrastructure.csproj", "src
 COPY ["src/BuildingBlock/cShop.Contracts/cShop.Contracts.csproj", "src/BuildingBlock/cShop.Contracts/"]
 COPY ["src/BuildingBlock/cShop.Core/cShop.Core.csproj", "src/BuildingBlock/cShop.Core/"]
 COPY ["src/Services/Basket/Application/Application.csproj", "src/Services/Basket/Application/"]
-COPY ["src/Services/Basket/Domain/Domain.csproj", "src/Services/Basket/Domain/"]
 COPY ["src/Services/Basket/Infrastructure/Infrastructure.csproj", "src/Services/Basket/Infrastructure/"]
+COPY ["src/Services/Basket/Domain/Domain.csproj", "src/Services/Basket/Domain/"]
 RUN dotnet restore "src/Services/Basket/WebApi/WebApi.csproj"
 COPY . .
 WORKDIR "/src/src/Services/Basket/WebApi"

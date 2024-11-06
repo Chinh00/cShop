@@ -14,7 +14,6 @@ COPY ["src/BuildingBlock/cShop.Core/cShop.Core.csproj", "src/BuildingBlock/cShop
 COPY ["src/Services/Order/Application/Application.csproj", "src/Services/Order/Application/"]
 COPY ["src/Services/Order/Infrastructure/Infrastructure.csproj", "src/Services/Order/Infrastructure/"]
 COPY ["src/Services/Order/Domain/Domain.csproj", "src/Services/Order/Domain/"]
-COPY ["src/Services/Order/Bus/Bus.csproj", "src/Services/Order/Bus/"]
 RUN dotnet restore "src/Services/Order/WebApi/WebApi.csproj"
 COPY . .
 WORKDIR "/src/src/Services/Order/WebApi"

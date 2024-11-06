@@ -59,13 +59,7 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_ORDER_SERVICE_NAME}}:latest
           
-      - name: Build and push Docker image Identity Service
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: src/Services/IdentityServer/Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_IDENTITY_SERVICE_NAME}}:latest
+      
           
       
       
