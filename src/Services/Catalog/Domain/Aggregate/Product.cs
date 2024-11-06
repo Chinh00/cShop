@@ -22,7 +22,7 @@ public class Product : AggregateBase
     public void AssignCategory(Category category)
     {
         CategoryId = category.Id;
-        RaiseEvent(version => new DomainEvents.CategoryAssigned(category.Id, Version));
+        RaiseEvent(version => new DomainEvents.CategoryAssigned(category.Id, version));
     }
     
 

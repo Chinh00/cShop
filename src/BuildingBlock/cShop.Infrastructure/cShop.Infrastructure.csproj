@@ -9,12 +9,13 @@
 
     <ItemGroup>
         <PackageReference Include="Confluent.SchemaRegistry.Serdes.Avro" Version="2.6.0" />
+        <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.10.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="*" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="*"/>
         <PackageReference Include="Asp.Versioning.Http" Version="8.1.0" />
         <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
         <PackageReference Include="Confluent.Kafka" Version="2.6.0" />
-        <PackageReference Include="FluentValidation" Version="11.10.0" />
         <PackageReference Include="MassTransit.Kafka" Version="8.2.5" />
         <PackageReference Include="MediatR" Version="12.4.1" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
@@ -41,12 +42,6 @@
     <ItemGroup>
       <ProjectReference Include="..\cShop.Contracts\cShop.Contracts.csproj" />
       <ProjectReference Include="..\cShop.Core\cShop.Core.csproj" />
-    </ItemGroup>
-
-  
-
-    <ItemGroup>
-      <Folder Include="Validation\" />
     </ItemGroup>
     
 

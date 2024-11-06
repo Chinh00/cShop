@@ -1,3 +1,6 @@
+using cShop.Infrastructure.Validation;
+using MediatR;
+
 namespace cShop.Infrastructure.Mediator;
 
 public static class Extensions
@@ -6,7 +9,9 @@ public static class Extensions
         Action<IServiceCollection>? action = null)
     {
 
-        services.AddMediatR(e => e.RegisterServicesFromAssemblies(type.Select(t => t.Assembly).ToArray()));
+        services.AddMediatR(e => e.RegisterServicesFromAssemblies(type.Select(t => t.Assembly).ToArray()))
+            .AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidateBehaviorPipeline<,>));
+            
         action?.Invoke(services);
         return services;
     }

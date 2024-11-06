@@ -1,6 +1,7 @@
 
 
 using Application;
+using Application.UseCases.Command;
 using Bus;
 using cShop.Infrastructure.Auth;
 using cShop.Infrastructure.Bus;
@@ -9,12 +10,16 @@ using cShop.Infrastructure.Mediator;
 using cShop.Infrastructure.Ole;
 using cShop.Infrastructure.SchemaRegistry;
 using cShop.Infrastructure.Swagger;
+using cShop.Infrastructure.Validation;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using GrpcService.Implements;
 using Infrastructure.Data;
 using WebApi.Apis;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddLoggingCustom(builder.Configuration, "Catalog")
+    .AddValidation(typeof(Anchor))
     .AddOpenTelemetryCustom("CatalogService")
     .AddAuthenticationDefault(builder.Configuration)
     .AddSwaggerCustom(builder.Configuration)
@@ -26,13 +31,21 @@ builder.Services.AddLoggingCustom(builder.Configuration, "Catalog")
     .AddGrpc();
 
 
+
+
+
+
 var app = builder.Build();
+
+
 
 app.NewVersionedApi("Catalog").MapCatalogApiV1();
 app.UseAuthenticationDefault(builder.Configuration)
     .ConfigureSwagger(builder.Configuration)
     .MapGrpcService<CatalogGrpcService>()
     ;
+app.UseMiddleware<ExceptionMiddleware>();
+
 
 
 

@@ -5,6 +5,7 @@ using cShop.Core.Repository;
 using cShop.Infrastructure.SchemaRegistry;
 using Domain.Aggregate;
 using Domain.Outbox;
+using FluentValidation;
 using IntegrationEvents;
 
 namespace Application.UseCases.Command;
@@ -20,8 +21,18 @@ public record CreateCatalogCommand(
         new(name, quantity, price, imageSrc, categoryId);
     
     
+    public class Validator : AbstractValidator<CreateCatalogCommand>
+    {
+        public Validator()
+        {
+            RuleFor(x => x.Name).NotNull().NotEmpty();
+            RuleFor(x => x.Quantity).NotNull().GreaterThanOrEqualTo(1).LessThanOrEqualTo(int.MaxValue);
+            RuleFor(x => x.Price).NotNull().GreaterThanOrEqualTo(1).LessThanOrEqualTo(int.MaxValue);
+            RuleFor(x => x.ImageSrc).NotNull().NotEmpty();
+        }
+    }
+    
     internal class Hander(
-        IBusEvent messageBus,
         ISchemaRegistryClient schemaRegistryClient,
         IRepository<Product> catalogRepository,
         IRepository<ProductOutbox> repository)
