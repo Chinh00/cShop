@@ -1,3 +1,1 @@
-# Sonarqube scan code
-  - Server: https://14df-113-190-242-151.ngrok-free.app
-  - Uname/pass: user-preview/user-@P@ssw0rd02
+![Screenshot 2024-11-06 at 13 04 34](https://github.com/user-attachments/assets/9017703a-d7d5-4092-b27a-93dd498e3415)
