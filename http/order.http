@@ -1,6 +1,6 @@
 ### Start order
 @userId = efa99cdb-ac1f-4ef6-be49-1a1396016c6a
-@orderId = 55ca1851-546c-4f73-b7df-52942b9edec2
+@orderId = b0bf1f31-41c9-4ada-a31c-ddbffb9b37a6
 
 
 POST http://localhost:5057/api/v1/order HTTP/1.1

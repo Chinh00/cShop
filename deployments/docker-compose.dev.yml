@@ -85,7 +85,18 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=@P@ssw0rd02
-
+  smtp4dev:
+    image: rnwood/smtp4dev:v3
+    restart: always
+    ports:
+      - '9999:80'
+      - '2525:25'
+      - '143:143'
+    volumes:
+      - smtp4dev-data:/smtp4dev
+    environment:
+      ServerOptions__Urls: http://0.0.0.0:80
+      ServerOptions__HostName: smtp4dev
 
   schema-registry-ui:
     image: landoop/schema-registry-ui
@@ -148,3 +159,4 @@ services:
 volumes:
   data:
   grafana-storage:
+  smtp4dev-data:

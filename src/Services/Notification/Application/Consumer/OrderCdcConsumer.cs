@@ -1,3 +1,4 @@
+using System.Net.Mail;
 using IntegrationEvents;
 using MediatR;
 
@@ -7,7 +8,7 @@ public class OrderCdcConsumer : INotificationHandler<OrderComplete>
 {
     public async Task Handle(OrderComplete notification, CancellationToken cancellationToken)
     {
-        Console.Out.WriteLine(notification.OrderId);
+        await Console.Out.WriteLineAsync(notification.OrderId);
         
     }
 }
