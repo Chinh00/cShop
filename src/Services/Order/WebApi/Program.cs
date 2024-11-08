@@ -6,6 +6,7 @@ using cShop.Infrastructure.Mediator;
 using cShop.Infrastructure.Ole;
 using cShop.Infrastructure.SchemaRegistry;
 using cShop.Infrastructure.Swagger;
+using cShop.Infrastructure.Validation;
 using Infrastructure;
 using Infrastructure.Data;
 using WebApi.Apis;
@@ -14,6 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddLoggingCustom(builder.Configuration, "Order")
+    .AddValidation(typeof(Anchor))
     .AddAuthenticationDefault(builder.Configuration)
     .AddSwaggerCustom(builder.Configuration)
     .AddMediatorDefault([typeof(Program), typeof(Anchor)])

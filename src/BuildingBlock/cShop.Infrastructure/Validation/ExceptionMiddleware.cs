@@ -21,7 +21,7 @@ public class ExceptionMiddleware(RequestDelegate next)
             }
             else
             {
-                await context.Response.WriteAsync(JsonSerializer.Serialize(ResultModel<string>.Create(e.Message)));
+                await context.Response.WriteAsync(JsonSerializer.Serialize(ResultModel<string>.Create(e.ToString())));
             }
         }
 

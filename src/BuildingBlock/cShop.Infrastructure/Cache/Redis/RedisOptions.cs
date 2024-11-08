@@ -7,6 +7,6 @@ public record RedisOptions
 
     public string GetConnectionString()
     {
-        return $"{Server}:{Port}";
+        return $"{Server}:{Port},abortConnect=false";
     }
 }

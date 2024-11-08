@@ -18,9 +18,9 @@ public class RepositoryBase<TDbContext, TEntity> : IRepository<TEntity>
         DbSet = context.Set<TEntity>();
     }
 
-    public Task<TEntity> FindByIdAsync(Guid id)
+    public async Task<TEntity> FindByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        return await DbSet.FindAsync(id);
     }
 
     public Task<List<TEntity>> FindAsync()
@@ -30,14 +30,16 @@ public class RepositoryBase<TDbContext, TEntity> : IRepository<TEntity>
 
     public async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken)
     {
-        await _context.AddAsync(entity, cancellationToken);
+        await DbSet.AddAsync(entity, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
         return entity;
     }
 
-    public Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken)
+    public async Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        DbSet.Update(entity);
+        await _context.SaveChangesAsync(cancellationToken);
+        return entity;
     }
 
     public Task<bool> RemoveAsync(TEntity entity, CancellationToken cancellationToken)

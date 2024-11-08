@@ -1,14 +1,33 @@
+@host = http://localhost:11111
+###
+GET http://localhost:1111/swagger/index.html HTTP2
+
+
 ### Create catalog
-POST https://localhost:7000/api/v1/catalog
+POST {{host}}/catalogservice/api/v1/catalog
 Content-Type: application/json
 
 {
   
   "name": "string",
-  "quantity": 0,
-  "price": 0,
+  "quantity": 1,
+  "price": 1,
   "imageSrc": "string",
   "categoryId": null
 }
 
-###
+### Active catalog
+@productId = cf999378-1447-45be-9543-561fce79c3c8
+
+PUT {{host}}/catalogservice/api/v1/catalog/{{productId}}/active
+Content-Type: application/json
+
+
+### Inactive catalog
+
+PUT {{host}}/catalogservice/api/v1/catalog/{{productId}}/inactive
+Content-Type: application/json
+
+
+
+

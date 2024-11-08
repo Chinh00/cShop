@@ -1,0 +1,296 @@
+version: "3.9"
+
+services:
+  
+  
+  catalogservice:
+    build:
+      context: .
+      dockerfile: ./src/Services/Catalog/WebApi/Dockerfile
+    container_name: catalogservice
+    environment:
+      IdentityServer__Url: http://localhost:5555
+      ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
+      Kafka__BootstrapServers: kafka:9092
+      SchemaRegistry__Url: ${SchemaRegistry__Url:-http://schema-registry}
+      ASPNETCORE_Kestrel__Endpoints__Https__Url: https://+:443z
+      ASPNETCORE_Kestrel__Endpoints__Https__Protocols: Http2
+      ASPNETCORE_Kestrel__Endpoints__Http__Url: http://+:80
+      ASPNETCORE_Kestrel__Endpoints__Http__Protocols: Http1
+      ASPNETCORE_Kestrel__Certificates__Default__Path: /https.pfx
+      ASPNETCORE_Kestrel__Certificates__Default__Password: "P@ssw0rd02"
+    ports:
+      - "7007:80"
+      - "7004:443"
+    volumes:
+      - ./certs/https.pfx:/https.pfx
+    depends_on:
+      - kafka
+      - schema-registry
+      - mongodb
+      - sqlserver
+      
+  basketservice:
+    container_name: basketservice
+    ports:
+      - "7001:80"
+    depends_on:
+      - redis
+    build:
+      context: .
+      dockerfile: ./src/Services/Basket/WebApi/Dockerfile
+    environment:
+      IdentityServer__Url: http://localhost:5555
+      Kafka__BootstrapServers: kafka:9092
+      SchemaRegistry__Url: ${SchemaRegistry__Url:-http://schema-registry:8085}
+      CatalogGrpc__Url: https://catalogservice
+      Redis__Server: redis
+      Redis__Port: 6379
+      Cert__Path: /https.pfx
+      Cert__Password: "P@ssw0rd02"
+    volumes:
+      - ./certs/https.pfx:/https.pfx
+    
+    
+    
+  orderservice:
+    ports:
+      - "7002:80"
+    
+    build:
+      context: .
+      dockerfile: ./src/Services/Order/WebApi/Dockerfile
+    environment:
+      Kafka__BootstrapServers: kafka:9092
+      Kafka__SchemaRegistryServer: ${SchemaRegistry__Url:-http://schema-registry:8085}
+      ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
+      MongoDb__Username: root
+      MongoDb__Password: "%40P%40ssw0rd02"
+      MongoDb__DatabaseName: orderdb
+      MongoDb__CollectionName: ordercollection
+      MongoDb__ServerName: mongodb
+    depends_on:
+      - mongodb
+      - kafka
+      - schema-registry
+  
+  gatewayservice:
+    ports:
+      - "11111:80"
+    build:
+      context: .
+      dockerfile: ./src/Services/Proxy/AppGateway/Dockerfile
+    environment:
+      ReverseProxy__Routes__identityserver__ClusterId: 
+        
+      ReverseProxy__Routes__identityserver__Match__Path: /identityserver/{**catch-all}
+      ReverseProxy__Routes__identityserver__Transforms_0__PathRemovePrefix: /identityserver
+      ReverseProxy__Routes__identityserver__Transforms_1__PathPrefix: /
+        
+      ReverseProxy__Routes__orderservice__ClusterId: orderservice
+      ReverseProxy__Routes__orderservice__Match__Path: /orderservice/{**catch-all}
+      ReverseProxy__Routes__orderservice__Transforms_0__PathRemovePrefix: /orderservice
+      ReverseProxy__Routes__orderservice__Transforms_1__PathPrefix: /
+        
+      ReverseProxy__Routes__catalogservice__ClusterId: catalogservice
+      ReverseProxy__Routes__catalogservice__Match__Path: /catalogservice/{**catch-all}
+      ReverseProxy__Routes__catalogservice__Transforms_0__PathRemovePrefix: /catalogservice
+      ReverseProxy__Routes__catalogservice__Transforms_1__PathPrefix: /
+        
+      ReverseProxy__Routes__basketservice__ClusterId: basketservice
+      ReverseProxy__Routes__basketservice__Match__Path: /basketservice/{**catch-all}
+      ReverseProxy__Routes__basketservice__Transforms_0__PathRemovePrefix: /catalogservice
+      ReverseProxy__Routes__basketservice__Transforms_1__PathPrefix: /
+        
+      
+        
+      ReverseProxy__Clusters__orderservice__ClusterId: orderservice
+      ReverseProxy__Clusters__orderservice__Destinations__destination1__Address: http://orderservice
+      
+      ReverseProxy__Clusters__identityserver__ClusterId: identityserver
+      ReverseProxy__Clusters__identityserver__Destinations__destination1__Address: http://identityserver
+      
+      ReverseProxy__Clusters__catalogservice__ClusterId: catalogservice
+      ReverseProxy__Clusters__catalogservice__Destinations__destination1__Address: http://catalogservice
+      
+      ReverseProxy__Clusters__basketservice__ClusterId: basketservice
+      ReverseProxy__Clusters__basketservice__Destinations__destination1__Address: http://basketservice
+      
+      
+    depends_on:
+      - orderservice
+      - basketservice
+      - catalogservice
+  
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: ${MSSQL_PASSWORD:-@P@ssw0rd02}
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Standard"
+      MSSQL_AGENT_ENABLED: true
+    
+    volumes:
+      - data:/var/opt/mssql
+      - ./deployments/cshop.sql:/setup-db.sql
+    command: >
+      /bin/bash -c "
+      /opt/mssql/bin/sqlservr & 
+      until /opt/mssql-tools18/bin/sqlcmd -l 1 -S localhost -U sa -P '${MSSQL_PASSWORD:-@P@ssw0rd02}' -C -Q 'SELECT 1' &> /dev/null; do
+        echo '>>>>>>>>>> SQL Server is unavailable - sleeping <<<<<<<<<<';
+        sleep 5;
+      done;
+      /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P '${MSSQL_PASSWORD:-@P@ssw0rd02}' -C -d master -i /setup-db.sql;
+      sleep infinity;
+      "
+
+
+  
+
+  redis:
+    image: redis/redis-stack
+    container_name: redis
+    ports:
+      - "6379:6379"
+      - "8001:8001"
+
+  debezium:
+    image: quay.io/debezium/connect
+    ports:
+      - "8083:8083"
+    environment:
+      BOOTSTRAP_SERVERS: kafka:29092
+      GROUP_ID: 1
+      CONFIG_STORAGE_TOPIC: debezium_config
+      OFFSET_STORAGE_TOPIC: debezium_offset
+      STATUS_STORAGE_TOPIC: debezium_status
+      KEY_CONVERTER: org.apache.kafka.connect.storage.StringConverter
+      VALUE_CONVERTER: io.debezium.converters.BinaryDataConverter
+      INTERNAL_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      KAFKA_CONNECT_PLUGIN_PATH: /kafka/connect
+    volumes:
+      - ./deployments/connectors/confluentinc-kafka-connect-avro-converter-7.7.1/:/kafka/connect/lib/
+      - ./deployments/connectors/confluentinc-kafka-connect-jdbc-10.8.0/:/kafka/connect/lib-db/
+    depends_on:
+      - kafka
+  
+  
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=@P@ssw0rd02
+  smtp4dev:
+    image: rnwood/smtp4dev:v3
+    restart: always
+    ports:
+      - '9999:80'
+      - '2525:25'
+      - '143:143'
+    volumes:
+      - smtp4dev-data:/smtp4dev
+    environment:
+      ServerOptions__Urls: http://0.0.0.0:80
+      ServerOptions__HostName: smtp4dev
+
+  schema-registry-ui:
+    image: landoop/schema-registry-ui
+    ports:
+      - 8000:8000
+    environment:
+      - SCHEMAREGISTRY_URL=http://schema-registry:8085
+      - PROXY=true
+    depends_on:
+      - schema-registry
+    
+    
+  schema-registry:
+    image: confluentinc/cp-schema-registry
+    container_name: schema-registry
+    depends_on:
+      - kafka
+    environment:
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://kafka:29092
+      SCHEMA_REGISTRY_LISTENERS: http://schema-registry:8085
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_LOG4J_ROOT_LOGLEVEL: 'INFO'
+    ports:
+      - "8085:8085"
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper
+    hostname: zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    image: confluentinc/cp-kafka
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+      - "9997:9997"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    ports:
+      - "8080:8080"
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:29092
+    depends_on:
+      - kafka
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.4.0
+    container_name: elasticsearch
+    restart: always
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:7.4.0
+    restart: always
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+
+
+volumes:
+  data:
+  elasticsearch-data:
+  smtp4dev-data:

@@ -8,8 +8,7 @@ public interface ICommand<TResponse> : IRequest<IResult>
     
 }
 
-public interface ICommandV1 : IRequest<IResult>{}
-
+public interface IQuery<TResponse> : IRequest<IResult> {}
 
 
 public interface ICreateCommand<TModel, TResponse> : ICommand<TResponse>   

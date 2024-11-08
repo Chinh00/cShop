@@ -18,7 +18,7 @@ POST http://localhost:8083/connectors HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "catalog-outbox-source-test",
+  "name": "catalog-outbox-source",
   "config": {
     "connector.class": "io.debezium.connector.sqlserver.SqlServerConnector",
     "database.hostname": "sqlserver",
@@ -65,7 +65,7 @@ POST http://localhost:8083/connectors HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "order-outbox-source-test",
+  "name": "order-outbox-source",
   "config": {
     "connector.class": "io.debezium.connector.sqlserver.SqlServerConnector",
     "database.hostname": "sqlserver",

@@ -2,14 +2,22 @@ using cShop.Core.Domain;
 using cShop.Infrastructure.Cache.Redis;
 using cShop.Infrastructure.IdentityServer;
 using Domain.Entities;
+using FluentValidation;
 using MediatR;
 
 namespace Application.UseCases.Commands;
 
 public record CreateBasketCommand(Guid UserId) : ICommand<IResult>
 {
-    
 
+    public class Validator : AbstractValidator<CreateBasketCommand>
+    {
+        public Validator()
+        {
+            RuleFor(x => x.UserId).NotEmpty();
+        }
+    }
+    
     public class Handler : IRequestHandler<CreateBasketCommand, IResult>
     {
         

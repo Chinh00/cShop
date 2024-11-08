@@ -29,6 +29,6 @@ public class Basket : EntityBase
     public void RemoveBasketItem(BasketItem item)
     {
         BasketItems ??= []; 
-        BasketItems.Remove(item);
+        BasketItems.Remove(BasketItems.FirstOrDefault(e => e.ProductId == item.ProductId));
     }
 }

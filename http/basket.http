@@ -1,11 +1,35 @@
-### GET request to example server
+### Create basket
+@host = http://localhost:11111
+@userId = 3fa85f64-5717-4562-b3fc-2c963f66afa6
 
-@userId = efa99cdb-ac1f-4ef6-be49-1a1396016c6a
+GET {{host}}/basketservice/api/v1/basket/{{userId}}
 
-POST http://localhost:5122/api/v1/basket
+
+### Create basket
+POST {{host}}/api/v1/basket
 Content-Type: application/json
 
 {
   "userId": "{{userId}}"
 }
-###
+
+### add basket item
+@basketId = aa001976-770f-43e3-9d65-9011a0dbcb29
+@productId = 783f0609-10ef-44de-b08c-4cf27f7b0e59
+
+POST {{host}}/basketservice/api/v1/basket/add-item
+Content-Type: application/json
+
+{
+  "userId": "{{userId}}",
+  "basketId": "{{basketId}}",
+  "productId": "{{productId}}"
+}
+
+
+### remove basket item
+
+DELETE {{host}}/basketservice/api/v1/basket/{{productId}}?userId={{userId}}
+Content-Type: application/json
+
+

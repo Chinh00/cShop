@@ -7,11 +7,6 @@
         <OutputType>Library</OutputType>
     </PropertyGroup>
 
-
-    <ItemGroup>
-      <Folder Include="UseCases\Queries\" />
-    </ItemGroup>
-
     <ItemGroup>
       <ProjectReference Include="..\..\..\BuildingBlock\cShop.Contracts\cShop.Contracts.csproj" />
       <ProjectReference Include="..\..\..\BuildingBlock\cShop.Core\cShop.Core.csproj" />

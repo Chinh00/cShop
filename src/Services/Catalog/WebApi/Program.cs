@@ -16,7 +16,6 @@ using FluentValidation.AspNetCore;
 using GrpcService.Implements;
 using Infrastructure.Data;
 using WebApi.Apis;
-
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddLoggingCustom(builder.Configuration, "Catalog")
     .AddValidation(typeof(Anchor))
@@ -37,14 +36,13 @@ builder.Services.AddLoggingCustom(builder.Configuration, "Catalog")
 
 var app = builder.Build();
 
+app.UseMiddleware<ExceptionMiddleware>();
 
 
 app.NewVersionedApi("Catalog").MapCatalogApiV1();
 app.UseAuthenticationDefault(builder.Configuration)
     .ConfigureSwagger(builder.Configuration)
-    .MapGrpcService<CatalogGrpcService>()
-    ;
-app.UseMiddleware<ExceptionMiddleware>();
+    .MapGrpcService<CatalogGrpcService>();
 
 
 

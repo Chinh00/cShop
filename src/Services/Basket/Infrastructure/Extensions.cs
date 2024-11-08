@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using Confluent.Kafka;
 using cShop.Contracts.Services.Basket;
 using cShop.Contracts.Services.Order;
@@ -15,7 +16,20 @@ public static class Extensions
         Action<IServiceCollection>? action = null)
     {
 
-        services.AddGrpcClient<Catalog.CatalogClient>(o => o.Address = new Uri(configuration.GetValue<string>("CatalogGrpc:Url"))); 
+        services.AddGrpcClient<Catalog.CatalogClient>(
+            o =>
+            {
+                o.Address = new Uri(configuration.GetValue<string>("CatalogGrpc:Url"));
+            }).ConfigurePrimaryHttpMessageHandler(() =>
+        {
+            var handler = new HttpClientHandler();
+            var certificate = new X509Certificate2(configuration.GetValue<string>("Cert:Path"), configuration.GetValue<string>("Cert:Password"));
+
+            handler.ClientCertificates.Add(certificate);
+            handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+
+            return handler;
+        }); 
         action?.Invoke(services);
         return services;
     }

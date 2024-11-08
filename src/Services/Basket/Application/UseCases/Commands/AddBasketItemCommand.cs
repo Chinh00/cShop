@@ -2,6 +2,7 @@ using cShop.Core.Domain;
 using cShop.Infrastructure.Cache.Redis;
 using cShop.Infrastructure.IdentityServer;
 using Domain.Entities;
+using FluentValidation;
 using GrpcServices;
 using MediatR;
 
@@ -10,6 +11,16 @@ namespace Application.UseCases.Commands;
 public record AddBasketItemCommand(Guid UserId, Guid BasketId, Guid ProductId) : ICommand<IResult>
 {
 
+    public class Validator : AbstractValidator<AddBasketItemCommand>
+    {
+        public Validator()
+        {
+            RuleFor(x => x.UserId).NotEmpty();
+            RuleFor(x => x.BasketId).NotEmpty();
+            RuleFor(x => x.ProductId).NotEmpty();
+        }
+    }
+    
     
     internal class Handler(IRedisService redisService, Catalog.CatalogClient catalogClient)
         : IRequestHandler<AddBasketItemCommand, IResult>

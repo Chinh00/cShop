@@ -1,29 +1,35 @@
 using cShop.Contracts.Abstractions;
 using cShop.Core.Domain;
+using cShop.Core.Repository;
 using cShop.Infrastructure.Bus;
 using cShop.Infrastructure.EventStore;
 using Domain.Aggregate;
+using FluentValidation;
 using MediatR;
 
 namespace Application.UseCases.Command;
 
 public record ActiveCatalogCommand(Guid CatalogId) : ICommand<IResult>
 {
-    internal class Handler : IRequestHandler<ActiveCatalogCommand, IResult>
+    
+    
+    public class Validator : AbstractValidator<ActiveCatalogCommand>
     {
-        private readonly ILogger<ActiveCatalogCommand> _logger;
-        private readonly IBusEvent _message;
-
-        public Handler( ILogger<ActiveCatalogCommand> logger, IBusEvent message)
+        public Validator()
         {
-            _logger = logger;
-            _message = message;
+            RuleFor(x => x.CatalogId).NotEmpty();
         }
+    }
 
+    internal class Handler(IRepository<Product> productRepository) : IRequestHandler<ActiveCatalogCommand, IResult>
+    {
         public async Task<IResult> Handle(ActiveCatalogCommand request, CancellationToken cancellationToken)
         {
-            
-            return Results.Ok(ResultModel<Guid>.Create(Guid.NewGuid()));
+
+            var product = await productRepository.FindByIdAsync(request.CatalogId);
+            product.ActiveCatalog();
+            await productRepository.UpdateAsync(product, cancellationToken);
+            return Results.Ok(ResultModel<Guid>.Create(product.Id));
         }
     }
 }

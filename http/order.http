@@ -1,9 +1,13 @@
+###
+@host = http://localhost:9999
+
+
 ### Start order
 @userId = efa99cdb-ac1f-4ef6-be49-1a1396016c6a
 @orderId = b0bf1f31-41c9-4ada-a31c-ddbffb9b37a6
 
 
-POST http://localhost:5057/api/v1/order HTTP/1.1
+POST {{host}}/orderservice/api/v1/order HTTP/1.1
 Content-Type: application/json
 
 {
@@ -20,8 +24,8 @@ Content-Type: application/json
 
 
 
-### 
-POST http://localhost:5057/api/v1/payment/payment
+###  user payment
+POST {{host}}/api/v1/payment/payment
 Content-Type: application/json
 
 {
@@ -30,4 +34,6 @@ Content-Type: application/json
   "transactionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
 }
 ###
+
+
 GET https://localhost:9200

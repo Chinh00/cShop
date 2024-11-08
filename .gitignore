@@ -7,4 +7,5 @@ riderModule.iml
 /.sonarqube/
 /.idea/
 
-./cShop.sln.DotSettings.user
+cShop.sln.DotSettings.user
+certs

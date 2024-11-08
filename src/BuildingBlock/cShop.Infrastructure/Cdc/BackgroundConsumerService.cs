@@ -26,7 +26,7 @@ public class BackgroundConsumerService(
 
         using var schemaRegistryClient = new CachedSchemaRegistryClient(new SchemaRegistryConfig()
         {
-            Url = "http://localhost:8085"
+            Url = config.Value.SchemaRegistryServer
         });
         var consumerBuilder = new ConsumerBuilder<string, GenericRecord>(config.Value)
             .SetErrorHandler((_, e) => logger.LogError($"Error: {e.Reason}"))
