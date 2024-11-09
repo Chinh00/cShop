@@ -13,7 +13,7 @@ services:
       ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
       Kafka__BootstrapServers: kafka:9092
       SchemaRegistry__Url: ${SchemaRegistry__Url:-http://schema-registry}
-      ASPNETCORE_Kestrel__Endpoints__Https__Url: https://+:443z
+      ASPNETCORE_Kestrel__Endpoints__Https__Url: https://+:443
       ASPNETCORE_Kestrel__Endpoints__Https__Protocols: Http2
       ASPNETCORE_Kestrel__Endpoints__Http__Url: http://+:80
       ASPNETCORE_Kestrel__Endpoints__Http__Protocols: Http1

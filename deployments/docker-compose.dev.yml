@@ -1,7 +1,14 @@
 version: "3.8"
 
 services:
-  
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: sa
+      POSTGRES_PASSWORD: Password
+    ports:
+      - "5432:5432"
  
   grafana:
     image: grafana/grafana:latest
