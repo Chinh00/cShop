@@ -27,6 +27,14 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push Docker image Identity Service
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: src/Services/IdentityServer/Identity.Api/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_IDENTITY_SERVICE_NAME}}:latest
+
 
       - name: Build and push Docker image Catalog Service
         uses: docker/build-push-action@v5
@@ -58,19 +66,7 @@ jobs:
           file: src/Services/Order/WebApi/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_ORDER_SERVICE_NAME}}:latest
-          
-      
-          
-      
-      
-      
-      
-      
 
-      
-        
-        
-        
   build:
     name: Build and analyze
     runs-on: windows-latest
@@ -106,6 +102,6 @@ jobs:
       - name: Build and analyze
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Chinh00_cShop_bc2a6cd3-4715-486e-8131-121a4a7d5d5a" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}"
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Chinh00_cShop_37d8bcee-b912-4ad9-ac7e-e1a9d52e6384" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}"
           dotnet build
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
