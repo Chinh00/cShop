@@ -73,6 +73,11 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      - name: Set up .NET SDK 9.0
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
