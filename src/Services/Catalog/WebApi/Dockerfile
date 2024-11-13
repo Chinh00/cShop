@@ -1,10 +1,10 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+﻿FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 USER $APP_UID
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/Services/Catalog/WebApi/WebApi.csproj", "src/Services/Catalog/WebApi/"]
@@ -14,8 +14,8 @@ COPY ["src/BuildingBlock/cShop.Core/cShop.Core.csproj", "src/BuildingBlock/cShop
 COPY ["src/Services/Catalog/Application/Application.csproj", "src/Services/Catalog/Application/"]
 COPY ["src/Services/Catalog/Domain/Domain.csproj", "src/Services/Catalog/Domain/"]
 COPY ["src/Services/Catalog/Bus/Bus.csproj", "src/Services/Catalog/Bus/"]
-COPY ["src/Services/Catalog/Infrastructure/Infrastructure.csproj", "src/Services/Catalog/Infrastructure/"]
 COPY ["src/Services/Catalog/GrpcService/GrpcService.csproj", "src/Services/Catalog/GrpcService/"]
+COPY ["src/Services/Catalog/Infrastructure/Infrastructure.csproj", "src/Services/Catalog/Infrastructure/"]
 RUN dotnet restore "src/Services/Catalog/WebApi/WebApi.csproj"
 COPY . .
 WORKDIR "/src/src/Services/Catalog/WebApi"
@@ -27,7 +27,5 @@ RUN dotnet publish "WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:Us
 
 FROM base AS final
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "WebApi.dll"]
