@@ -2,11 +2,15 @@
     <Import Project="..\..\..\..\GlobalUsing.props" />
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net9.0</TargetFramework>
+        <LangVersion>13</LangVersion>
         <Nullable>disable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <OutputType>Library</OutputType>
+        
+        
+        
     </PropertyGroup>
 
   
