@@ -4,37 +4,43 @@ using Domain.Entities;
 
 namespace Domain.Aggregate;
 
-public class Product : AggregateBase
+public class CatalogItem : AggregateBase
 {
     
     public string Name { get; set; }
-    public int Quantity { get; set; }
-    public double Price { get; set; }
+    public decimal Price { get; set; }
     public string? ImageUrl { get; set; }
     
     public bool IsActive { get; set; }
     
-    public Guid? CategoryId { get; set; }
+    public Guid? CategoryTypeId { get; set; }
     
-    public virtual Category Category { get; set; }
+    public virtual CatalogType CatalogType { get; set; }
+    
+    public Guid? CatalogBrandId { get; set; }
+    
+    public virtual CatalogBrand CatalogBrand { get; set; }
+    
+    
+    
+    public int AvailableStock { get; set; }
 
-
-    public void AssignCategory(Category category)
+    public void AssignCategory(CatalogType catalogType)
     {
-        CategoryId = category.Id;
-        RaiseEvent(version => new DomainEvents.CategoryAssigned(category.Id, version));
+        CategoryTypeId = catalogType.Id;
+        RaiseEvent(version => new DomainEvents.CategoryAssigned(catalogType.Id, version));
     }
     
 
     public void CreateCatalog(Command.CreateCatalog command)
     {
         Name = command.Name;
-        Quantity = command.Quantity;
+        AvailableStock = command.Quantity;
         Price = command.Price;
         ImageUrl = command.ImageSrc;
-        CategoryId = command.CategoryId;
+        CategoryTypeId = command.CategoryId;
         IsActive = false;
-        RaiseEvent(version => new DomainEvents.CatalogCreated(Id, Name, Quantity, Price, ImageUrl, CategoryId , IsActive, version));
+        RaiseEvent(version => new DomainEvents.CatalogCreated(Id, Name, AvailableStock, Price, ImageUrl, CategoryTypeId , IsActive, version));
     }
 
     public void ActiveCatalog()
@@ -70,10 +76,10 @@ public class Product : AggregateBase
     {
         Id = @event.Id;
         Name = @event.Name;
-        Quantity = @event.Quantity;
+        AvailableStock = @event.Quantity;
         Price = @event.Price;
         ImageUrl = @event.ImageUrl;
-        CategoryId = @event.CategoryId;
+        CategoryTypeId = @event.CategoryId;
         IsActive = @event.IsActive;
         
         Version = @event.Version;

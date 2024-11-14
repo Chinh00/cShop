@@ -5,7 +5,7 @@ using GrpcServices;
 
 namespace GrpcService.Implements;
 
-public class CatalogGrpcService(IRepository<Product> productRepository) : Catalog.CatalogBase
+public class CatalogGrpcService(IRepository<CatalogItem> productRepository) : Catalog.CatalogBase
 {
 
 
@@ -15,7 +15,7 @@ public class CatalogGrpcService(IRepository<Product> productRepository) : Catalo
        return new GetCatalogByIdResponse()
        {
             ProductId = product.Id.ToString(),
-            CurrentCost = product.Price,
+            CurrentCost = (float) product.Price,
             ProductName = product.Name
        };
 

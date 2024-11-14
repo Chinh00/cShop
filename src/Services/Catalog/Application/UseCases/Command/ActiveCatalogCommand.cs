@@ -21,7 +21,7 @@ public record ActiveCatalogCommand(Guid CatalogId) : ICommand<IResult>
         }
     }
 
-    internal class Handler(IRepository<Product> productRepository) : IRequestHandler<ActiveCatalogCommand, IResult>
+    internal class Handler(IRepository<CatalogItem> productRepository) : IRequestHandler<ActiveCatalogCommand, IResult>
     {
         public async Task<IResult> Handle(ActiveCatalogCommand request, CancellationToken cancellationToken)
         {

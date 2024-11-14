@@ -20,7 +20,7 @@ public record InactiveCatalogCommand(Guid CatalogId) : ICommand<IResult>
         }
     }
     
-    internal class Handler(IRepository<Product> productRepository)
+    internal class Handler(IRepository<CatalogItem> productRepository)
         : IRequestHandler<InactiveCatalogCommand, IResult>
     {
 

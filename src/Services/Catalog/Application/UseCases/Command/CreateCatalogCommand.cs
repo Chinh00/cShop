@@ -12,12 +12,12 @@ namespace Application.UseCases.Command;
 
 public record CreateCatalogCommand(
     string Name, 
-    int Quantity, 
-    double Price, 
+    int AvailableStock, 
+    decimal Price, 
     string ImageSrc, 
     Guid? CategoryId) : ICommand<IResult>
 {
-    private cShop.Contracts.Services.Catalog.Command.CreateCatalog Command(string name, int quantity, double price, string imageSrc, Guid? categoryId) =>
+    private cShop.Contracts.Services.Catalog.Command.CreateCatalog Command(string name, int quantity, decimal price, string imageSrc, Guid? categoryId) =>
         new(name, quantity, price, imageSrc, categoryId);
     
     
@@ -26,7 +26,7 @@ public record CreateCatalogCommand(
         public Validator()
         {
             RuleFor(x => x.Name).NotNull().NotEmpty();
-            RuleFor(x => x.Quantity).NotNull().GreaterThanOrEqualTo(1).LessThanOrEqualTo(int.MaxValue);
+            RuleFor(x => x.AvailableStock).NotNull().GreaterThanOrEqualTo(1).LessThanOrEqualTo(int.MaxValue);
             RuleFor(x => x.Price).NotNull().GreaterThanOrEqualTo(1).LessThanOrEqualTo(int.MaxValue);
             RuleFor(x => x.ImageSrc).NotNull().NotEmpty();
         }
@@ -34,28 +34,28 @@ public record CreateCatalogCommand(
     
     internal class Hander(
         ISchemaRegistryClient schemaRegistryClient,
-        IRepository<Product> catalogRepository,
+        IRepository<CatalogItem> catalogRepository,
         IRepository<ProductOutbox> repository)
         : OutboxHandler<ProductOutbox>(schemaRegistryClient, repository), IRequestHandler<CreateCatalogCommand, IResult>
     {
         public async Task<IResult> Handle(CreateCatalogCommand request, CancellationToken cancellationToken)
         {
-            Product product = new();
-            product.CreateCatalog(request.Command(request.Name, request.Quantity, request.Price, request.ImageSrc, request.CategoryId));
-            await catalogRepository.AddAsync(product, cancellationToken);
+            CatalogItem catalogItem = new();
+            catalogItem.CreateCatalog(request.Command(request.Name, request.AvailableStock, request.Price, request.ImageSrc, request.CategoryId));
+            await catalogRepository.AddAsync(catalogItem, cancellationToken);
             await SendToOutboxAsync(
-                product,
+                catalogItem,
                 () => (
                     new ProductOutbox(),
                     new ProductCreated()
                         {
-                            Id = product.Id.ToString(),
-                            Name = product.Name,
-                            Price = (float)product.Price
+                            Id = catalogItem.Id.ToString(),
+                            Name = catalogItem.Name,
+                            Price = (float)catalogItem.Price
                         }, 
                     "catalog_cdc_events"), cancellationToken);
             
-            return Results.Ok(ResultModel<Guid>.Create(product.Id));
+            return Results.Ok(ResultModel<Guid>.Create(catalogItem.Id));
         }
     }
 }

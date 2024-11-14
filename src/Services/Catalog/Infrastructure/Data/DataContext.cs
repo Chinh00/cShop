@@ -8,7 +8,7 @@ namespace Infrastructure.Data;
 
 public class DataContext(DbContextOptions options) : AppBaseContext(options)
 {
-    public DbSet<Product> Products { get; set; }
+    public DbSet<CatalogItem> Products { get; set; }
     public DbSet<ProductOutbox> ProductOutboxes { get; set; }
-    public DbSet<Category> Categories { get; set; }
+    public DbSet<CatalogType> Categories { get; set; }
 }
