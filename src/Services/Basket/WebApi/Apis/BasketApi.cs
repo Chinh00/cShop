@@ -1,7 +1,6 @@
 using Application.UseCases.Commands;
 using Application.UseCases.Queries;
 using Asp.Versioning.Builder;
-using cShop.Contracts.Services.Basket;
 using MediatR;
 
 namespace WebApi.Apis;

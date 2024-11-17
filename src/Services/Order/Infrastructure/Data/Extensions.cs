@@ -1,7 +1,5 @@
 using cShop.Core.Repository;
 using cShop.Infrastructure.Data;
-using Infrastructure.Data.Internal;
-using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data;
 

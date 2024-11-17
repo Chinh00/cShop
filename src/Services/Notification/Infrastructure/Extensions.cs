@@ -1,5 +1,6 @@
 using Avro.Specific;
 using Confluent.Kafka;
+using Confluent.SchemaRegistry;
 using Confluent.SchemaRegistry.Serdes;
 using cShop.Infrastructure.Cdc;
 using IntegrationEvents;
@@ -17,7 +18,7 @@ public static class Extensions
         {
             e.TopicName = "order_cdc_events";
             e.GroupId = "order_cdc_events_group";
-            e.HandlePayload = async (schemaRegistryClient, eventName, payload) =>
+            e.HandlePayload = async (ISchemaRegistryClient schemaRegistryClient, string eventName, byte[] payload) =>
             {
                 ISpecificRecord result = default;
                 switch (eventName)
@@ -29,7 +30,6 @@ public static class Extensions
                         break;
                     }
                 }
-                
                 
                 return result;
             };

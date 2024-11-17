@@ -1,9 +1,9 @@
 using System.Security.Cryptography.X509Certificates;
 using Confluent.Kafka;
-using cShop.Contracts.Services.Basket;
 using cShop.Contracts.Services.Order;
 using GrpcServices;
 using Infrastructure.Consumers;
+using IntegrationEvents;
 using MassTransit;
 
 
@@ -48,8 +48,8 @@ public static class Extensions
             
             e.AddRider(t =>
             {
-                t.AddProducer<IntegrationEvent.BasketCheckoutSuccess>(nameof(IntegrationEvent.BasketCheckoutSuccess));
-                t.AddProducer<IntegrationEvent.BasketCheckoutFail>(nameof(IntegrationEvent.BasketCheckoutFail));
+                t.AddProducer<BasketCheckoutSuccessIntegrationEvent>(nameof(BasketCheckoutSuccessIntegrationEvent));
+                t.AddProducer<BasketCheckoutFailIntegrationEvent>(nameof(BasketCheckoutFailIntegrationEvent));
 
                 t.AddConsumer<MakeOrderValidateConsumer>();
                 
@@ -58,7 +58,7 @@ public static class Extensions
                     k.Host(configuration.GetValue<string>("Kafka:BootstrapServers"));
 
 
-                    k.TopicEndpoint<MakeOrderValidate>(nameof(MakeOrderValidate), "basket-group", c =>
+                    k.TopicEndpoint<MakeOrderStockValidateIntegrationEvent>(nameof(MakeOrderStockValidateIntegrationEvent), "basket-group", c =>
                     {
                         c.CreateIfMissing(n => n.NumPartitions = 1);
                         c.AutoOffsetReset = AutoOffsetReset.Earliest;

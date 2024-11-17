@@ -1,4 +1,3 @@
-using cShop.Core.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace cShop.Infrastructure.Data;

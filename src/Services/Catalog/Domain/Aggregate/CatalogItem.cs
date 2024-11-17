@@ -25,6 +25,21 @@ public class CatalogItem : AggregateBase
     
     public int AvailableStock { get; set; }
 
+
+    public void RemoveStock(int quantity)
+    {
+
+        if (quantity <= 0) throw new DomainException("Quantity must be greater than zero");
+        
+        if (AvailableStock < quantity) throw new DomainException("Quantity cannot be less than available stock");
+        
+        if (AvailableStock - quantity < 0) throw new DomainException("Quantity cannot be less than available stock");
+        
+        AvailableStock -= quantity;
+    }
+    
+    
+
     public void AssignCategory(CatalogType catalogType)
     {
         CategoryTypeId = catalogType.Id;

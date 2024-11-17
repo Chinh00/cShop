@@ -1,8 +1,6 @@
 
 
 using Application;
-using Application.UseCases.Command;
-using Bus;
 using cShop.Infrastructure.Auth;
 using cShop.Infrastructure.Bus;
 using cShop.Infrastructure.Logging;
@@ -11,9 +9,8 @@ using cShop.Infrastructure.Ole;
 using cShop.Infrastructure.SchemaRegistry;
 using cShop.Infrastructure.Swagger;
 using cShop.Infrastructure.Validation;
-using FluentValidation;
-using FluentValidation.AspNetCore;
 using GrpcService.Implements;
+using Infrastructure;
 using Infrastructure.Data;
 using WebApi.Apis;
 var builder = WebApplication.CreateBuilder(args);

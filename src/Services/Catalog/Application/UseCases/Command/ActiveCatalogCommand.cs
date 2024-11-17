@@ -1,8 +1,5 @@
-using cShop.Contracts.Abstractions;
 using cShop.Core.Domain;
 using cShop.Core.Repository;
-using cShop.Infrastructure.Bus;
-using cShop.Infrastructure.EventStore;
 using Domain.Aggregate;
 using FluentValidation;
 using MediatR;

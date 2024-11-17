@@ -1,4 +1,8 @@
-﻿using Identity.Api;
+﻿using cShop.Infrastructure.SchemaRegistry;
+using Identity.Api;
+using Identity.Api.Data;
+using IntegrationEvents;
+using MassTransit;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -17,6 +21,24 @@ try
             "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}")
         .Enrich.FromLogContext()
         .ReadFrom.Configuration(ctx.Configuration));
+
+    builder.Services.AddHostedService<DbMigrationService>();
+
+    builder.Services.AddMassTransit(e =>
+    {
+        e.SetKebabCaseEndpointNameFormatter();
+        e.UsingInMemory();
+        e.AddRider(t =>
+        {
+            
+            t.AddProducer<UserCreatedIntegrationEvent>(nameof(UserCreatedIntegrationEvent));
+            t.UsingKafka((context, configurator) =>
+            {
+                configurator.Host(builder.Configuration.GetValue<string>("Kafka:BootstrapServers"));
+            });
+        });
+    });
+    
 
     var app = builder
         .ConfigureServices()

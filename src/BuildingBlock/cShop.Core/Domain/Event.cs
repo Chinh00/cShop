@@ -15,7 +15,7 @@ public interface IEvent
     
 }
 
-public interface IIntegrationEvent : IEvent {}
+public interface IIntegrationEvent : IEvent, INotification {}
 
 public interface IVersion
 {
@@ -83,3 +83,5 @@ public abstract class AggregateBase : EntityBase, IAggregateRoot
 }
 
 
+
+public class DomainException(string message) : Exception(message);

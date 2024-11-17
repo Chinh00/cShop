@@ -13,4 +13,8 @@ public class OrderState : SagaStateMachineInstance, ISagaVersion
     public DateTime UpdatedTime { get; set; }
 
     public int Version { get; set; }
+
+    public List<OrderDetail> OrderDetails { get; set; } = default!;
+    
+    public record OrderDetail(Guid ProductId, int Quantity);
 }

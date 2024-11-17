@@ -13,8 +13,6 @@ COPY ["src/BuildingBlock/cShop.Contracts/cShop.Contracts.csproj", "src/BuildingB
 COPY ["src/BuildingBlock/cShop.Core/cShop.Core.csproj", "src/BuildingBlock/cShop.Core/"]
 COPY ["src/Services/Catalog/Application/Application.csproj", "src/Services/Catalog/Application/"]
 COPY ["src/Services/Catalog/Domain/Domain.csproj", "src/Services/Catalog/Domain/"]
-COPY ["src/Services/Catalog/Bus/Bus.csproj", "src/Services/Catalog/Bus/"]
-COPY ["src/Services/Catalog/GrpcService/GrpcService.csproj", "src/Services/Catalog/GrpcService/"]
 COPY ["src/Services/Catalog/Infrastructure/Infrastructure.csproj", "src/Services/Catalog/Infrastructure/"]
 RUN dotnet restore "src/Services/Catalog/WebApi/WebApi.csproj"
 COPY . .

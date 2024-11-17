@@ -1,3 +1,5 @@
+using cShop.Core.Repository;
+using cShop.Infrastructure.Data;
 using Duende.IdentityServer;
 using Identity.Api.Data;
 using Identity.Api.Models;
@@ -15,7 +17,9 @@ internal static class HostingExtensions
         builder.Services.AddRazorPages();
 
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseNpgsql(builder.Configuration.GetConnectionString("Db")));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("Db")));
+        builder.Services.AddTransient<IRepository<UserOutbox>, RepositoryBase<ApplicationDbContext, UserOutbox>>();
+        
 
         builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()

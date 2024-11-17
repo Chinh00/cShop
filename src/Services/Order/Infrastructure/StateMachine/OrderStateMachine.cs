@@ -1,8 +1,6 @@
-using Avro.Specific;
 using Confluent.Kafka;
 using Confluent.SchemaRegistry;
 using Confluent.SchemaRegistry.Serdes;
-using cShop.Contracts.Services.Basket;
 using cShop.Contracts.Services.Order;
 using cShop.Contracts.Services.Payment;
 using cShop.Core.Repository;
@@ -19,8 +17,12 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
     public OrderStateMachine(ILogger<OrderStateMachine> logger, IServiceScopeFactory serviceScopeFactory)
     {
         _logger = logger;
-        Event(() => OrderSubmitted, c => c.CorrelateById(x => x.Message.OrderId));
-        Event(() => MakeOrderValidate, c => c.CorrelateById(x => x.Message.OrderId));
+        Event(() => OrderStartedIntegrationEvent, c => c.CorrelateById(x => x.Message.OrderId));
+        Event(() => MakeOrderStockValidateIntegrationEvent, c => c.CorrelateById(x => x.Message.OrderId));
+        Event(() => OrderStockValidatedSuccessIntegrationEvent, c => c.CorrelateById(x => x.Message.OrderId));
+        Event(() => OrderStockValidatedFailIntegrationEvent, c => c.CorrelateById(x => x.Message.OrderId));
+        
+        
         
         Event(() => BasketCheckoutSuccess, c => c.CorrelateById(x => x.Message.OrderId));
         Event(() => BasketCheckoutFail, c => c.CorrelateById(x => x.Message.OrderId));
@@ -31,45 +33,46 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
         Event(() => OrderCanceled, c => c.CorrelateById(x => x.Message.OrderId));
         Event(() => OrderConfirmed, c => c.CorrelateById(x => x.Message.OrderId));
         
-        InstanceState(e => e.CurrentState);
+        InstanceState(e => Submitted);
         
         
         Initially(
-            When(OrderSubmitted)
+            When(OrderStartedIntegrationEvent)
                 .ThenAsync(async context =>
                 {
-                    context.Saga.CorrelationId = context.Message.OrderId;
                     _logger.LogInformation($"Order submitted {context.Message.OrderId}");
+                    context.Saga.CorrelationId = context.Message.OrderId;
                     context.Saga.UserId = context.Message.UserId;
 
                     await SendAuditLog();
                 })
-                .Produce(context => context.Init<MakeOrderValidate>(new
+                .Produce(context => context.Init<MakeOrderStockValidateIntegrationEvent>(new
                 {
                     OrderId = context.Saga.CorrelationId,
-                    context.Message.UserId
+                    context.Message.UserId,
+                    OrderItems = context.Message.OrderDetails
                 }))
-                .TransitionTo(Submitted)
+                .TransitionTo(Validate)
         );
         
-        During(Submitted,
-            Ignore(OrderSubmitted),
-            When(BasketCheckoutSuccess).ThenAsync(async context =>
+        
+        
+        During(Validate, Ignore(OrderStartedIntegrationEvent), 
+            When(OrderStockValidatedSuccessIntegrationEvent).ThenAsync( async (context) =>
             {
-                _logger.LogInformation($"Order validated {context.Saga.CorrelationId}");
-
-                await SendAuditLog();
-            }).TransitionTo(Process),
-            When(BasketCheckoutFail).ThenAsync(async context =>
+                
+            }).TransitionTo(PaymentProcess),
+            When(OrderStockValidatedFailIntegrationEvent).ThenAsync(async context =>
                 {
-                    _logger.LogInformation("Order checkout failed");
-
-                    await SendAuditLog();
+                    
                 }).TransitionTo(Cancel)
-        );
-        During(Process,
-            Ignore(OrderSubmitted),
-            Ignore(BasketCheckoutSuccess),
+            );
+        
+        
+        During(PaymentProcess,
+            Ignore(OrderStartedIntegrationEvent),
+            Ignore(MakeOrderStockValidateIntegrationEvent),
+            Ignore(OrderStockValidatedSuccessIntegrationEvent),
             When(PaymentProcessSuccess)
                 .ThenAsync(async context =>
                 {
@@ -77,10 +80,16 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
                     await SendAuditLog();
                 })
                 .Produce(
-                    context => context.Init<OrderConfirmed>(new {OrderId = context.Saga.CorrelationId, context.Saga.TransactionId}))
-                .TransitionTo(Complete),
-            When(PaymentProcessFail).Produce(context => context.Init<OrderCancelled>(new {context.Saga.CorrelationId})).TransitionTo(Cancel)
+                    context => context.Init<OrderPaidIntegrationEvent>(
+                        new
+                        {
+                            OrderId = context.Saga.CorrelationId, 
+                            CatalogItems = context.Saga.OrderDetails
+                        }))
+                .TransitionTo(StockProcess),
+            When(PaymentProcessFail).Produce(context => context.Init<OrderUnPaidIntegrationEvent>(new {context.Saga.CorrelationId})).TransitionTo(Cancel)
         );
+        
         
         During(Complete,
             Ignore(PaymentProcessSuccess),
@@ -134,15 +143,24 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
     
     
     
+    
     public State Submitted { get; private set; }
-    public State Process { get; private set; }
+    
+    public State Validate { get; private set; }
+    public State PaymentProcess { get; private set; }
+    
+    public State StockProcess { get; private set; }
     public State Complete { get; private set; }
+    
+    
     public State Cancel { get; private set; }
     
-    public Event<OrderSubmitted> OrderSubmitted { get; private set; } = null!;
-    public Event<MakeOrderValidate> MakeOrderValidate { get; private set; } = null!;
-    public Event<IntegrationEvent.BasketCheckoutSuccess> BasketCheckoutSuccess { get; private set; } = null!;
-    public Event<IntegrationEvent.BasketCheckoutFail> BasketCheckoutFail { get; private set; } = null!;
+    public Event<OrderStartedIntegrationEvent> OrderStartedIntegrationEvent { get; private set; } = null!;
+    public Event<MakeOrderStockValidateIntegrationEvent> MakeOrderStockValidateIntegrationEvent { get; private set; } = null!;
+    public Event<OrderStockValidatedSuccessIntegrationEvent> OrderStockValidatedSuccessIntegrationEvent { get; private set; } = null!;
+    public Event<OrderStockValidatedFailIntegrationEvent> OrderStockValidatedFailIntegrationEvent { get; private set; } = null!;
+    public Event<BasketCheckoutSuccessIntegrationEvent> BasketCheckoutSuccess { get; private set; } = null!;
+    public Event<BasketCheckoutFailIntegrationEvent> BasketCheckoutFail { get; private set; } = null!;
     public Event<OrderCancelled> OrderCanceled { get; private set; } = null!;
     public Event<PaymentProcessSuccess> PaymentProcessSuccess { get; private set; } = null!;
     public Event<PaymentProcessFail> PaymentProcessFail { get; private set; } = null!;

@@ -1,12 +1,14 @@
 
 
 using Confluent.SchemaRegistry;
+using cShop.Core.Domain;
 using cShop.Core.Repository;
 using cShop.Infrastructure.SchemaRegistry;
 using Domain.Aggregate;
 using Domain.Outbox;
 using FluentValidation;
 using IntegrationEvents;
+using MediatR;
 
 namespace Application.UseCases.Command;
 

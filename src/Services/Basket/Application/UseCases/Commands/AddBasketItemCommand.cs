@@ -1,6 +1,5 @@
 using cShop.Core.Domain;
 using cShop.Infrastructure.Cache.Redis;
-using cShop.Infrastructure.IdentityServer;
 using Domain.Entities;
 using FluentValidation;
 using GrpcServices;

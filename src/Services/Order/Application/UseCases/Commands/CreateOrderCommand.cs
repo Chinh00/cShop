@@ -8,7 +8,10 @@ using MediatR;
 
 namespace Application.UseCases.Commands;
 
-public record CreateOrderCommand(Guid UserId, List<CreateOrderCommand.OrderItemDetail> Items) : ICommand<IResult>
+public record CreateOrderCommand(
+   Guid UserId, 
+   List<CreateOrderCommand.OrderItemDetail> Items,
+   DateTime OrderDate) : ICommand<IResult>
 {
    public record OrderItemDetail(Guid ProductId, int Quantity);
    
@@ -18,11 +21,12 @@ public record CreateOrderCommand(Guid UserId, List<CreateOrderCommand.OrderItemD
       public Validator()
       {
          RuleFor(x => x.UserId).NotEmpty();
+         RuleFor(x => x.OrderDate).NotNull();
          RuleFor(e => e.Items).NotEmpty().Must(e => e.Count > 0);
       }
    }
    
-   internal class Handler(IRepository<Order> orderRepository, ITopicProducer<OrderSubmitted> orderSubmittedProducer)
+   internal class Handler(IRepository<Order> orderRepository, ITopicProducer<OrderStartedIntegrationEvent> orderSubmittedProducer)
       : IRequestHandler<CreateOrderCommand, IResult>
    {
       public async Task<IResult> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
@@ -30,6 +34,7 @@ public record CreateOrderCommand(Guid UserId, List<CreateOrderCommand.OrderItemD
          var order = new Order()
          {
             CustomerId = request.UserId,
+            OrderDate = request.OrderDate,
             OrderDetails = request.Items.Select(e => new OrderDetail()
             {
                ProductId = e.ProductId,

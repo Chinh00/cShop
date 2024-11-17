@@ -1,8 +1,6 @@
-using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using OpenTelemetry.Metrics;
-using OpenTelemetry.Resources;
+
 namespace cShop.Infrastructure.Ole;
 
 public static class Extensions

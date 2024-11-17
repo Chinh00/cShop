@@ -1,7 +1,7 @@
 using Avro.Specific;
 using Confluent.Kafka;
+using Confluent.SchemaRegistry;
 using Confluent.SchemaRegistry.Serdes;
-using cShop.Contracts.Services.Basket;
 using cShop.Contracts.Services.Order;
 using cShop.Contracts.Services.Payment;
 using cShop.Infrastructure.Cdc;
@@ -9,7 +9,6 @@ using cShop.Infrastructure.Projection;
 using Infrastructure.StateMachine;
 using IntegrationEvents;
 using MassTransit;
-using OrderSubmitted = cShop.Contracts.Services.Order.OrderSubmitted;
 
 namespace Infrastructure;
 
@@ -28,8 +27,10 @@ public static class Extensions
             
             t.AddRider(r =>
             {
-                r.AddProducer<OrderSubmitted>(nameof(OrderSubmitted));
-                r.AddProducer<MakeOrderValidate>(nameof(MakeOrderValidate));
+                r.AddProducer<OrderStartedIntegrationEvent>(nameof(OrderStartedIntegrationEvent));
+                r.AddProducer<MakeOrderStockValidateIntegrationEvent>(nameof(MakeOrderStockValidateIntegrationEvent));
+                
+                
                 r.AddProducer<PaymentProcessSuccess>(nameof(PaymentProcessSuccess));
                 r.AddProducer<PaymentProcessFail>(nameof(PaymentProcessFail));
                 
@@ -52,7 +53,21 @@ public static class Extensions
                     configurator.Host(configuration.GetValue<string>("Kafka:BootstrapServers"));
                     
                     
-                    configurator.TopicEndpoint<OrderSubmitted>(nameof(OrderSubmitted), "orders-group",
+                    configurator.TopicEndpoint<OrderStartedIntegrationEvent>(nameof(OrderStartedIntegrationEvent), "orders-group",
+                        c =>
+                        {
+                            c.AutoOffsetReset = AutoOffsetReset.Earliest;
+                            c.CreateIfMissing(e => e.NumPartitions = 1);
+                            c.ConfigureSaga<OrderState>(context);
+                        });
+                    configurator.TopicEndpoint<OrderStockValidatedSuccessIntegrationEvent>(nameof(OrderStockValidatedSuccessIntegrationEvent), "orders-group",
+                        c =>
+                        {
+                            c.AutoOffsetReset = AutoOffsetReset.Earliest;
+                            c.CreateIfMissing(e => e.NumPartitions = 1);
+                            c.ConfigureSaga<OrderState>(context);
+                        });
+                    configurator.TopicEndpoint<OrderStockValidatedFailIntegrationEvent>(nameof(OrderStockValidatedFailIntegrationEvent), "orders-group",
                         c =>
                         {
                             c.AutoOffsetReset = AutoOffsetReset.Earliest;
@@ -60,14 +75,17 @@ public static class Extensions
                             c.ConfigureSaga<OrderState>(context);
                         });
                     
-                    configurator.TopicEndpoint<cShop.Contracts.Services.Basket.IntegrationEvent.BasketCheckoutSuccess>(nameof(cShop.Contracts.Services.Basket.IntegrationEvent.BasketCheckoutSuccess), "basket-group",
+                    
+                    
+                    
+                    configurator.TopicEndpoint<BasketCheckoutSuccessIntegrationEvent>(nameof(BasketCheckoutSuccessIntegrationEvent), "basket-group",
                         c =>
                         {
                             c.AutoOffsetReset = AutoOffsetReset.Earliest;
                             c.CreateIfMissing(e => e.NumPartitions = 1);
                             c.ConfigureSaga<OrderState>(context);
                         });
-                    configurator.TopicEndpoint<IntegrationEvent.BasketCheckoutFail>(nameof(cShop.Contracts.Services.Basket.IntegrationEvent.BasketCheckoutFail), "basket-group",
+                    configurator.TopicEndpoint<BasketCheckoutFailIntegrationEvent>(nameof(BasketCheckoutFailIntegrationEvent), "basket-group",
                         c =>
                         {
                             c.AutoOffsetReset = AutoOffsetReset.Earliest;
@@ -122,7 +140,7 @@ public static class Extensions
         {
             e.TopicName = "catalog_cdc_events";
             e.GroupId = "catalog_cdc_events-group";
-            e.HandlePayload = async (schemaRegistryClient, eventName, payload) =>
+            e.HandlePayload = async (ISchemaRegistryClient schemaRegistryClient, string eventName, byte[] payload) =>
             {
                 ISpecificRecord result = null;    
                 

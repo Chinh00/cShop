@@ -8,17 +8,7 @@
         <LangVersion>13</LangVersion>
     </PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Confluent.SchemaRegistry.Serdes.Avro" Version="2.6.0" />
-        <PackageReference Include="Google.Protobuf" Version="3.28.2" />
-        <PackageReference Include="Grpc.AspNetCore" Version="2.65.0" />
-        <PackageReference Include="Grpc.Core.Api" Version="2.65.0" />
-        <PackageReference Include="Grpc.Net.Client" Version="2.65.0" />
-        <PackageReference Include="Grpc.Tools" Version="2.66.0">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-    </ItemGroup>
+  
 
     <ItemGroup>
       <None Remove="Properties\launchSettings.json" />
@@ -26,6 +16,11 @@
 
     <ItemGroup>
       <ProjectReference Include="..\cShop.Core\cShop.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Services\Basket\" />
+      <Folder Include="Services\Identity\" />
     </ItemGroup>
 
 </Project>

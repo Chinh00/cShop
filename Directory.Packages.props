@@ -1,0 +1,46 @@
+<Project>
+    <ItemGroup>
+
+        <PackageReference Include="MediatR" Version="12.4.1" />
+
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        
+        
+        <PackageReference Include="Google.Protobuf" Version="3.28.2" />
+        <PackageReference Include="Grpc.AspNetCore" Version="2.65.0" />
+        <PackageReference Include="Grpc.Core.Api" Version="2.65.0" />
+        <PackageReference Include="Grpc.Net.Client" Version="2.65.0" />
+        <PackageReference Include="Confluent.SchemaRegistry.Serdes.Avro" Version="2.6.0" />
+
+        <PackageReference Include="Grpc.Tools" Version="2.66.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+
+        <!-- Logger -->
+        <PackageReference Include="Serilog" Version="4.0.1" />
+        <PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+
+        <!-- Retry -->
+        <PackageReference Include="Scrutor" Version="5.0.1" />
+
+        <!-- Swagger -->
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="*" />
+
+
+        <!-- Schema Registry -->
+        <PackageReference Include="Confluent.SchemaRegistry.Serdes.Avro" Version="2.6.0" />
+        <PackageReference Include="Confluent.SchemaRegistry" Version="2.6.0" />
+
+        <!-- Masstransit -->
+
+        <PackageReference Include="MassTransit" Version="8.3.0" />
+
+    </ItemGroup>
+</Project>

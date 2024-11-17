@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace cShop.Infrastructure.Data;
 
 public class RepositoryBase<TDbContext, TEntity> : IRepository<TEntity>
-    where TDbContext : AppBaseContext
+    where TDbContext : DbContext
     where TEntity : EntityBase
 {
     

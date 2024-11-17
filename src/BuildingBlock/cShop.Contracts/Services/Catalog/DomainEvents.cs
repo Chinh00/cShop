@@ -1,5 +1,4 @@
 using cShop.Core.Domain;
-using MediatR;
 
 namespace cShop.Contracts.Services.Catalog;
 
