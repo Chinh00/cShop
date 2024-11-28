@@ -1,0 +1,16 @@
+{
+  "name": "CustomerCreatedIntegrationEvent",
+  "type": "record",
+  "namespace": "IntegrationEvents",
+  "fields": [
+    {
+      "name": "Id",
+      "type": "string"
+    },
+    {
+      "name": "Name",
+      "type": "string"
+    },
+   
+  ],
+}

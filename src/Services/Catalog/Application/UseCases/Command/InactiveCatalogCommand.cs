@@ -23,7 +23,7 @@ public record InactiveCatalogCommand(Guid CatalogId) : ICommand<IResult>
 
         public async Task<IResult> Handle(InactiveCatalogCommand request, CancellationToken cancellationToken)
         {
-            var product = await productRepository.FindByIdAsync(request.CatalogId);
+            var product = await productRepository.FindByIdAsync(request.CatalogId, cancellationToken);
             product.InActiveCatalog();
             await productRepository.UpdateAsync(product, cancellationToken);
             return Results.Ok(ResultModel<Guid>.Create(product.Id));

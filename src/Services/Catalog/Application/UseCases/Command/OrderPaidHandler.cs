@@ -13,7 +13,7 @@ public class OrderPaidHandler(IRepository<CatalogItem> repository, ITopicProduce
     {
         foreach (var notificationCatalogItem in notification.CatalogItems)
         {
-            var catalog = await repository.FindByIdAsync(notificationCatalogItem.ProductId);
+            var catalog = await repository.FindByIdAsync(notificationCatalogItem.ProductId, cancellationToken);
             catalog.RemoveStock(notificationCatalogItem.Quantity);
             await repository.UpdateAsync(catalog, cancellationToken);
         }

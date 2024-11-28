@@ -8,13 +8,21 @@ public interface ICommand<TResponse> : IRequest<IResult>
     
 }
 
-public interface IQuery<TResponse> : IRequest<IResult> {}
-
-
-public interface ICreateCommand<TModel, TResponse> : ICommand<TResponse>   
+public interface IQuery<TResponse> : IRequest<IResult>
 {
-    public TModel Model { get; }
+    public List<FilterModel> Filters { get; set; }
+    public List<string> Includes { get; set; }
+    
+    public List<string> OrderBy { get; set; }
+    public int Page { get; set; }
+    
+    public int PageSize { get; set; }
+    
+    
 }
+
+
+public record FilterModel(string Field, string Operator, string Value);
 
 
 

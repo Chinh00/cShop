@@ -31,7 +31,7 @@ try
         e.AddRider(t =>
         {
             
-            t.AddProducer<UserCreatedIntegrationEvent>(nameof(UserCreatedIntegrationEvent));
+            //t.AddProducer<UserCreatedIntegrationEvent>(nameof(UserCreatedIntegrationEvent));
             t.UsingKafka((context, configurator) =>
             {
                 configurator.Host(builder.Configuration.GetValue<string>("Kafka:BootstrapServers"));

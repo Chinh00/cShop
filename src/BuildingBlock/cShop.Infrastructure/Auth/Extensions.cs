@@ -23,7 +23,7 @@ public static class Extensions
         
         services.AddAuthentication().AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
         {
-            options.Authority = configuration.GetValue<string>("IdentityServer:Url") ?? throw new Exception("IdentityServer Url is missing.");
+            options.Authority = configuration.GetValue<string>("IdentityServer:Url");
             options.RequireHttpsMetadata = false;
             options.TokenValidationParameters.ValidateIssuer = false;
             options.TokenValidationParameters.ValidateAudience = false;

@@ -1,6 +1,10 @@
 using Application.UseCases.Command;
+using Application.UseCases.Queries;
 using Asp.Versioning.Builder;
+using cShop.Core.Domain;
+using cShop.Infrastructure;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Apis;
 
@@ -16,10 +20,15 @@ public static class CatalogApi
         group.MapPut("/{id:guid}/active", async (ISender sender, Guid id) => await sender.Send(new ActiveCatalogCommand(id)));
         group.MapPut("/{id:guid}/inactive", async (ISender sender, Guid id) => await sender.Send(new InactiveCatalogCommand(id)));
 
-
-        group.MapGet(string.Empty, async (ISender sender) =>
+        group.MapDelete("/{id:guid}",
+            async (ISender sender, Guid id) => await sender.Send(new RemoveCatalogItemCommand()));
+        
+        
+        group.MapGet(string.Empty, async (ISender sender, HttpContext context,[FromHeader(Name = "x-query")] string stringQuery) =>
         {
-            
+            var query = context.GetQuery<GetCatalogsQuery>(stringQuery);
+            var result = await sender.Send(query);
+            return Results.Ok(result);
         });
         
         return endpoints;

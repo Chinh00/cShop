@@ -8,7 +8,7 @@ content-type: application/json
 
 
 ###
-GET http://localhost:8083/connectors/catalog-outbox-source-test/config HTTP/1.1
+GET http://localhost:8083/connectors/user-outbox-source/config HTTP/1.1
 content-type: application/json
 
 
@@ -103,6 +103,57 @@ Content-Type: application/json
     "poll.interval.ms": "100",
 
     "transforms.outbox.route.topic.replacement": "order_cdc_events"
+  }
+}
+### Remove connector source
+DELETE http://localhost:8083/connectors/order-outbox-source HTTP/1.1
+
+
+
+### Add UserOutbox
+
+POST http://localhost:8083/connectors HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "user-outbox-source",
+  "config": {
+    "connector.class": "io.debezium.connector.sqlserver.SqlServerConnector",
+    "database.hostname": "sqlserver",
+    "database.port": "1433",
+    "database.user": "sa",
+    "database.password": "@P@ssw0rd02",
+    "database.names": "Db",
+    "topic.prefix": "user",
+    "table.include.list": "dbo.UserOutboxes",
+    "schema.history.internal.kafka.bootstrap.servers": "kafka:29092",
+    "schema.history.internal.kafka.topic": "user.cdc",
+    "database.encrypt": false,
+    "include.schema.changes": false,
+    "value.converter.schemas.enable": false,
+    "tasks.max": "1",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "io.debezium.converters.BinaryDataConverter",
+    "value.converter.schema.registry.url": "http://schema-registry:8085",
+    "tombstones.on.delete" : "false",
+    "internal.key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "internal.value.converter": "org.apache.kafka.connect.json.JsonConverter",
+
+
+
+    "transforms": "outbox",
+    "transforms.outbox.type": "io.debezium.transforms.outbox.EventRouter",
+    "transforms.outbox.table.field.event.key" : "AggregateId",
+    "transforms.outbox.table.field.event.id" : "Id",
+    "transforms.outbox.table.field.event.payload" : "Payload",
+    "transforms.outbox.table.field.event.payload.id" : "AggregateId",
+    "transforms.outbox.table.fields.additional.placement": "Type:header:eventType",
+    "transforms.outbox.route.by.field" : "AggregateType",
+    "transforms.outbox.table.field.event.type": "Type",
+
+    "poll.interval.ms": "100",
+
+    "transforms.outbox.route.topic.replacement": "user_cdc_events"
   }
 }
 ### Remove connector source

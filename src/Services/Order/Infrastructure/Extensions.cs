@@ -5,7 +5,6 @@ using Confluent.SchemaRegistry.Serdes;
 using cShop.Contracts.Services.Order;
 using cShop.Contracts.Services.Payment;
 using cShop.Infrastructure.Cdc;
-using cShop.Infrastructure.Projection;
 using Infrastructure.StateMachine;
 using IntegrationEvents;
 using MassTransit;
@@ -18,7 +17,7 @@ public static class Extensions
         Action<IServiceCollection>? action = null)
     {
         
-        var mongodb = configuration.GetSection(MongoDbOptions.MongoDb).Get<MongoDbOptions>();
+        //var mongodb = configuration.GetSection(MongoDbOptions.MongoDb).Get<MongoDbOptions>();
         services.AddMassTransit(t =>
         {
             t.SetKebabCaseEndpointNameFormatter();
@@ -45,7 +44,7 @@ public static class Extensions
                 r.AddSagaStateMachine<OrderStateMachine, OrderState, OrderStateMachineDefinition>()
                     .MongoDbRepository(e =>
                 {
-                    e.Connection = mongodb.ToString();
+                    //e.Connection = mongodb.ToString();
                 });
                 
                 r.UsingKafka((context, configurator) =>
