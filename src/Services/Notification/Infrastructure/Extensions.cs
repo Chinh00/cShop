@@ -16,7 +16,7 @@ public static class Extensions
 
         services.AddKafkaConsumer(e =>
         {
-            e.TopicName = "order_cdc_events";
+            e.Topic = "order_cdc_events";
             e.GroupId = "order_cdc_events_group";
             e.HandlePayload = async (ISchemaRegistryClient schemaRegistryClient, string eventName, byte[] payload) =>
             {

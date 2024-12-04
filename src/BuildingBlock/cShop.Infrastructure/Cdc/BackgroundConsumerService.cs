@@ -8,74 +8,79 @@ using Microsoft.Extensions.Options;
 
 namespace cShop.Infrastructure.Cdc;
 
-public class BackgroundConsumerService(
-    ILogger<BackgroundConsumerService> logger, 
-    IOptions<ConsumerConfig> config,
-    IServiceScopeFactory scopeFactory) : BackgroundService
+public class BackgroundConsumerService : BackgroundService
 {
+    private readonly ILogger<BackgroundConsumerService> _logger;
+    private readonly BackgroundConsumerConfig _config;
+    private readonly IServiceScopeFactory _scopeFactory;
 
-    
+    public BackgroundConsumerService(ILogger<BackgroundConsumerService> logger, IServiceScopeFactory scopeFactory, IOptions<BackgroundConsumerConfig> config)
+    {
+        this._logger = logger;
+        this._scopeFactory = scopeFactory;
+        this._config = config.Value;
+    }
+
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     => Task.Factory.StartNew(() => KafkaConsumer(stoppingToken), stoppingToken, TaskCreationOptions.LongRunning, TaskScheduler.Current);
 
     private async Task KafkaConsumer(CancellationToken stoppingToken)
     {
-        using var scope = scopeFactory.CreateScope();
+        using var scope = _scopeFactory.CreateScope();
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
         using var schemaRegistryClient = new CachedSchemaRegistryClient(new SchemaRegistryConfig()
         {
-            Url = config.Value.SchemaRegistryServer
+            Url = _config.SchemaRegistryServer
         });
-        var consumerBuilder = new ConsumerBuilder<string, GenericRecord>(config.Value)
-            .SetErrorHandler((_, e) => logger.LogError($"Error: {e.Reason}"))
-            .SetStatisticsHandler((_, json) => logger.LogInformation($"Statistics: {json}"))
+        var consumerBuilder = new ConsumerBuilder<string, GenericRecord>(_config)
+            .SetErrorHandler((_, e) => _logger.LogError($"Error: {e.Reason}"))
+            .SetStatisticsHandler((_, json) => _logger.LogInformation($"Statistics: {json}"))
             .SetValueDeserializer(new AvroDeserializer<GenericRecord>(schemaRegistryClient).AsSyncOverAsync())
             .Build();
-        consumerBuilder.Subscribe(config.Value.TopicName);
+        _logger.LogInformation(_config.Topic);
+        consumerBuilder.Subscribe(_config.Topic);
+        
         try
         {
             while (stoppingToken.IsCancellationRequested == false)
             {
-                logger.LogInformation("Starting consumer...");
-
                 try
                 {
                     var result = consumerBuilder.Consume();
                     if (result is null) continue;
                     var eventName = result.Message.Value.Schema?.Name;
                     
-                    logger.LogInformation(result.Message.Value.ToString());
                     var bytes = await (new AvroSerializer<GenericRecord>(schemaRegistryClient, new AvroSerializerConfig()
                     {
                         SubjectNameStrategy = SubjectNameStrategy.Topic
-                    })).SerializeAsync(result.Message.Value, new SerializationContext(MessageComponentType.Value, $"{config.Value.TopicName}-anchor"));
-                    var res = await config.Value.HandlePayload(schemaRegistryClient, eventName, bytes);
+                    })).SerializeAsync(result.Message.Value, new SerializationContext(MessageComponentType.Value, $"{_config.Topic}-anchor"));
+                    var res = await _config.HandlePayload(schemaRegistryClient, eventName, bytes);
 
+                    
+                    _logger.LogInformation($"Handler message {result}");
                     if (res is INotification)
                     {
-                        logger.LogInformation("Kafka message received");
+                        _logger.LogInformation("Kafka message received");
                         await mediator.Publish(res, stoppingToken);
                     }
 
                     consumerBuilder.Commit(result);
                 }
-                catch (Exception e)
+                catch (ConsumeException e)
                 {
-                    logger.LogInformation(e.Message);
+                    _logger.LogInformation(e.Message);
                 }
 
                 
             }
         }
-        catch (Exception e)
+        catch (OperationCanceledException e)
         {
-            logger.LogError(e.Message);
+            _logger.LogError(e.Message);
+            consumerBuilder.Close();
         }
-        finally
-        {
-            consumerBuilder.Dispose();
-        }
+        
     }
     
 }

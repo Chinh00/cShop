@@ -1,4 +1,3 @@
-using Avro.Specific;
 using Confluent.SchemaRegistry;
 using cShop.Infrastructure.Cdc;
 using IntegrationEvents;
@@ -13,8 +12,8 @@ public static class Extensions
 
         services.AddKafkaConsumer((config) =>
         {
-            config.TopicName = "user_cdc_events";
-            config.GroupId = "user_cdc_events_group";
+            config.Topic = "shipper_cdc_events";
+            config.GroupId = "shipper_cdc_events-group";
             config.HandlePayload = async (ISchemaRegistryClient schemaRegistry,string eventName, byte[] payload) =>
             {
                 return eventName switch

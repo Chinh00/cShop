@@ -1,6 +1,6 @@
-using cShop.Contracts.Services.Payment;
 using cShop.Core.Domain;
 using FluentValidation;
+using IntegrationEvents;
 using MassTransit;
 using MediatR;
 
@@ -21,8 +21,8 @@ public record PaymentOrderCommand(Guid UserId, Guid OrderId, Guid TransactionId)
     
     
     internal record Handler(
-        ITopicProducer<PaymentProcessSuccess> PaymentProcessSuccess,
-        ITopicProducer<PaymentProcessFail> PaymentProcessFailTopic)
+        ITopicProducer<PaymentProcessSuccessIntegrationEvent> PaymentProcessSuccess,
+        ITopicProducer<PaymentProcessFailIntegrationEvent> PaymentProcessFailTopic)
         : IRequestHandler<PaymentOrderCommand, IResult>
     {
 

@@ -11,18 +11,18 @@ using MediatR;
 
 namespace Application.UseCases.Commands;
 
-public record CreateCustomerCommand(string UserName, string Email) : ICommand<IResult>
+public record CreateCustomerCommand(string Name, string Email) : ICommand<IResult>
 {
     public class Validator : AbstractValidator<CreateCustomerCommand>
     {
         public Validator()
         {
-            RuleFor(e => e.UserName).NotEmpty();
+            RuleFor(e => e.Name).NotEmpty();
             RuleFor(e => e.Email).NotEmpty();
         }
     }
     
-    internal class Handler(ISchemaRegistryClient schemaRegistryClient, IRepository<UserOutbox> repository, IRepository<User> userRepository) : OutboxHandler<UserOutbox>(schemaRegistryClient, repository), IRequestHandler<CreateCustomerCommand, IResult>
+    internal class Handler(ISchemaRegistryClient schemaRegistryClient, IRepository<CustomerOutbox> repository, IRepository<Customer> userRepository) : OutboxHandler<CustomerOutbox>(schemaRegistryClient, repository), IRequestHandler<CreateCustomerCommand, IResult>
     {
         
         
@@ -31,26 +31,26 @@ public record CreateCustomerCommand(string UserName, string Email) : ICommand<IR
         
         public async Task<IResult> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
         {
-            var user = new User()
+            var user = new Customer()
             {
-                UserName = request.UserName,
+                Name = request.Name,
                 Email = request.Email,
             };
             var userCreatedIntegrationEvent = new CustomerCreatedIntegrationEvent()
             {
                 Id = user.Id.ToString(),
-                Name = user.UserName
+                Name = user.Name
             };
             
             
             await userRepository.AddAsync(user, cancellationToken);
             await SendToOutboxAsync(user, () => (
-                new UserOutbox(),
+                new CustomerOutbox(),
                 userCreatedIntegrationEvent,
-                "user_cdc_events"
+                "customer_cdc_events"
                 ), cancellationToken);
 
-            return Results.Ok(user);
+            return Results.Ok(ResultModel<Customer>.Create(user));
 
         }
     }

@@ -10,14 +10,7 @@ public class DesignTimeDbContextBase<TDbContext> : IDesignTimeDbContextFactory<T
 
     public TDbContext CreateDbContext(string[] args)
     {
-        var configuration = new ConfigurationBuilder()
-            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-            .AddJsonFile("appsettings.json", true)
-            .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", true)
-            .AddEnvironmentVariables()
-            .Build();
         
-        var conn = configuration.GetConnectionString("EventStore");
         Console.WriteLine("Server=localhost;Database=EventStore;Encrypt=false;User Id=sa;Password=@P@ssw0rd02");
         var options = new DbContextOptionsBuilder<TDbContext>().UseSqlServer("Server=localhost;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02", builder =>
         {

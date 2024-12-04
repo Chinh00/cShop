@@ -1,8 +1,8 @@
-using cShop.Contracts.Services.Order;
 using cShop.Core.Domain;
 using cShop.Core.Repository;
 using Domain;
 using FluentValidation;
+using IntegrationEvents;
 using MassTransit;
 using MediatR;
 
@@ -26,7 +26,7 @@ public record CreateOrderCommand(
       }
    }
    
-   internal class Handler(IRepository<Order> orderRepository, ITopicProducer<OrderStartedIntegrationEvent> orderSubmittedProducer)
+   internal class Handler(IRepository<Order> orderRepository, ITopicProducer<OrderStartedIntegrationEvent> orderStartedTopic)
       : IRequestHandler<CreateOrderCommand, IResult>
    {
       public async Task<IResult> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
@@ -38,10 +38,12 @@ public record CreateOrderCommand(
             OrderDetails = request.Items.Select(e => new OrderDetail()
             {
                ProductId = e.ProductId,
+               Quantity = e.Quantity
             }).ToList()
          };
          await orderRepository.AddAsync(order, cancellationToken);
-         await orderSubmittedProducer.Produce(new { OrderId = order.Id, UserId = order.CustomerId }, cancellationToken);
+         
+         await orderStartedTopic.Produce(new { OrderId = order.Id, UserId = order.CustomerId }, cancellationToken);
          
          return Results.Ok(ResultModel<Order>.Create(order));
       }

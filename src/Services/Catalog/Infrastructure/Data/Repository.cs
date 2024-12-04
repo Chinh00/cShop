@@ -3,5 +3,5 @@ using cShop.Infrastructure.Data;
 
 namespace Infrastructure.Data;
 
-public class Repository<TEntity>(DataContext context) : RepositoryBase<DataContext, TEntity>(context)
+public class Repository<TEntity>(CatalogContext context) : RepositoryBase<CatalogContext, TEntity>(context)
     where TEntity : EntityBase;

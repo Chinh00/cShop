@@ -1,7 +1,5 @@
 using Application;
 using cShop.Infrastructure.Auth;
-using cShop.Infrastructure.Data;
-using cShop.Infrastructure.EventStore;
 using cShop.Infrastructure.Logging;
 using cShop.Infrastructure.Mediator;
 using cShop.Infrastructure.SchemaRegistry;
@@ -17,7 +15,7 @@ builder.Services.AddLoggingCustom(builder.Configuration, "UserService")
     .AddSwaggerCustom(builder.Configuration)
     .AddValidation(typeof(Anchor))
     .AddMediatorDefault([typeof(Anchor)])
-    .AddDbContextCustom<UserContext>(builder.Configuration, typeof(UserContext))
+    .AddRepository(builder.Configuration)
     .AddSchemaRegistry(builder.Configuration);
     
 
@@ -26,7 +24,7 @@ var app = builder.Build();
 
 
 app.UseAuthenticationDefault(builder.Configuration)
-    .NewVersionedApi("Customer").MapCustomersApi();
+    .NewVersionedApi("User").MapUserApi();
 app.ConfigureSwagger(builder.Configuration);
 
 app.Run();

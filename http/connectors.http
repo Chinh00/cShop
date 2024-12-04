@@ -27,7 +27,7 @@ Content-Type: application/json
     "database.password": "@P@ssw0rd02",
     "database.names": "Db",
     "topic.prefix": "catalog",
-    "table.include.list": "dbo.ProductOutboxes",
+    "table.include.list": "dbo.CatalogOutboxes",
     "schema.history.internal.kafka.bootstrap.servers": "kafka:29092",
     "schema.history.internal.kafka.topic": "catalog.cdc",
     "database.encrypt": false,
@@ -110,13 +110,13 @@ DELETE http://localhost:8083/connectors/order-outbox-source HTTP/1.1
 
 
 
-### Add UserOutbox
+### Add Shipper Outbox
 
 POST http://localhost:8083/connectors HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "user-outbox-source",
+  "name": "shipper-outbox-source",
   "config": {
     "connector.class": "io.debezium.connector.sqlserver.SqlServerConnector",
     "database.hostname": "sqlserver",
@@ -124,8 +124,8 @@ Content-Type: application/json
     "database.user": "sa",
     "database.password": "@P@ssw0rd02",
     "database.names": "Db",
-    "topic.prefix": "user",
-    "table.include.list": "dbo.UserOutboxes",
+    "topic.prefix": "shipper",
+    "table.include.list": "dbo.ShipperOutboxes",
     "schema.history.internal.kafka.bootstrap.servers": "kafka:29092",
     "schema.history.internal.kafka.topic": "user.cdc",
     "database.encrypt": false,
@@ -153,10 +153,61 @@ Content-Type: application/json
 
     "poll.interval.ms": "100",
 
-    "transforms.outbox.route.topic.replacement": "user_cdc_events"
+    "transforms.outbox.route.topic.replacement": "shipper_cdc_events"
   }
 }
 ### Remove connector source
-DELETE http://localhost:8083/connectors/order-outbox-source HTTP/1.1
+DELETE http://localhost:8083/connectors/user-outbox-source HTTP/1.1
+
+
+
+### Add Customer Outbox
+
+POST http://localhost:8083/connectors HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "customer-outbox-source",
+  "config": {
+    "connector.class": "io.debezium.connector.sqlserver.SqlServerConnector",
+    "database.hostname": "sqlserver",
+    "database.port": "1433",
+    "database.user": "sa",
+    "database.password": "@P@ssw0rd02",
+    "database.names": "Db",
+    "topic.prefix": "customer",
+    "table.include.list": "dbo.CustomerOutboxes",
+    "schema.history.internal.kafka.bootstrap.servers": "kafka:29092",
+    "schema.history.internal.kafka.topic": "user.cdc",
+    "database.encrypt": false,
+    "include.schema.changes": false,
+    "value.converter.schemas.enable": false,
+    "tasks.max": "1",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "io.debezium.converters.BinaryDataConverter",
+    "value.converter.schema.registry.url": "http://schema-registry:8085",
+    "tombstones.on.delete" : "false",
+    "internal.key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "internal.value.converter": "org.apache.kafka.connect.json.JsonConverter",
+
+
+
+    "transforms": "outbox",
+    "transforms.outbox.type": "io.debezium.transforms.outbox.EventRouter",
+    "transforms.outbox.table.field.event.key" : "AggregateId",
+    "transforms.outbox.table.field.event.id" : "Id",
+    "transforms.outbox.table.field.event.payload" : "Payload",
+    "transforms.outbox.table.field.event.payload.id" : "AggregateId",
+    "transforms.outbox.table.fields.additional.placement": "Type:header:eventType",
+    "transforms.outbox.route.by.field" : "AggregateType",
+    "transforms.outbox.table.field.event.type": "Type",
+
+    "poll.interval.ms": "100",
+
+    "transforms.outbox.route.topic.replacement": "customer_cdc_events"
+  }
+}
+### Remove connector source
+DELETE http://localhost:8083/connectors/shipper-outbox-source HTTP/1.1
 
 

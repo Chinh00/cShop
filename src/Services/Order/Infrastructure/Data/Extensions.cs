@@ -10,8 +10,7 @@ public static class Extensions
     {
 
         services.AddDbContextCustom<OrderContext>(configuration, typeof(OrderContext));
-        //services.AddHostedService<DbMigrationHostedService>();
-        services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+        services.AddHostedService<OrderMigrationHostedDb>();
         action?.Invoke(services);
         return services;
     }

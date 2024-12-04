@@ -134,17 +134,7 @@ services:
     
     volumes:
       - data:/var/opt/mssql
-      - ./deployments/cshop.sql:/setup-db.sql
-    command: >
-      /bin/bash -c "
-      /opt/mssql/bin/sqlservr & 
-      until /opt/mssql-tools18/bin/sqlcmd -l 1 -S localhost -U sa -P '${MSSQL_PASSWORD:-@P@ssw0rd02}' -C -Q 'SELECT 1' &> /dev/null; do
-        echo '>>>>>>>>>> SQL Server is unavailable - sleeping <<<<<<<<<<';
-        sleep 5;
-      done;
-      /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P '${MSSQL_PASSWORD:-@P@ssw0rd02}' -C -d master -i /setup-db.sql;
-      sleep infinity;
-      "
+    
 
 
   

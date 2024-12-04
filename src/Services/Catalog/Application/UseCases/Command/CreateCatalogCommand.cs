@@ -37,8 +37,8 @@ public record CreateCatalogCommand(
     internal class Hander(
         ISchemaRegistryClient schemaRegistryClient,
         IRepository<CatalogItem> catalogRepository,
-        IRepository<ProductOutbox> repository)
-        : OutboxHandler<ProductOutbox>(schemaRegistryClient, repository), IRequestHandler<CreateCatalogCommand, IResult>
+        IRepository<CatalogOutbox> repository)
+        : OutboxHandler<CatalogOutbox>(schemaRegistryClient, repository), IRequestHandler<CreateCatalogCommand, IResult>
     {
         public async Task<IResult> Handle(CreateCatalogCommand request, CancellationToken cancellationToken)
         {
@@ -48,7 +48,7 @@ public record CreateCatalogCommand(
             await SendToOutboxAsync(
                 catalogItem,
                 () => (
-                    new ProductOutbox(),
+                    new CatalogOutbox(),
                     new ProductCreated()
                         {
                             Id = catalogItem.Id.ToString(),

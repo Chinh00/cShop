@@ -22,7 +22,7 @@ namespace Infrastructure.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Domain.Shipper", b =>
+            modelBuilder.Entity("Domain.ShipperInfo", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -42,7 +42,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Shippers");
+                    b.ToTable("ShipperInfos");
                 });
 
             modelBuilder.Entity("Domain.ShipperOrder", b =>
@@ -60,6 +60,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<Guid?>("ShipperId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("ShipperInfoId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("ShipperOrderDate")
                         .HasColumnType("datetime2");
 
@@ -68,21 +71,21 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ShipperId");
+                    b.HasIndex("ShipperInfoId");
 
                     b.ToTable("ShipperOrders");
                 });
 
             modelBuilder.Entity("Domain.ShipperOrder", b =>
                 {
-                    b.HasOne("Domain.Shipper", "Shipper")
+                    b.HasOne("Domain.ShipperInfo", "ShipperInfo")
                         .WithMany("ShipperOrders")
-                        .HasForeignKey("ShipperId");
+                        .HasForeignKey("ShipperInfoId");
 
-                    b.Navigation("Shipper");
+                    b.Navigation("ShipperInfo");
                 });
 
-            modelBuilder.Entity("Domain.Shipper", b =>
+            modelBuilder.Entity("Domain.ShipperInfo", b =>
                 {
                     b.Navigation("ShipperOrders");
                 });

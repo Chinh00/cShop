@@ -23,8 +23,7 @@ builder.Services.AddLoggingCustom(builder.Configuration, "Order")
     .AddMasstransitCustom(builder.Configuration)
     .AddDbContextService(builder.Configuration)
     .AddSchemaRegistry(builder.Configuration)
-    .AddCdcConsumer(builder.Configuration)
-    .AddOpenTelemetryCustom("Order");
+    .AddCdcConsumer();
 
 var app = builder.Build();
 

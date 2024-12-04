@@ -10,7 +10,7 @@ public static class Extensions
     {
 
         services.AddMediatR(e => e.RegisterServicesFromAssemblies(type.Select(t => t.Assembly).ToArray()))
-            .AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidateBehaviorPipeline<,>));
+            .AddScoped(typeof(IPipelineBehavior<,>), typeof(RequestValidateBehaviorPipeline<,>));
             
         action?.Invoke(services);
         return services;

@@ -7,6 +7,10 @@ namespace Infrastructure.Data;
 
 public class UserContext(DbContextOptions options) : AppBaseContext(options)
 {
-    public DbSet<User> Users { get; set; }
-    public DbSet<UserOutbox> UserOutboxes { get; set; }
+    public DbSet<Customer> Customers { get; set; }
+    public DbSet<CustomerOutbox> CustomerOutboxes { get; set; }
+    public DbSet<Shipper> Shippers { get; set; }
+    public DbSet<ShipperOutbox> ShipperOutboxes { get; set; }
+    
+    
 }

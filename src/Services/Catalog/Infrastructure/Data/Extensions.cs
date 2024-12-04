@@ -9,8 +9,8 @@ public static class Extensions
         Action<IServiceCollection>? action = null)
     {
 
-        services.AddDbContextCustom<DataContext>(configuration, typeof(DataContext));
-        services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+        services.AddDbContextCustom<CatalogContext>(configuration, typeof(CatalogContext));
+        services.AddHostedService<CatalogMigrationHostedDb>();
         action?.Invoke(services);
         return services;
     }

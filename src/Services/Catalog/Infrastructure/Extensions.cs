@@ -1,3 +1,4 @@
+using Confluent.Kafka;
 using cShop.Contracts.Services.Catalog;
 using IntegrationEvents;
 using MassTransit;
@@ -25,19 +26,31 @@ public static class Extensions
                 
                 
                 
+                t.AddProducer<OrderStockChangedIntegrationEvent>(nameof(OrderStockChangedIntegrationEvent));
+                t.AddProducer<OrderStockUnavailableIntegrationEvent>(nameof(OrderStockUnavailableIntegrationEvent));
+                
+                
                 
                 t.AddProducer<OrderStockValidatedFailIntegrationEvent>(nameof(OrderStockValidatedFailIntegrationEvent));
                 t.AddProducer<OrderStockValidatedSuccessIntegrationEvent>(nameof(OrderStockValidatedSuccessIntegrationEvent));
                 
-                t.AddProducer<OrderStockChangedIntegrationEvent>(nameof(OrderStockChangedIntegrationEvent));
-                t.AddProducer<OrderStockUnavailableIntegrationEvent>(nameof(OrderStockUnavailableIntegrationEvent));
+                
+
+
+                t.AddConsumer<EventDispatcher>();
                 
                 
                 
                 t.UsingKafka((context, config) =>
                 {
                     config.Host(configuration.GetValue<string>("Kafka:BootstrapServers"));
-                    
+                    config.TopicEndpoint<MakeOrderStockValidateIntegrationEvent>(nameof(MakeOrderStockValidateIntegrationEvent), "catalog-groups",
+                        configurator =>
+                        {
+                            configurator.CreateIfMissing(e => e.NumPartitions = 1);
+                            configurator.AutoOffsetReset = AutoOffsetReset.Earliest;
+                            configurator.ConfigureConsumer<EventDispatcher>(context);
+                        });
                     
                 });
             });

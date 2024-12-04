@@ -3,8 +3,8 @@ using Confluent.Kafka;
 using Confluent.SchemaRegistry;
 using Confluent.SchemaRegistry.Serdes;
 using cShop.Contracts.Services.Order;
-using cShop.Contracts.Services.Payment;
 using cShop.Infrastructure.Cdc;
+using cShop.Infrastructure.Mongodb;
 using Infrastructure.StateMachine;
 using IntegrationEvents;
 using MassTransit;
@@ -16,8 +16,9 @@ public static class Extensions
     public static IServiceCollection AddMasstransitCustom(this IServiceCollection services, IConfiguration configuration,
         Action<IServiceCollection>? action = null)
     {
-        
-        //var mongodb = configuration.GetSection(MongoDbOptions.MongoDb).Get<MongoDbOptions>();
+
+        var mOption = new MongoDbbOption();
+        configuration.GetSection(MongoDbbOption.Mongodb).Bind(mOption);
         services.AddMassTransit(t =>
         {
             t.SetKebabCaseEndpointNameFormatter();
@@ -27,11 +28,12 @@ public static class Extensions
             t.AddRider(r =>
             {
                 r.AddProducer<OrderStartedIntegrationEvent>(nameof(OrderStartedIntegrationEvent));
+                
                 r.AddProducer<MakeOrderStockValidateIntegrationEvent>(nameof(MakeOrderStockValidateIntegrationEvent));
                 
                 
-                r.AddProducer<PaymentProcessSuccess>(nameof(PaymentProcessSuccess));
-                r.AddProducer<PaymentProcessFail>(nameof(PaymentProcessFail));
+                r.AddProducer<PaymentProcessSuccessIntegrationEvent>(nameof(PaymentProcessSuccessIntegrationEvent));
+                r.AddProducer<PaymentProcessFailIntegrationEvent>(nameof(PaymentProcessFailIntegrationEvent));
                 
                 
                 r.AddProducer<OrderConfirmed>(nameof(OrderConfirmed));
@@ -43,9 +45,11 @@ public static class Extensions
 
                 r.AddSagaStateMachine<OrderStateMachine, OrderState, OrderStateMachineDefinition>()
                     .MongoDbRepository(e =>
-                {
-                    //e.Connection = mongodb.ToString();
-                });
+                    {
+                        e.Connection = mOption.ToString();
+                        e.DatabaseName = mOption.DatabaseName;
+                        e.CollectionName = "OrderSaga";
+                    });
                 
                 r.UsingKafka((context, configurator) =>
                 {
@@ -59,6 +63,9 @@ public static class Extensions
                             c.CreateIfMissing(e => e.NumPartitions = 1);
                             c.ConfigureSaga<OrderState>(context);
                         });
+                    
+                    
+                    
                     configurator.TopicEndpoint<OrderStockValidatedSuccessIntegrationEvent>(nameof(OrderStockValidatedSuccessIntegrationEvent), "orders-group",
                         c =>
                         {
@@ -67,6 +74,20 @@ public static class Extensions
                             c.ConfigureSaga<OrderState>(context);
                         });
                     configurator.TopicEndpoint<OrderStockValidatedFailIntegrationEvent>(nameof(OrderStockValidatedFailIntegrationEvent), "orders-group",
+                        c =>
+                        {
+                            c.AutoOffsetReset = AutoOffsetReset.Earliest;
+                            c.CreateIfMissing(e => e.NumPartitions = 1);
+                            c.ConfigureSaga<OrderState>(context);
+                        });
+                    configurator.TopicEndpoint<OrderStockChangedIntegrationEvent>(nameof(OrderStockChangedIntegrationEvent), "orders-group",
+                        c =>
+                        {
+                            c.AutoOffsetReset = AutoOffsetReset.Earliest;
+                            c.CreateIfMissing(e => e.NumPartitions = 1);
+                            c.ConfigureSaga<OrderState>(context);
+                        });
+                    configurator.TopicEndpoint<OrderStockUnavailableIntegrationEvent>(nameof(OrderStockUnavailableIntegrationEvent), "orders-group",
                         c =>
                         {
                             c.AutoOffsetReset = AutoOffsetReset.Earliest;
@@ -91,14 +112,14 @@ public static class Extensions
                             c.CreateIfMissing(e => e.NumPartitions = 1);
                             c.ConfigureSaga<OrderState>(context);
                         });
-                    configurator.TopicEndpoint<PaymentProcessSuccess>(nameof(PaymentProcessSuccess), "payment-group",
+                    configurator.TopicEndpoint<PaymentProcessSuccessIntegrationEvent>(nameof(PaymentProcessSuccessIntegrationEvent), "payment-group",
                         c =>
                         {
                             c.AutoOffsetReset = AutoOffsetReset.Earliest;
                             c.CreateIfMissing(e => e.NumPartitions = 1);
                             c.ConfigureSaga<OrderState>(context);
                         });
-                    configurator.TopicEndpoint<PaymentProcessFail>(nameof(PaymentProcessFail), "payment-group",
+                    configurator.TopicEndpoint<PaymentProcessFailIntegrationEvent>(nameof(PaymentProcessFailIntegrationEvent), "payment-group",
                         c =>
                         {
                             c.AutoOffsetReset = AutoOffsetReset.Earliest;
@@ -130,40 +151,39 @@ public static class Extensions
         return services;
     }
 
-    public static IServiceCollection AddCdcConsumer(this IServiceCollection services, IConfiguration configuration,
+    public static IServiceCollection AddCdcConsumer(this IServiceCollection services,
         Action<IServiceCollection>? action = null)
     {
-
-        
-        services.AddKafkaConsumer(e =>
+        services.AddKafkaConsumer("catalog",e =>
         {
-            e.TopicName = "catalog_cdc_events";
+            e.Topic = "catalog_cdc_events";
             e.GroupId = "catalog_cdc_events-group";
             e.HandlePayload = async (ISchemaRegistryClient schemaRegistryClient, string eventName, byte[] payload) =>
             {
-                ISpecificRecord result = null;    
-                
-            
 
-                
-                switch (eventName)
+                return eventName switch
                 {
-                    case nameof(ProductCreated):
-                    {
-                        var deserialize = new AvroDeserializer<ProductCreated>(schemaRegistryClient);
+                    nameof(ProductCreated) => await payload.AsRecord<ProductCreated>(schemaRegistryClient),
+                    _ => throw new ArgumentOutOfRangeException(nameof(eventName), eventName, null)
+                };
 
-                        result = await deserialize.DeserializeAsync(payload, false, new SerializationContext());
-                        
-                        break;
-                    }
-                }
-                
-                
-                
-                return result;
+
+
             };
         });
-        
+        services.AddKafkaConsumer("customer",e =>
+        {
+            e.Topic = "customer_cdc_events";
+            e.GroupId = "customer_cdc_events-group";
+            e.HandlePayload = async (ISchemaRegistryClient schemaRegistryClient, string eventName, byte[] payload) =>
+            {
+                return  (eventName switch
+                {
+                    nameof(CustomerCreatedIntegrationEvent) => await payload.AsRecord<CustomerCreatedIntegrationEvent>(schemaRegistryClient),
+                    _ => throw new ArgumentOutOfRangeException(nameof(eventName), eventName, null)
+                });
+            };
+        });
         
         action?.Invoke(services);
         return services;

@@ -6,6 +6,6 @@ namespace Infrastructure.Data;
 
 public class ShipperContext(DbContextOptions options) : AppBaseContext(options)
 {
-    public DbSet<Shipper> Shippers { get; set; }
+    public DbSet<ShipperInfo> ShipperInfos { get; set; }
     public DbSet<ShipperOrder> ShipperOrders { get; set; }
 }

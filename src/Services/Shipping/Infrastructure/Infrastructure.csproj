@@ -13,12 +13,12 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Consumers\" />
+      <ProjectReference Include="..\..\..\BuildingBlock\cShop.Infrastructure\cShop.Infrastructure.csproj" />
+      <ProjectReference Include="..\Domain\Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\BuildingBlock\cShop.Infrastructure\cShop.Infrastructure.csproj" />
-      <ProjectReference Include="..\Domain\Domain.csproj" />
+      <Folder Include="Data\Migrations\" />
     </ItemGroup>
 
 </Project>

@@ -1,6 +1,5 @@
 using System.Security.Cryptography.X509Certificates;
 using Confluent.Kafka;
-using cShop.Contracts.Services.Order;
 using GrpcServices;
 using Infrastructure.Consumers;
 using IntegrationEvents;

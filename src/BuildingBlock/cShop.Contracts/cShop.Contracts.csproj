@@ -21,6 +21,7 @@
     <ItemGroup>
       <Folder Include="Services\Basket\" />
       <Folder Include="Services\Identity\" />
+      <Folder Include="Services\Payment\" />
     </ItemGroup>
 
 </Project>

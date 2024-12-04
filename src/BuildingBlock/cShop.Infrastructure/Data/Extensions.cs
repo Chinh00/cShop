@@ -19,7 +19,6 @@ public static class Extensions
 
         services.Scan(e => e.FromAssembliesOf(repoType).AddClasses(c => c.AssignableTo(typeof(IRepository<>))).AsImplementedInterfaces().WithTransientLifetime());
         
-        
         action?.Invoke(services);
         return services;
     }
