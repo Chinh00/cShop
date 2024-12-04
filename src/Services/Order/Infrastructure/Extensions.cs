@@ -5,6 +5,7 @@ using Confluent.SchemaRegistry.Serdes;
 using cShop.Contracts.Services.Order;
 using cShop.Infrastructure.Cdc;
 using cShop.Infrastructure.Mongodb;
+using Infrastructure.Cdc;
 using Infrastructure.StateMachine;
 using IntegrationEvents;
 using MassTransit;
@@ -154,7 +155,7 @@ public static class Extensions
     public static IServiceCollection AddCdcConsumer(this IServiceCollection services,
         Action<IServiceCollection>? action = null)
     {
-        services.AddKafkaConsumer("catalog",e =>
+        services.AddKafkaConsumer<CatalogConsumerConfig>(e =>
         {
             e.Topic = "catalog_cdc_events";
             e.GroupId = "catalog_cdc_events-group";
@@ -171,7 +172,7 @@ public static class Extensions
 
             };
         });
-        services.AddKafkaConsumer("customer",e =>
+        services.AddKafkaConsumer<CustomerConsumerConfig>(e =>
         {
             e.Topic = "customer_cdc_events";
             e.GroupId = "customer_cdc_events-group";

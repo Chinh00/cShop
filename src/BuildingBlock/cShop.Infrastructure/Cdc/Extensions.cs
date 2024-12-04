@@ -7,11 +7,11 @@ namespace cShop.Infrastructure.Cdc;
 
 public static class Extensions
 {
-    public static IServiceCollection AddKafkaConsumer(this IServiceCollection services,
-        Action<BackgroundConsumerConfig> action)
+    public static IServiceCollection AddKafkaConsumer<TConfig>(this IServiceCollection services,
+        Action<TConfig> action) where TConfig : BackgroundConsumerConfig
     {        
-        services.AddOptions<BackgroundConsumerConfig>().BindConfiguration(BackgroundConsumerConfig.Name).Configure(action);
-        services.AddHostedService<BackgroundConsumerService>();
+        services.AddOptions<TConfig>().BindConfiguration(BackgroundConsumerConfig.Name).Configure(action);
+        services.AddHostedService<BackgroundConsumerService<TConfig>>();
         return services;
     }
 

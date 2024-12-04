@@ -1,5 +1,6 @@
 using Confluent.SchemaRegistry;
 using cShop.Infrastructure.Cdc;
+using Infrastructure.Cdc;
 using IntegrationEvents;
 
 namespace Infrastructure;
@@ -10,7 +11,7 @@ public static class Extensions
         Action<IServiceCollection>? action = null)
     {
 
-        services.AddKafkaConsumer((config) =>
+        services.AddKafkaConsumer<ShipperConsumerConfig>((config) =>
         {
             config.Topic = "shipper_cdc_events";
             config.GroupId = "shipper_cdc_events-group";

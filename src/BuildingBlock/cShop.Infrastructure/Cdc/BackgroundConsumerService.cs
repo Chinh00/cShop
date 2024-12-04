@@ -8,17 +8,18 @@ using Microsoft.Extensions.Options;
 
 namespace cShop.Infrastructure.Cdc;
 
-public class BackgroundConsumerService : BackgroundService
+public class BackgroundConsumerService<TConfig> : BackgroundService 
+    where TConfig : BackgroundConsumerConfig
 {
-    private readonly ILogger<BackgroundConsumerService> _logger;
+    private readonly ILogger<BackgroundConsumerService<TConfig>> _logger;
     private readonly BackgroundConsumerConfig _config;
     private readonly IServiceScopeFactory _scopeFactory;
 
-    public BackgroundConsumerService(ILogger<BackgroundConsumerService> logger, IServiceScopeFactory scopeFactory, IOptions<BackgroundConsumerConfig> config)
+    public BackgroundConsumerService(ILogger<BackgroundConsumerService<TConfig>> logger, IServiceScopeFactory scopeFactory, IOptions<TConfig> config)
     {
-        this._logger = logger;
-        this._scopeFactory = scopeFactory;
-        this._config = config.Value;
+        _logger = logger;
+        _scopeFactory = scopeFactory;
+        _config = config.Value;
     }
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
