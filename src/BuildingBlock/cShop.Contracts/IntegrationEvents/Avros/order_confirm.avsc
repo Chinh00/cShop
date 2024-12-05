@@ -1,0 +1,11 @@
+{
+  "name": "OrderConfirmIntegrationEvent",
+  "type": "record",
+  "namespace": "IntegrationEvents",
+  "fields": [
+    {
+      "name": "OrderId",
+      "type": "string"
+    }
+  ],
+}

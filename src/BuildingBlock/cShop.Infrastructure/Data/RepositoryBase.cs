@@ -26,9 +26,9 @@ public class RepositoryBase<TDbContext, TEntity> : IRepository<TEntity>, IListRe
         
     }
 
-    public Task<TEntity> FindByIdAsync<TId>(TId id, CancellationToken cancellationToken)
+    public async Task<TEntity> FindByIdAsync<TId>(TId id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return await _dbSet.FindAsync(id, cancellationToken);
     }
 
     public Task<List<TEntity>> FindAsync(ISpecification<TEntity> specification, CancellationToken cancellationToken)
