@@ -1,4 +1,3 @@
-using cShop.Core.Repository;
 using cShop.Infrastructure.Data;
 
 namespace Infrastructure.Data;

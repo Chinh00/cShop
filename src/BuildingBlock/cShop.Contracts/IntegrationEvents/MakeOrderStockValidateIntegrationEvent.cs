@@ -1,15 +1,15 @@
 using cShop.Core.Domain;
+using MediatR;
 
 namespace IntegrationEvents;
 
-public interface MakeOrderStockValidateIntegrationEvent : IIntegrationEvent
+public class MakeOrderStockValidateIntegrationEvent : INotification
 {
     public Guid OrderId { get; set; }
     
-    public List<CatalogConfirm> OrderItems { get; set; }
+    public List<OrderCheckoutDetail> OrderItems { get; set; }
     
 }
 
-public record CatalogConfirm(Guid CatalogId, int Quantity);
 
 

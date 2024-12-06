@@ -7,3 +7,4 @@ public partial class OrderComplete : INotification;
 
 public partial class CustomerCreatedIntegrationEvent : INotification;
 public partial class ShipperCreatedIntegrationEvent : INotification;
+public partial class OrderConfirmIntegrationEvent : INotification;

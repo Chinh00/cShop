@@ -5,6 +5,7 @@ using FluentValidation;
 using IntegrationEvents;
 using MassTransit;
 using MediatR;
+using OrderDetail = Domain.OrderDetail;
 
 namespace Application.UseCases.Commands;
 
@@ -43,7 +44,13 @@ public record CreateOrderCommand(
          };
          await orderRepository.AddAsync(order, cancellationToken);
          
-         await orderStartedTopic.Produce(new { OrderId = order.Id, UserId = order.CustomerId }, cancellationToken);
+         await orderStartedTopic.Produce(
+            new
+            {
+               OrderId = order.Id, UserId = order.CustomerId,
+               OrderCheckoutDetails =
+                  order.OrderDetails.Select(e => new { ProductId = e.ProductId, Quantity = e.Quantity })
+            }, cancellationToken);
          
          return Results.Ok(ResultModel<Order>.Create(order));
       }

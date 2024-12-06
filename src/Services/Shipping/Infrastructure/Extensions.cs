@@ -24,6 +24,20 @@ public static class Extensions
                 };
             };
         });
+        services.AddKafkaConsumer<OrderConsumerConfig>((config) =>
+        {
+            config.Topic = "order_cdc_events";
+            config.GroupId = "order_cdc_events_shipper-group";
+            config.HandlePayload = async (ISchemaRegistryClient schemaRegistry,string eventName, byte[] payload) =>
+            {
+                return eventName switch
+                {
+                    nameof(OrderConfirmIntegrationEvent) => await payload.AsRecord<OrderConfirmIntegrationEvent>(schemaRegistry),
+                    _ => null
+                };
+            };
+        });
+        
         
         
         action?.Invoke(services);

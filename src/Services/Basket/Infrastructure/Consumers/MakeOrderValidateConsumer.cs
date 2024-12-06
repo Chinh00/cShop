@@ -1,5 +1,4 @@
 using cShop.Infrastructure.Cache.Redis;
-using Domain.Entities;
 using IntegrationEvents;
 using MassTransit;
 

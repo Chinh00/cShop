@@ -11,15 +11,17 @@ using cShop.Infrastructure.Swagger;
 using cShop.Infrastructure.Validation;
 using GrpcService.Implements;
 using Infrastructure;
+using Infrastructure.Consumers;
 using Infrastructure.Data;
 using WebApi.Apis;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddLoggingCustom(builder.Configuration, "Catalog")
     .AddValidation(typeof(Anchor))
     .AddOpenTelemetryCustom("CatalogService")
     .AddAuthenticationDefault(builder.Configuration)
     .AddSwaggerCustom(builder.Configuration)
-    .AddMediatorDefault([typeof(Program), typeof(Anchor)])
+    .AddMediatorDefault([typeof(Program), typeof(Anchor), typeof(MakeStockValidateConsumer)])
     .AddDbContextService(builder.Configuration)
     .AddMessageBus(builder.Configuration)
     .AddMasstransitCustom(builder.Configuration)

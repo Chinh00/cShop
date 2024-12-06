@@ -1,5 +1,6 @@
 using Confluent.Kafka;
 using cShop.Contracts.Services.Catalog;
+using Infrastructure.Consumers;
 using IntegrationEvents;
 using MassTransit;
 
@@ -37,19 +38,19 @@ public static class Extensions
                 
 
 
-                t.AddConsumer<EventDispatcher>();
+                t.AddConsumer<MakeStockValidateConsumer>();
                 
                 
                 
                 t.UsingKafka((context, config) =>
                 {
                     config.Host(configuration.GetValue<string>("Kafka:BootstrapServers"));
-                    config.TopicEndpoint<MakeOrderStockValidateIntegrationEvent>(nameof(MakeOrderStockValidateIntegrationEvent), "catalog-groups",
+                    config.TopicEndpoint<MakeOrderStockValidateIntegrationEvent>(nameof(MakeOrderStockValidateIntegrationEvent), "validate-groups",
                         configurator =>
                         {
                             configurator.CreateIfMissing(e => e.NumPartitions = 1);
                             configurator.AutoOffsetReset = AutoOffsetReset.Earliest;
-                            configurator.ConfigureConsumer<EventDispatcher>(context);
+                            configurator.ConfigureConsumer<MakeStockValidateConsumer>(context);
                         });
                     
                 });

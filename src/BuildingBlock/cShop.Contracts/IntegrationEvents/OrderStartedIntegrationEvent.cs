@@ -4,10 +4,15 @@ namespace IntegrationEvents;
 
 public interface OrderStartedIntegrationEvent : IIntegrationEvent
 {
-    public Guid OrderId { get; init; }
-    public Guid UserId { get; init; }
+    public Guid OrderId { get; set; }
+    public Guid UserId { get; set; }
     
-    public List<OrderDetail> OrderDetails { get; init; }
+    public IList<OrderCheckoutDetail> OrderCheckoutDetails { get; set; }
     
-    public record OrderDetail(Guid CatalogId, int Quantity) : IIntegrationEvent;
 };
+
+public class OrderCheckoutDetail
+{
+    public Guid ProductId { get; set; }
+    public int Quantity { get; set; }
+}

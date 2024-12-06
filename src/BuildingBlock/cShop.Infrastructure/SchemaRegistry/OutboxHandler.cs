@@ -17,7 +17,7 @@ public class OutboxHandler<TOutbox>(ISchemaRegistryClient schemaRegistryClient, 
         TAggregate aggregateRoot,
         Func<(TOutbox, TEvent, string)> eventFunc, CancellationToken cancellationToken = default)    
         where TEvent : ISpecificRecord
-        where TAggregate : AggregateBase
+        where TAggregate : EntityBase
     {
 
         var (outbox, @event, topicName) = eventFunc();

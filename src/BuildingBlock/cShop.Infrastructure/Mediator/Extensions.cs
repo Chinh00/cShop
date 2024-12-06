@@ -1,3 +1,4 @@
+using System.Reflection;
 using cShop.Infrastructure.Validation;
 using MediatR;
 
@@ -10,8 +11,9 @@ public static class Extensions
     {
 
         services.AddMediatR(e => e.RegisterServicesFromAssemblies(type.Select(t => t.Assembly).ToArray()))
-            .AddScoped(typeof(IPipelineBehavior<,>), typeof(RequestValidateBehaviorPipeline<,>));
-            
+             .AddScoped(typeof(IPipelineBehavior<,>), typeof(RequestValidateBehaviorPipeline<,>));
+        // services.AddMediatR(e => e.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()))
+        //     .AddScoped(typeof(IPipelineBehavior<,>), typeof(RequestValidateBehaviorPipeline<,>));
         action?.Invoke(services);
         return services;
     }

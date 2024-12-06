@@ -3,11 +3,11 @@ using MediatR;
 
 namespace Application.Consumer;
 
-public class OrderCdcConsumer : INotificationHandler<OrderComplete>
+public class OrderCdcConsumer(ILogger<OrderCdcConsumer> logger) : INotificationHandler<OrderComplete>
 {
+
     public async Task Handle(OrderComplete notification, CancellationToken cancellationToken)
     {
-        await Console.Out.WriteLineAsync(notification.OrderId);
-        
+        logger.LogInformation($"Order {notification.OrderId} has been processed");        
     }
 }

@@ -1,3 +1,4 @@
+using IntegrationEvents;
 using MassTransit;
 
 namespace Infrastructure.StateMachine;
@@ -14,7 +15,6 @@ public class OrderState : SagaStateMachineInstance, ISagaVersion
 
     public int Version { get; set; }
 
-    public List<OrderDetail> OrderDetails { get; set; } = default!;
+    public List<OrderCheckoutDetail> OrderCheckoutDetails { get; set; } = [];
     
-    public record OrderDetail(Guid ProductId, int Quantity);
 }

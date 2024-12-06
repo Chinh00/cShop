@@ -2,7 +2,6 @@
 // See LICENSE in the project root for license information.
 
 
-using cShop.Core.Domain;
 using Microsoft.AspNetCore.Identity;
 
 namespace Identity.Api.Models;

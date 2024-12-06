@@ -1,7 +1,5 @@
-﻿using cShop.Infrastructure.SchemaRegistry;
-using Identity.Api;
+﻿using Identity.Api;
 using Identity.Api.Data;
-using IntegrationEvents;
 using MassTransit;
 using Serilog;
 

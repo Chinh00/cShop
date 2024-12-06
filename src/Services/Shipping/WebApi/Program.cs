@@ -1,6 +1,5 @@
 using Application;
 using cShop.Infrastructure.Auth;
-using cShop.Infrastructure.Data;
 using cShop.Infrastructure.Logging;
 using cShop.Infrastructure.Mediator;
 using cShop.Infrastructure.SchemaRegistry;
