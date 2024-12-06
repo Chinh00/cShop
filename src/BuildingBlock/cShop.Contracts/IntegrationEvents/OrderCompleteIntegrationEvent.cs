@@ -2,8 +2,7 @@ using cShop.Core.Domain;
 
 namespace IntegrationEvents;
 
-public record OrderStockValidatedFailIntegrationEvent : IIntegrationEvent
+public class OrderCompleteIntegrationEvent : IIntegrationEvent
 {
     public Guid OrderId { get; set; }
-};
-
+}

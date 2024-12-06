@@ -3,13 +3,11 @@ using MediatR;
 
 namespace IntegrationEvents;
 
-public class MakeOrderStockValidateIntegrationEvent : INotification
+public record MakeOrderStockValidateIntegrationEvent : IIntegrationEvent
 {
     public Guid OrderId { get; set; }
     
     public List<OrderCheckoutDetail> OrderItems { get; set; }
     
 }
-
-
-
+  

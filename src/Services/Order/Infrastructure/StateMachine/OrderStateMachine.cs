@@ -28,6 +28,7 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
 
         Event(() => OrderCanceled, c => c.CorrelateById(x => x.Message.OrderId));
         Event(() => OrderConfirmed, c => c.CorrelateById(x => x.Message.OrderId));
+        Event(() => OrderCompleteIntegrationEvent, c => c.CorrelateById(x => x.Message.OrderId));
 
         InstanceState(e => e.CurrentState);
 
@@ -53,7 +54,10 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
 
 
         During(Validate, Ignore(OrderStartedIntegrationEvent),
-            When(OrderStockValidatedSuccessIntegrationEvent).ThenAsync(async (context) => { })
+            When(OrderStockValidatedSuccessIntegrationEvent).ThenAsync(async (context) =>
+                {
+                    _logger.LogInformation($"Order submitted {context.Message.OrderId}");                    
+                })
                 .TransitionTo(PaymentProcess),
             When(OrderStockValidatedFailIntegrationEvent).ThenAsync(async context => { }).TransitionTo(Cancel)
         );                  
@@ -74,7 +78,7 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
                         new
                         {
                             OrderId = context.Saga.CorrelationId,
-                            CatalogItems = context.Saga.OrderCheckoutDetails
+                            OrderCheckoutDetails = context.Saga.OrderCheckoutDetails
                         }))
                 .TransitionTo(StockProcess),
             When(PaymentProcessFailIntegrationEvent)
@@ -106,7 +110,7 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
 
         During(Success,
             Ignore(PaymentProcessSuccessIntegrationEvent),
-            When(OrderConfirmed)
+            When(OrderCompleteIntegrationEvent)
                 .ThenAsync(async context => { await SendAuditLog(); }).Finalize()
         );
         During(Cancel,
@@ -164,6 +168,7 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
     public Event<PaymentProcessFailIntegrationEvent> PaymentProcessFailIntegrationEvent { get; private set; } = null!;
     public Event<OrderConfirmed> OrderConfirmed { get; private set; } = null!;
 
+    public Event<OrderCompleteIntegrationEvent> OrderCompleteIntegrationEvent { get; private set; } = null!;
 
     async Task SendAuditLog()
     {

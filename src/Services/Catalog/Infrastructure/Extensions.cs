@@ -1,6 +1,5 @@
 using Confluent.Kafka;
 using cShop.Contracts.Services.Catalog;
-using Infrastructure.Consumers;
 using IntegrationEvents;
 using MassTransit;
 
@@ -38,7 +37,7 @@ public static class Extensions
                 
 
 
-                t.AddConsumer<MakeStockValidateConsumer>();
+                t.AddConsumer<EventDispatcher>();
                 
                 
                 
@@ -50,9 +49,23 @@ public static class Extensions
                         {
                             configurator.CreateIfMissing(e => e.NumPartitions = 1);
                             configurator.AutoOffsetReset = AutoOffsetReset.Earliest;
-                            configurator.ConfigureConsumer<MakeStockValidateConsumer>(context);
+                            configurator.ConfigureConsumer<EventDispatcher>(context);
                         });
-                    
+                    config.TopicEndpoint<OrderPaidIntegrationEvent>(nameof(OrderPaidIntegrationEvent), "stock-groups",
+                        configurator =>
+                        {
+                            configurator.CreateIfMissing(e => e.NumPartitions = 1);
+                            configurator.AutoOffsetReset = AutoOffsetReset.Earliest;
+                            configurator.ConfigureConsumer<EventDispatcher>(context);
+                        });
+                    config.TopicEndpoint<OrderUnPaidIntegrationEvent>(nameof(OrderUnPaidIntegrationEvent), "stock-groups",
+                        configurator =>
+                        {
+                            configurator.CreateIfMissing(e => e.NumPartitions = 1);
+                            configurator.AutoOffsetReset = AutoOffsetReset.Earliest;
+                            configurator.ConfigureConsumer<EventDispatcher>(context);
+                        });
+
                 });
             });
 

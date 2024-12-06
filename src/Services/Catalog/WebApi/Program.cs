@@ -1,5 +1,3 @@
-
-
 using Application;
 using cShop.Infrastructure.Auth;
 using cShop.Infrastructure.Bus;
@@ -11,7 +9,6 @@ using cShop.Infrastructure.Swagger;
 using cShop.Infrastructure.Validation;
 using GrpcService.Implements;
 using Infrastructure;
-using Infrastructure.Consumers;
 using Infrastructure.Data;
 using WebApi.Apis;
 
@@ -21,7 +18,7 @@ builder.Services.AddLoggingCustom(builder.Configuration, "Catalog")
     .AddOpenTelemetryCustom("CatalogService")
     .AddAuthenticationDefault(builder.Configuration)
     .AddSwaggerCustom(builder.Configuration)
-    .AddMediatorDefault([typeof(Program), typeof(Anchor), typeof(MakeStockValidateConsumer)])
+    .AddMediatorDefault([typeof(Program), typeof(Anchor)])
     .AddDbContextService(builder.Configuration)
     .AddMessageBus(builder.Configuration)
     .AddMasstransitCustom(builder.Configuration)
