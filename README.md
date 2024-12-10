@@ -39,3 +39,6 @@ And after run command into terminal
 ```shell
 docker compose -f docker-compose.yml up -d
 ```
+#  Review code with SonarQube
+Url: https://de7c-113-190-242-151.ngrok-free.app/
+Uname/upass: cshopuser/Admin123123!@
