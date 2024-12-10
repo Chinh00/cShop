@@ -5,8 +5,9 @@ namespace Application.Consumer;
 
 public class OrderCdcConsumer(ILogger<OrderCdcConsumer> logger) : INotificationHandler<OrderConfirmIntegrationEvent>
 {
-    public Task Handle(OrderConfirmIntegrationEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(OrderConfirmIntegrationEvent notification, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        logger.LogInformation($"Order {notification.OrderId} has been processed");
+        
     }
 }

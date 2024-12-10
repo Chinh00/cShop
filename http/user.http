@@ -1,5 +1,12 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=JetBrains Rider
 
-###
+@host = http://localhost:9999
+
+### create customer
+
+POST {{host}}/userservice/api/v1/users/customers
+Content-Type: application/json
+
+{
+  "name": "string",
+  "email": "string"
+}

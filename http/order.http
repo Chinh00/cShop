@@ -3,18 +3,18 @@
 
 
 ### Start order
-@userId = 76316400-ab73-4bc7-86d0-efb507e01c57
-@orderId = b0bf1f31-41c9-4ada-a31c-ddbffb9b37a6
+@userId = d2a157f0-8717-4044-bf3a-37d06400f9cc
+@orderId = 025c13a0-ff97-469b-be6f-b204f1eefd13
 
 
 POST {{host}}/orderservice/api/v1/order HTTP/1.1
 Content-Type: application/json
 
 {
-  "userId": {{userId}},
+  "userId": "{{userId}}",
   "items": [
     {
-      "productId": "5c84fb43-8a88-43ce-9ea3-2b5e009eadf1",
+      "productId": "d0532497-58f9-40ed-ba95-951254760e3a",
       "quantity": 1
     }
   ],
@@ -23,7 +23,7 @@ Content-Type: application/json
 
 
 ###  user payment
-POST {{host}}/api/v1/payment/payment
+POST {{host}}/orderservice/api/v1/payment/payment
 Content-Type: application/json
 
 {

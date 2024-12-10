@@ -2,7 +2,7 @@ using cShop.Core.Domain;
 
 namespace cShop.Contracts.Services.Order;
 
-public interface OrderConfirmed : IIntegrationEvent
+public record OrderConfirmed : IIntegrationEvent
 {
     public Guid OrderId { get; set; }
 }

@@ -47,9 +47,11 @@ public class RepositoryBase<TDbContext, TEntity> : IRepository<TEntity>, IListRe
         return entity;
     }
 
-    public Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken)
+    public async Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        _dbSet.Update(entity);
+        await _context.SaveChangesAsync(cancellationToken);
+        return entity;
     }
 
     public Task<bool> RemoveAsync(TEntity entity, CancellationToken cancellationToken)

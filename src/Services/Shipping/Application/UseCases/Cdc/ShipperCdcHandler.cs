@@ -3,9 +3,9 @@ using Domain;
 using IntegrationEvents;
 using MediatR;
 
-namespace Application.UseCases.EventHandlers;
+namespace Application.UseCases.Cdc;
 
-public class ShipperCreatedIntegrationEventHandler(ILogger<ShipperCreatedIntegrationEventHandler> logger, IRepository<ShipperInfo> repository)
+public class ShipperCdcHandler(ILogger<ShipperCdcHandler> logger, IRepository<ShipperInfo> repository)
     : INotificationHandler<ShipperCreatedIntegrationEvent>
 {
     public async Task Handle(ShipperCreatedIntegrationEvent notification, CancellationToken cancellationToken)

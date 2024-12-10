@@ -8,7 +8,7 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
 {
     private readonly ILogger<OrderStateMachine> _logger;
 
-    public OrderStateMachine(ILogger<OrderStateMachine> logger, IServiceScopeFactory serviceScopeFactory)
+    public OrderStateMachine(ILogger<OrderStateMachine> logger)
     {
         _logger = logger;
         Event(() => OrderStartedIntegrationEvent, c => c.CorrelateById(x => x.Message.OrderId));

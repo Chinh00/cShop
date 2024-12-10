@@ -2,6 +2,7 @@ using Application;
 using cShop.Infrastructure.Auth;
 using cShop.Infrastructure.Logging;
 using cShop.Infrastructure.Mediator;
+using cShop.Infrastructure.Mongodb;
 using cShop.Infrastructure.SchemaRegistry;
 using cShop.Infrastructure.Swagger;
 using cShop.Infrastructure.Validation;
@@ -17,8 +18,10 @@ builder.Services.AddLoggingCustom(builder.Configuration, "ShipperService")
     .AddSwaggerCustom(builder.Configuration)
     .AddMediatorDefault([typeof(Anchor), typeof(Program)])
     .AddRepository(builder.Configuration)
+    .AddMasstransits(builder.Configuration)
     .AddSchemaRegistry(builder.Configuration)
-    .AddCdcConsumers(builder.Configuration);
+    .AddCdcConsumers(builder.Configuration)
+    .AddMongoDb(builder.Configuration);
 
 
 

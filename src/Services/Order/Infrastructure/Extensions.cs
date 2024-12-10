@@ -1,7 +1,5 @@
-using Avro.Specific;
 using Confluent.Kafka;
 using Confluent.SchemaRegistry;
-using Confluent.SchemaRegistry.Serdes;
 using cShop.Contracts.Services.Order;
 using cShop.Infrastructure.Cdc;
 using cShop.Infrastructure.Mongodb;
@@ -42,10 +40,10 @@ public static class Extensions
                 r.AddProducer<OrderUnPaidIntegrationEvent>(nameof(OrderUnPaidIntegrationEvent));
                 
                 r.AddProducer<OrderConfirmed>(nameof(OrderConfirmed));
+                
                 r.AddProducer<OrderCancelled>(nameof(OrderCancelled));
-                
 
-                
+                r.AddConsumer<EventDispatcher>();
                 
 
                 r.AddSagaStateMachine<OrderStateMachine, OrderState, OrderStateMachineDefinition>()
@@ -59,6 +57,15 @@ public static class Extensions
                 r.UsingKafka((context, configurator) =>
                 {
                     configurator.Host(configuration.GetValue<string>("Kafka:BootstrapServers"));
+                    
+                    
+                    configurator.TopicEndpoint<OrderConfirmed>(nameof(OrderConfirmed), "order-group",
+                        endpointConfigurator =>
+                        {
+                            endpointConfigurator.AutoOffsetReset = AutoOffsetReset.Earliest;
+                            endpointConfigurator.CreateIfMissing(e => e.NumPartitions = 1);
+                            endpointConfigurator.ConfigureConsumer<EventDispatcher>(context);
+                        });
                     
                     
                     configurator.TopicEndpoint<OrderStartedIntegrationEvent>(nameof(OrderStartedIntegrationEvent), "orders-group",
@@ -131,13 +138,7 @@ public static class Extensions
                             c.CreateIfMissing(e => e.NumPartitions = 1);
                             c.ConfigureSaga<OrderState>(context);
                         });
-                    configurator.TopicEndpoint<OrderConfirmed>(nameof(OrderConfirmed), "order-group",
-                        c =>
-                        {
-                            c.AutoOffsetReset = AutoOffsetReset.Earliest;
-                            c.CreateIfMissing(e => e.NumPartitions = 1);
-                            c.ConfigureSaga<OrderState>(context);
-                        });
+                    
                     configurator.TopicEndpoint<OrderCancelled>(nameof(OrderCancelled), "order-group",
                         c =>
                         {
@@ -145,7 +146,14 @@ public static class Extensions
                             c.CreateIfMissing(e => e.NumPartitions = 1);
                             c.ConfigureSaga<OrderState>(context);
                         });
-                    
+                    configurator.TopicEndpoint<OrderCompleteIntegrationEvent>(nameof(OrderCompleteIntegrationEvent), "order-group",
+                        c =>
+                        {
+                            c.AutoOffsetReset = AutoOffsetReset.Earliest;
+                            c.CreateIfMissing(e => e.NumPartitions = 1);
+                            c.ConfigureSaga<OrderState>(context);
+                        });
+                                        
                 });
                 
             });

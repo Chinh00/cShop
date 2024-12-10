@@ -1,12 +1,83 @@
+using Confluent.Kafka;
 using Confluent.SchemaRegistry;
 using cShop.Infrastructure.Cdc;
+using cShop.Infrastructure.Mongodb;
 using Infrastructure.Cdc;
+using Infrastructure.StateMachine;
 using IntegrationEvents;
+using MassTransit;
 
 namespace Infrastructure;
 
 public static class Extensions
 {
+    public static IServiceCollection AddMasstransits(this IServiceCollection services, IConfiguration configuration,
+        Action<IServiceCollection>? action = null)
+    {
+        var mOption = new MongoDbbOption();
+        configuration.GetSection(MongoDbbOption.Mongodb).Bind(mOption);
+        services.AddMassTransit(e =>
+        {
+            e.SetKebabCaseEndpointNameFormatter();
+            e.UsingInMemory();
+            
+            e.AddRider(t =>
+            {
+                
+                t.AddProducer<ShipmentCreatedIntegrationEvent>(nameof(ShipmentCreatedIntegrationEvent));
+                t.AddProducer<ShipmentPickedIntegrationEvent>(nameof(ShipmentPickedIntegrationEvent));
+                t.AddProducer<ShipmentDeliveryIntegrationEvent>(nameof(ShipmentDeliveryIntegrationEvent));
+                t.AddProducer<OrderCompleteIntegrationEvent>(nameof(OrderCompleteIntegrationEvent));
+                
+                
+                t.AddSagaStateMachine<ShippingStateMachine, ShippingState, ShippingStateMachineDefinition>().MongoDbRepository(
+                    f =>
+                    {
+                        f.Connection = mOption.ToString();
+                        f.DatabaseName = mOption.DatabaseName;
+                        f.CollectionName = "ShipmentSaga";
+                    });
+                
+                
+                t.UsingKafka((context, configurator) =>
+                {
+                    configurator.Host(configuration.GetValue<string>("Kafka:BootstrapServers"));
+                    configurator.TopicEndpoint<ShipmentCreatedIntegrationEvent>(nameof(ShipmentCreatedIntegrationEvent),
+                        "shipment-group",
+                        c =>
+                        {
+                            c.AutoOffsetReset = AutoOffsetReset.Earliest;
+                            c.CreateIfMissing(n => n.NumPartitions = 1);
+                            c.ConfigureSaga<ShippingState>(context);
+                        });
+                    configurator.TopicEndpoint<ShipmentPickedIntegrationEvent>(nameof(ShipmentPickedIntegrationEvent),
+                        "shipment-group",
+                        c =>
+                        {
+                            c.AutoOffsetReset = AutoOffsetReset.Earliest;
+                            c.CreateIfMissing(n => n.NumPartitions = 1);
+                            c.ConfigureSaga<ShippingState>(context);
+                        });
+                    configurator.TopicEndpoint<ShipmentDeliveryIntegrationEvent>(nameof(ShipmentDeliveryIntegrationEvent),
+                        "shipment-group",
+                        c =>
+                        {
+                            c.AutoOffsetReset = AutoOffsetReset.Earliest;
+                            c.CreateIfMissing(n => n.NumPartitions = 1);
+                            c.ConfigureSaga<ShippingState>(context);
+                        });
+                });
+            });
+            
+        });
+        
+        
+        action?.Invoke(services);
+        return services;
+    }
+    
+    
+    
     public static IServiceCollection AddCdcConsumers(this IServiceCollection services, IConfiguration configuration,
         Action<IServiceCollection>? action = null)
     {
@@ -19,7 +90,8 @@ public static class Extensions
             {
                 return eventName switch
                 {
-                    nameof(ShipperCreatedIntegrationEvent) => await payload.AsRecord<ShipperCreatedIntegrationEvent>(schemaRegistry),
+                    nameof(ShipperCreatedIntegrationEvent) => await payload.AsRecord<ShipperCreatedIntegrationEvent>(
+                        schemaRegistry),
                     _ => null
                 };
             };
@@ -32,11 +104,12 @@ public static class Extensions
             {
                 return eventName switch
                 {
-                    nameof(OrderConfirmIntegrationEvent) => await payload.AsRecord<OrderConfirmIntegrationEvent>(schemaRegistry),
+                    nameof(OrderConfirmIntegrationEvent) => await payload.AsRecord<OrderConfirmIntegrationEvent>(
+                        schemaRegistry),
                     _ => null
                 };
             };
-        });
+        });                                                 
         
         
         
