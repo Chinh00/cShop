@@ -66,6 +66,20 @@ jobs:
           file: src/Services/Order/WebApi/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_ORDER_SERVICE_NAME}}:latest
+      - name: Build and push Docker image User Service
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: src/Services/User/WebApi/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_USER_SERVICE_NAME}}:latest
+      - name: Build and push Docker image Notification Service
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: src/Services/Order/WebApi/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_NOTIFICATION_SERVICE_NAME}}:latest
 
   
   build:
