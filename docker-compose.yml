@@ -4,9 +4,7 @@ services:
   
   
   catalogservice:
-    build:
-      context: .
-      dockerfile: ./src/Services/Catalog/WebApi/Dockerfile
+    image: chinhval/catalogservice
     container_name: catalogservice
     environment:
       IdentityServer__Url: http://localhost:5555
@@ -36,9 +34,7 @@ services:
       - "7001:80"
     depends_on:
       - redis
-    build:
-      context: .
-      dockerfile: ./src/Services/Basket/WebApi/Dockerfile
+    image: chinhval/cshopbasketservice
     environment:
       IdentityServer__Url: http://localhost:5555
       Kafka__BootstrapServers: kafka:9092
@@ -57,9 +53,7 @@ services:
     ports:
       - "7002:80"
     
-    build:
-      context: .
-      dockerfile: ./src/Services/Order/WebApi/Dockerfile
+    image: chinhval/orderservice
     environment:
       Kafka__BootstrapServers: kafka:9092
       Kafka__SchemaRegistryServer: ${SchemaRegistry__Url:-http://schema-registry:8085}
@@ -69,6 +63,36 @@ services:
       MongoDb__DatabaseName: orderdb
       MongoDb__CollectionName: ordercollection
       MongoDb__ServerName: mongodb
+    depends_on:
+      - mongodb
+      - kafka
+      - schema-registry
+    
+  userservice:
+    container_name: userservice
+    ports:
+      - "7003:80"
+
+    image: chinhval/userservice
+    environment:
+      Kafka__BootstrapServers: kafka:9092
+      Kafka__SchemaRegistryServer: ${SchemaRegistry__Url:-http://schema-registry:8085}
+      ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
+    depends_on:
+      - mongodb
+      - kafka
+      - schema-registry
+  
+  notificationservice:
+    container_name: notificationservice
+    ports:
+      - "7004:80"
+
+    image: chinhval/notificationservice
+    environment:
+      Kafka__BootstrapServers: kafka:9092
+      Kafka__SchemaRegistryServer: ${SchemaRegistry__Url:-http://schema-registry:8085}
+      ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
     depends_on:
       - mongodb
       - kafka
@@ -103,6 +127,13 @@ services:
       ReverseProxy__Routes__basketservice__Transforms_1__PathPrefix: /
         
       
+      ReverseProxy__Clusters__userservice__ClusterId: userservice
+      ReverseProxy__Clusters__userservice__Destinations__destination1__Address: http://userservice
+      
+      ReverseProxy__Clusters__notificationservice__ClusterId: notificationservice
+      ReverseProxy__Clusters__notificationservice__Destinations__destination1__Address: http://notificationservice
+      
+      
         
       ReverseProxy__Clusters__orderservice__ClusterId: orderservice
       ReverseProxy__Clusters__orderservice__Destinations__destination1__Address: http://orderservice
@@ -121,6 +152,8 @@ services:
       - orderservice
       - basketservice
       - catalogservice
+      - notificationservice
+      - userservice
   
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
