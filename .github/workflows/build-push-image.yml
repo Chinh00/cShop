@@ -80,12 +80,12 @@ jobs:
           file: src/Services/Notification/WebApi/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_NOTIFICATION_SERVICE_NAME}}:latest
-
+  
   
   build:
     name: Build and analyze
     runs-on: windows-latest
-
+    
     steps:
       - uses: actions/checkout@v4
         with:
@@ -117,6 +117,7 @@ jobs:
       - name: Build and analyze
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Chinh00_cShop_226d6947-1ff0-4e1f-87bb-ce6e3831c45b" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}"
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Chinh00_cShop_27de570d-f814-4c0a-b9bb-dbd9c84cd2b2" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}"
           dotnet build
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+  
