@@ -70,6 +70,9 @@
 	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;
   &lt;Assembly Path="/Users/bachviet/Documents/Personal/dotnet/cShop/src/Services/Catalog/GrpcService/bin/Debug/net8.0/cShop.Core.dll" /&gt;
 &lt;/AssemblyExplorer&gt;</s:String>
+	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">/Users/bachviet/Library/Caches/JetBrains/Rider2024.3/resharper-host/temp/Rider/vAny/CoverageData/_cShop.-388487039/Snapshot/snapshot.utdcvr</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/CreateUnitTestDialog/TestProjectMapping/=BA646FD2_002D2EA0_002D4D41_002D902A_002DF3A9D6F9E29C/@EntryIndexedValue">FD0A5ED7-FC78-42FE-A57A-51FB75AEF5F8</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/CreateUnitTestDialog/TestTemplateMapping/=NUnit3x/@EntryIndexedValue">db4927dd-2e12-48a7-9a84-2b7e3e31b9c8</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=58c56b00_002Df81e_002D48fd_002Da74f_002Dc8e84271fcf4/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Continuous Testing" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;Solution /&gt;
 &lt;/SessionState&gt;</s:String>
