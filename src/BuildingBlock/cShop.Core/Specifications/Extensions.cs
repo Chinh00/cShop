@@ -11,7 +11,6 @@ public static class Extensions
         where TEntity : EntityBase
     { 
         var specType = specification.GetType().BaseType;     
-        //Expression<Func<TEntity, object>> = x => x.Property
 
         var endsWith = sort.EndsWith("Desc");
 
@@ -27,16 +26,16 @@ public static class Extensions
         
         var expression = Expression.Lambda<Func<TEntity, object>>(body, param);
 
-        var sortAscMethod = specType?.GetMethod(sortAsc, BindingFlags.Public);
-        var sortDescMethod = specType?.GetMethod(sortDesc, BindingFlags.Public);
+        var sortAscMethod = specType?.GetMethod(sortAsc, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        var sortDescMethod = specType?.GetMethod(sortDesc, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
         if (endsWith)
         {
-            sortDescMethod?.Invoke(specification, [new {expression}]);
+            sortDescMethod?.Invoke(specification, [expression]);
         }
         else
         {
-            sortAscMethod?.Invoke(specification, [new {expression}]);
+            sortAscMethod?.Invoke(specification, [expression]);
         }
 
     }
@@ -54,7 +53,6 @@ public static class Extensions
         where TEntity : EntityBase
     {
         var param = left.Parameters[0];
-        var typeOfLeft = param.Type;
         var subExpressionVisitor = new SubExpressionVisitor()
         {
             Subst = { [right.Parameters[0]] = param  }
@@ -69,13 +67,35 @@ public static class Extensions
         return comparision switch
         {
             "==" => BuildBinary(ExpressionType.Equal, left, value),
+            "!=" => BuildBinary(ExpressionType.NotEqual, left, value),
+            ">=" => BuildBinary(ExpressionType.GreaterThanOrEqual, left, value),
+            "<=" => BuildBinary(ExpressionType.LessThanOrEqual, left, value),
+            ">" => BuildBinary(ExpressionType.GreaterThan, left, value),
+            "<" => BuildBinary(ExpressionType.LessThan, left, value),
             _ => throw new Exception($"Invalid comparision: {comparision}")
         };
     }
 
     static Expression BuildBinary(ExpressionType type, Expression left, string value)
     {
-        var right = Expression.Constant(value, left.Type);
+        object leftType = value;
+        if (!(left.Type == typeof(string)))
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                leftType = null;
+                if (Nullable.GetUnderlyingType(left.Type) == null) 
+                    left = Expression.Convert(left, typeof(Nullable<>).MakeGenericType(left.Type));               
+            }
+            else
+            {
+                var valueType = Nullable.GetUnderlyingType(left.Type) ?? left.Type;
+                leftType = valueType.IsEnum ? Enum.Parse(valueType, value) :
+                    valueType == typeof(Guid) ? Guid.Parse(value) : Convert.ChangeType(value, valueType);
+            }
+        }
+
+        var right = Expression.Constant(leftType, left.Type);
         return Expression.MakeBinary(type, left, right);
     }
     

@@ -28,7 +28,7 @@ Content-Type: application/json
     "database.names": "Db",
     "topic.prefix": "catalog",
     "table.include.list": "dbo.CatalogOutboxes",
-    "schema.history.internal.kafka.bootstrap.servers": "kafka:29092",
+    "schema.history.internal.kafka.bootstrap.servers": "broker1:29092,broker2:29093,broker3:29094",
     "schema.history.internal.kafka.topic": "catalog.cdc",
     "database.encrypt": false,
     "include.schema.changes": false,
@@ -75,7 +75,7 @@ Content-Type: application/json
     "database.names": "Db",
     "topic.prefix": "order",
     "table.include.list": "dbo.OrderOutboxes",
-    "schema.history.internal.kafka.bootstrap.servers": "kafka:29092",
+    "schema.history.internal.kafka.bootstrap.servers": "broker1:29092,broker2:29093,broker3:29094",
     "schema.history.internal.kafka.topic": "order.cdc",
     "database.encrypt": false,
     "include.schema.changes": false,
@@ -126,7 +126,7 @@ Content-Type: application/json
     "database.names": "Db",
     "topic.prefix": "shipper",
     "table.include.list": "dbo.ShipperOutboxes",
-    "schema.history.internal.kafka.bootstrap.servers": "kafka:29092",
+    "schema.history.internal.kafka.bootstrap.servers": "broker1:29092,broker2:29093,broker3:29094",
     "schema.history.internal.kafka.topic": "user.cdc",
     "database.encrypt": false,
     "include.schema.changes": false,
@@ -157,7 +157,7 @@ Content-Type: application/json
   }
 }
 ### Remove connector source
-DELETE http://localhost:8083/connectors/user-outbox-source HTTP/1.1
+DELETE http://localhost:8083/connectors/shipper-outbox-source HTTP/1.1
 
 
 
@@ -177,7 +177,7 @@ Content-Type: application/json
     "database.names": "Db",
     "topic.prefix": "customer",
     "table.include.list": "dbo.CustomerOutboxes",
-    "schema.history.internal.kafka.bootstrap.servers": "kafka:29092",
+    "schema.history.internal.kafka.bootstrap.servers": "broker1:29092,broker2:29093,broker3:29094",
     "schema.history.internal.kafka.topic": "user.cdc",
     "database.encrypt": false,
     "include.schema.changes": false,
@@ -208,6 +208,6 @@ Content-Type: application/json
   }
 }
 ### Remove connector source
-DELETE http://localhost:8083/connectors/shipper-outbox-source HTTP/1.1
+DELETE http://localhost:8083/connectors/customer-outbox-source HTTP/1.1
 
 

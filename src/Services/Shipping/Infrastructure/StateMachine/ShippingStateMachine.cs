@@ -29,7 +29,7 @@ public class ShippingStateMachine : MassTransitStateMachine<ShippingState>
             
         }).Produce(context => context.Init<OrderCompleteIntegrationEvent>(new {context.Saga.OrderId})).Finalize());
         
-        SetCompletedWhenFinalized();
+        //SetCompletedWhenFinalized();
     }
     
     public State Dispatch { get; set; }

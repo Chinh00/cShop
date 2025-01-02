@@ -1,8 +1,0 @@
-﻿global:
-  scrape_interval: 15s
-
-scrape_configs:
-  - job_name: 'yarp-proxy'
-    metrics_path: '/metrics'
-    static_configs:
-      - targets: ['host.docker.internal:5000'] 

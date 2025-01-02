@@ -1,5 +1,7 @@
-﻿using System.Text.Json;
-using cShop.Core.Domain;
+﻿using cShop.Core.Domain;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+
 namespace cShop.Infrastructure;
 
 public static class Extensions
@@ -17,23 +19,16 @@ public static class Extensions
     }
 
     public static TQuery GetQuery<TQuery>(this HttpContext context, string query)
-        where TQuery : IQuery<IResult>, new()
+        where TQuery : new()
     {
 
         TQuery queryObject = new ();
         if (!string.IsNullOrWhiteSpace(query) || query == "{}")
         {
-            queryObject = JsonSerializer.Deserialize<TQuery>(query);
+            queryObject = JsonConvert.DeserializeObject<TQuery>(query);
         }
-        else
-        {
-            context.Response.Headers.Add("x-query", JsonSerializer.Serialize("{}", new JsonSerializerOptions()
-            {
-                
-                PropertyNameCaseInsensitive = true
-            }));
-
-        }
+        context.Response.Headers.Append("x-query", JsonConvert.SerializeObject(queryObject,
+            new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
         
         return queryObject;
         

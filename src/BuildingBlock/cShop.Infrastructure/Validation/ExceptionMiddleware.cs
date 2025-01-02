@@ -21,6 +21,7 @@ public class ExceptionMiddleware(RequestDelegate next)
             }
             else
             {
+                context.Response.StatusCode = 500;
                 await context.Response.WriteAsync(JsonSerializer.Serialize(ResultModel<string>.Create(e.ToString())));
             }
         }

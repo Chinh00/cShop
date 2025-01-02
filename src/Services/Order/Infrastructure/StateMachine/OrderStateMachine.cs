@@ -30,7 +30,28 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
         Event(() => OrderConfirmed, c => c.CorrelateById(x => x.Message.OrderId));
         Event(() => OrderCompleteIntegrationEvent, c => c.CorrelateById(x => x.Message.OrderId));
 
-        InstanceState(e => e.CurrentState);
+        Event(() => OrderStatusRequested, x =>
+        {
+            x.CorrelateById(m => m.Message.OrderId);
+            x.OnMissingInstance(m => m.ExecuteAsync(async context =>
+            {
+                if (context.RequestId.HasValue)
+                {
+                    await context.RespondAsync<OrderNotFound>(new { context.Message.OrderId });
+                }
+            }));
+        });
+
+        DuringAny(
+            When(OrderStatusRequested)
+                .RespondAsync(context => context.Init<OrderStatus>(new
+                {
+                    OrderId = context.Saga.CorrelationId,
+                    State = context.Saga.CurrentState
+                }))
+        );
+
+    InstanceState(e => e.CurrentState);
 
 
         Initially(
@@ -169,6 +190,7 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
     public Event<OrderConfirmed> OrderConfirmed { get; private set; } = null!;
 
     public Event<OrderCompleteIntegrationEvent> OrderCompleteIntegrationEvent { get; private set; } = null!;
+    public Event<CheckOrder> OrderStatusRequested { get; private set; }
 
     async Task SendAuditLog()
     {

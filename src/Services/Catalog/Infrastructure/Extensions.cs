@@ -1,5 +1,6 @@
 using Confluent.Kafka;
 using cShop.Contracts.Services.Catalog;
+using Infrastructure.ConfigMapper;
 using IntegrationEvents;
 using MassTransit;
 
@@ -10,7 +11,7 @@ public static class Extensions
     public static IServiceCollection AddMasstransitCustom(this IServiceCollection services, IConfiguration configuration,
         Action<IServiceCollection>? action = null)
     {
-
+        services.AddAutoMapper(typeof(CatalogConfigMapper));
         services.AddMassTransit(k =>
         {
             k.SetKebabCaseEndpointNameFormatter();

@@ -23,7 +23,7 @@ public static class Extensions
             t.SetKebabCaseEndpointNameFormatter();
 
             t.UsingInMemory();
-            
+            t.AddRequestClient<CheckOrder>();
             t.AddRider(r =>
             {
                 r.AddProducer<OrderStartedIntegrationEvent>(nameof(OrderStartedIntegrationEvent));

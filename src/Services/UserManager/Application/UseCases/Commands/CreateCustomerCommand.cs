@@ -24,11 +24,6 @@ public record CreateCustomerCommand(string Name, string Email) : ICommand<IResul
     
     internal class Handler(ISchemaRegistryClient schemaRegistryClient, IRepository<CustomerOutbox> repository, IRepository<Customer> userRepository) : OutboxHandler<CustomerOutbox>(schemaRegistryClient, repository), IRequestHandler<CreateCustomerCommand, IResult>
     {
-        
-        
-        
-        
-        
         public async Task<IResult> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
         {
             var user = new Customer()

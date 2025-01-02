@@ -7,6 +7,8 @@ public class GetCatalogsSpec : ListSpecification<CatalogItem>
 {
     public GetCatalogsSpec(GetCatalogsQuery query)
     {
-        
+        ApplyFilterList(query.Filters);
+        ApplyIncludeList(query.Includes);
+        ApplyOrderList(query.Sorts);
     }
 }

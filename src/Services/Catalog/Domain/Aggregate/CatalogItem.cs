@@ -13,7 +13,7 @@ public class CatalogItem : AggregateBase
     
     public bool IsActive { get; set; }
     
-    public Guid? CategoryTypeId { get; set; }
+    public Guid? CatalogTypeId { get; set; }
     
     public virtual CatalogType CatalogType { get; set; }
     
@@ -40,22 +40,34 @@ public class CatalogItem : AggregateBase
     
     
 
-    public void AssignCategory(CatalogType catalogType)
+    public void AssignCatalogType(CatalogType catalogType)
     {
-        CategoryTypeId = catalogType.Id;
-        RaiseEvent(version => new DomainEvents.CategoryAssigned(catalogType.Id, version));
+        CatalogType = catalogType;
+    }
+    public void AssignCatalogType(Guid catalogTypeId)
+    {
+        CatalogTypeId = catalogTypeId;
+    }
+    public void AssignCatalogBrand(Guid catalogBrandId)
+    {
+        CatalogBrandId = catalogBrandId;
+    }
+
+    
+    
+    public void AssignCatalogBrand(CatalogBrand catalogBrand)
+    {
+        CatalogBrand = catalogBrand;
     }
     
 
-    public void CreateCatalog(Command.CreateCatalog command)
+    public void CreateCatalog(string name, int quantity, decimal price, string imageUrl)
     {
-        Name = command.Name;
-        AvailableStock = command.Quantity;
-        Price = command.Price;
-        ImageUrl = command.ImageSrc;
-        CategoryTypeId = command.CategoryId;
+        Name = name;
+        AvailableStock = quantity;
+        Price = price;
+        ImageUrl = imageUrl;
         IsActive = false;
-        RaiseEvent(version => new DomainEvents.CatalogCreated(Id, Name, AvailableStock, Price, ImageUrl, CategoryTypeId , IsActive, version));
     }
 
     public void ActiveCatalog()
@@ -94,7 +106,8 @@ public class CatalogItem : AggregateBase
         AvailableStock = @event.Quantity;
         Price = @event.Price;
         ImageUrl = @event.ImageUrl;
-        CategoryTypeId = @event.CategoryId;
+        CatalogTypeId = @event.CategoryTypeId;
+        CatalogBrandId = @event.CategoryBrandId;
         IsActive = @event.IsActive;
         
         Version = @event.Version;

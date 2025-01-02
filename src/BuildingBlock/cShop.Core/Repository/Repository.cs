@@ -18,7 +18,7 @@ public interface IRepository<TEntity>
 public interface IListRepository<TEntity>
     where TEntity : EntityBase
 {
-    Task<TEntity> FindAsync(IListSpecification<TEntity> specification, CancellationToken cancellationToken);
+    Task<List<TEntity>> FindAsync(IListSpecification<TEntity> specification, CancellationToken cancellationToken);
     
 
 } 

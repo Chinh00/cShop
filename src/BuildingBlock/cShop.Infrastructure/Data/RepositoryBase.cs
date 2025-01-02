@@ -17,12 +17,21 @@ public class RepositoryBase<TDbContext, TEntity> : IRepository<TEntity>, IListRe
         _dbSet = context.Set<TEntity>();
     }
 
-    void GetQuery(IQueryable<TEntity> source, ISpecification<TEntity> specification)
+    IQueryable<TEntity> GetQuery(IQueryable<TEntity> source, ISpecification<TEntity> specification)
     {
         source = source.Where(specification.Filter);
-        specification.Includes.Aggregate(source, (queryable, current) => queryable.Include(current));
-        specification.IncludeStrings.Aggregate(source, (queryable, current) => queryable.Include(current));
-        
+        specification.Includes.ForEach(e => source = source.Include(e));
+        specification.IncludeStrings.ForEach(e => source = source.Include(e));
+        return source;
+    }
+    IQueryable<TEntity> GetQuery(IQueryable<TEntity> source, IListSpecification<TEntity> specification)
+    {
+        specification.Filter.ForEach(e => source = source.Where(e));
+        specification.Includes.ForEach(e => source = source.Include(e));
+        specification.IncludeStrings.ForEach(e => source = source.Include(e));
+        specification.OrderBys.ForEach(e => source = source.OrderBy(e));
+        specification.OrderDescBys.ForEach(e => source = source.OrderByDescending(e));
+        return source;
     }
 
     public async Task<TEntity> FindByIdAsync<TId>(TId id, CancellationToken cancellationToken)
@@ -30,9 +39,10 @@ public class RepositoryBase<TDbContext, TEntity> : IRepository<TEntity>, IListRe
         return await _dbSet.FindAsync(id, cancellationToken);
     }
 
-    public Task<List<TEntity>> FindAsync(ISpecification<TEntity> specification, CancellationToken cancellationToken)
+    public async Task<List<TEntity>> FindAsync(ISpecification<TEntity> specification, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var query = GetQuery(_dbSet, specification);
+        return await query.ToListAsync(cancellationToken);
     }
 
     public Task<TEntity> FindOneAsync(ISpecification<TEntity> specification, CancellationToken cancellationToken)
@@ -59,8 +69,9 @@ public class RepositoryBase<TDbContext, TEntity> : IRepository<TEntity>, IListRe
         throw new NotImplementedException();
     }
 
-    public Task<TEntity> FindAsync(IListSpecification<TEntity> specification, CancellationToken cancellationToken)
+    public async Task<List<TEntity>> FindAsync(IListSpecification<TEntity> specification, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var query = GetQuery(_dbSet, specification);
+        return await query.ToListAsync(cancellationToken);
     }
 }

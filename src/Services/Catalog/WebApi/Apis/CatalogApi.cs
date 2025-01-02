@@ -26,8 +26,7 @@ public static class CatalogApi
         group.MapGet(string.Empty, async (ISender sender, HttpContext context,[FromHeader(Name = "x-query")] string stringQuery) =>
         {
             var query = context.GetQuery<GetCatalogsQuery>(stringQuery);
-            var result = await sender.Send(query);
-            return Results.Ok(result);
+            return await sender.Send(query);
         });
         
         return endpoints;
