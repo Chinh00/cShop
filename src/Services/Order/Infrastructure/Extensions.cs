@@ -24,6 +24,7 @@ public static class Extensions
 
             t.UsingInMemory();
             t.AddRequestClient<CheckOrder>();
+            
             t.AddRider(r =>
             {
                 r.AddProducer<OrderStartedIntegrationEvent>(nameof(OrderStartedIntegrationEvent));
@@ -45,7 +46,7 @@ public static class Extensions
 
                 r.AddConsumer<EventDispatcher>();
                 
-
+                
                 r.AddSagaStateMachine<OrderStateMachine, OrderState, OrderStateMachineDefinition>()
                     .MongoDbRepository(e =>
                     {

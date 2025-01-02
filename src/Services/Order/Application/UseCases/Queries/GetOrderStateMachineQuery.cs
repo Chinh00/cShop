@@ -1,11 +1,6 @@
-using Automatonymous.Visualizer;
-using Automatonymous.Graphing;
 using cShop.Contracts.Services.Order;
-using cShop.Core.Domain;
 using FluentValidation;
-using Infrastructure.StateMachine;
 using MassTransit;
-using MassTransit.SagaStateMachine;
 using MediatR;
 
 namespace Application.UseCases.Queries;
@@ -30,7 +25,9 @@ public record GetOrderStateMachineQuery(Guid OrderId) : IRequest<IResult>
         public async Task<IResult> Handle(GetOrderStateMachineQuery request, CancellationToken cancellationToken)
         {
             
-            var orderStatus = await _client.GetResponse<OrderStatus>(new {request.OrderId}, cancellationToken);
+            var orderStatus = await _client.GetResponse<OrderStatus, OrderNotFound>(new { OrderId = request.OrderId }, cancellationToken,
+                timeout: TimeSpan.FromSeconds(60)
+            );
 
             return Results.Ok(orderStatus);
         }

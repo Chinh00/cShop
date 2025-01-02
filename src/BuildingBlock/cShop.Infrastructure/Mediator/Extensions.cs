@@ -1,4 +1,3 @@
-using System.Reflection;
 using cShop.Infrastructure.Validation;
 using MediatR;
 

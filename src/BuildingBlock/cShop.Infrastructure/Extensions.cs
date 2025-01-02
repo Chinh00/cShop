@@ -1,5 +1,4 @@
-﻿using cShop.Core.Domain;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace cShop.Infrastructure;

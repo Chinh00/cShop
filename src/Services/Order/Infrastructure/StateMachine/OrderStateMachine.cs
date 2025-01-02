@@ -42,16 +42,8 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
             }));
         });
 
-        DuringAny(
-            When(OrderStatusRequested)
-                .RespondAsync(context => context.Init<OrderStatus>(new
-                {
-                    OrderId = context.Saga.CorrelationId,
-                    State = context.Saga.CurrentState
-                }))
-        );
-
-    InstanceState(e => e.CurrentState);
+        
+        InstanceState(e => e.CurrentState);
 
 
         Initially(
@@ -143,6 +135,15 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
                     _logger.LogInformation($"Order cancelled {context.Saga.CorrelationId}");
                     await SendAuditLog();
                 }).Finalize());
+        DuringAny(
+            When(OrderStatusRequested)
+                .RespondAsync(context => context.Init<OrderStatus>(new
+                {
+                    OrderId = context.Saga.CorrelationId,
+                    State = context.Saga.CurrentState
+                }))
+        );
+
 
         SetCompletedWhenFinalized();
     }

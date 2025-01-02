@@ -5,7 +5,6 @@ using cShop.Infrastructure.SchemaRegistry;
 using Domain;
 using Domain.Outbox;
 using IntegrationEvents;
-using MassTransit;
 using MediatR;
 
 namespace Application.UseCases.Masstransits;
