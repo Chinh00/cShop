@@ -11,9 +11,9 @@ public record CreateCatalogsCommand(IFormFile File) : ICommand<IResult>
     {
         
     }
-    internal class Handler : IRequestHandler<CreateCatalogsCommand, IResult>
+    internal class Handler(ISender mediator) : IRequestHandler<CreateCatalogsCommand, IResult>
     {
-        
+
         public async Task<IResult> Handle(CreateCatalogsCommand request, CancellationToken cancellationToken)
         {
             
@@ -41,8 +41,17 @@ public record CreateCatalogsCommand(IFormFile File) : ICommand<IResult>
                     for (int col = 1; col <= colCount; col++)
                     {
                         rowData[headers[col - 1]] = worksheet.Cells[row, col].Text;
-                        Console.WriteLine(worksheet.Cells[row, col].Text);
+                        //Console.WriteLine(worksheet.Cells[row, col].Text);
                     }
+
+                    var price = worksheet.Cells[row, 2].Text.Replace(".", "").Replace("đ", "");
+                    Console.WriteLine(price);
+                    await mediator.Send(
+                        new CreateCatalogCommand(worksheet.Cells[row, 1].Text, 10, decimal.Parse(price),
+                            worksheet.Cells[row, 3].Text,
+                            new CreateCatalogCommand.CatalogTypeCreateModel(null, worksheet.Cells[row, 4].Text),
+                            new CreateCatalogCommand.CatalogBrandCreateModel(null, worksheet.Cells[row, 5].Text)),
+                        cancellationToken);
                     data.Add(rowData);
                     
 

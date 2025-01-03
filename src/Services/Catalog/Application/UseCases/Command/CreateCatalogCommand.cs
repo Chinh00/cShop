@@ -1,8 +1,10 @@
 
 
+using Application.UseCases.Queries.Specs;
 using Confluent.SchemaRegistry;
 using cShop.Core.Domain;
 using cShop.Core.Repository;
+using cShop.Core.Specifications;
 using cShop.Infrastructure.SchemaRegistry;
 using Domain.Aggregate;
 using Domain.Entities;
@@ -37,7 +39,9 @@ public record CreateCatalogCommand(
     internal class Hander(
         ISchemaRegistryClient schemaRegistryClient,
         IRepository<CatalogItem> catalogRepository,
-        IRepository<CatalogOutbox> repository)
+        IRepository<CatalogOutbox> repository,
+        IRepository<CatalogBrand> catalogBrandRepository,
+        IRepository<CatalogType> catalogTypeRepository)
         : OutboxHandler<CatalogOutbox>(schemaRegistryClient, repository), IRequestHandler<CreateCatalogCommand, IResult>
     {
         public async Task<IResult> Handle(CreateCatalogCommand request, CancellationToken cancellationToken)
@@ -48,18 +52,33 @@ public record CreateCatalogCommand(
             var (catalogBrandId, catalogBrandName) = categoryBrandId;
             
             catalogItem.CreateCatalog(name, availableStock, price, imageSrc);
-            if (catalogTypeId != null) catalogItem.AssignCatalogType(catalogTypeId.Value);
-            else
-                catalogItem.AssignCatalogType(new CatalogType()
+
+
+
+            CatalogType alreadyCatalogType;
+            if (catalogTypeId is not null)
             {
-                Name = catalogTypeName
-            });
-            if (catalogBrandId != null) catalogItem.AssignCatalogBrand(catalogBrandId.Value);
+                alreadyCatalogType = await catalogTypeRepository.FindOneAsync(new GetCatalogTypeByIdSpec(catalogTypeId.Value), cancellationToken);
+            }
             else
-                catalogItem.AssignCatalogBrand(new CatalogBrand()
-                {
-                    BrandName = catalogBrandName
-                });
+            {
+                alreadyCatalogType = await catalogTypeRepository.FindOneAsync(new GetCatalogTypeByNameSpec(catalogTypeName), cancellationToken);
+            }
+
+            catalogItem.AssignCatalogType(alreadyCatalogType ?? new CatalogType() {Name = catalogTypeName});
+
+            CatalogBrand alreadyCatalogBrand;
+            if (catalogBrandId is not null)
+            {
+                alreadyCatalogBrand = await catalogBrandRepository.FindOneAsync(new GetCatalogBrandByIdSpec(catalogBrandId.Value), cancellationToken);
+            }
+            else
+            {
+                alreadyCatalogBrand = await catalogBrandRepository.FindOneAsync(new GetCatalogBrandByNameSpec(catalogBrandName), cancellationToken);
+            }
+
+            catalogItem.AssignCatalogBrand(alreadyCatalogBrand ?? new CatalogBrand() {BrandName = catalogBrandName});
+            
             
 
             await catalogRepository.AddAsync(catalogItem, cancellationToken);

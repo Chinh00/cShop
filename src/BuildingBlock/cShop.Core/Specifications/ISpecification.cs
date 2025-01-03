@@ -9,7 +9,7 @@ public interface ISpecificationRoot<TEntity> where TEntity : EntityBase { }
 public interface ISpecification<TEntity> : ISpecificationRoot<TEntity> where TEntity : EntityBase
 {
     Expression<Func<TEntity, bool>> Filter { get; }
-    List<Expression<Func<TEntity, object>>> Includes { get; }
+    List<Expression<Func<TEntity, object>>> Includes { get; } 
     List<string> IncludeStrings { get; }
     List<Expression<Func<TEntity, object>>> OrderBys { get;  }
     
