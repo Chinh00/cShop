@@ -1,15 +1,12 @@
 version: "3.9"
 
-services:
-  
-  
+services:  
   catalogservice:
     image: chinhval/cshopcatalogservice
     container_name: catalogservice
     environment:
-#      IdentityServer__Url: http://localhost:5555
-      ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver,1434;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
-      Kafka__BootstrapServers: broker1:9092,broker2:9092,broker3:9092
+      ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
+      Kafka__BootstrapServers: broker1:9092,broker2:9093,broker3:9094
       SchemaRegistry__Url: ${SchemaRegistry__Url:-http://schema-registry}
       ASPNETCORE_Kestrel__Endpoints__Https__Url: https://+:443
       ASPNETCORE_Kestrel__Endpoints__Https__Protocols: Http2
@@ -19,7 +16,7 @@ services:
       ASPNETCORE_Kestrel__Certificates__Default__Password: "P@ssw0rd02"
     ports:
       - "7007:80"
-      - "7004:443"
+      - "7000:443"
     volumes:
       - ./certs/https.pfx:/https.pfx
     depends_on:
@@ -29,6 +26,8 @@ services:
       - schema-registry
       - mongodb
       - sqlserver
+    networks:
+      cshop-network:
       
   basketservice:
     container_name: basketservice
@@ -42,7 +41,7 @@ services:
     image: chinhval/cshopbasketservice
     environment:
 #      IdentityServer__Url: http://localhost:5555
-      Kafka__BootstrapServers: broker1:9092,broker2:9092,broker3:9092
+      Kafka__BootstrapServers: broker1:9092,broker2:9093,broker3:9094
       SchemaRegistry__Url: ${SchemaRegistry__Url:-http://schema-registry:8085}
       CatalogGrpc__Url: https://catalogservice
       Redis__Server: redis
@@ -51,17 +50,18 @@ services:
       Cert__Password: "P@ssw0rd02"
     volumes:
       - ./certs/https.pfx:/https.pfx
+    networks:
+      cshop-network:
     
     
     
     
   orderservice:
     ports:
-      - "7002:80"
-    
+      - "7002:80" 
     image: chinhval/cshoporderservice
     environment:
-      Kafka__BootstrapServers: broker1:9092,broker2:9092,broker3:9092
+      Kafka__BootstrapServers: broker1:9092,broker2:9093,broker3:9094
       Kafka__SchemaRegistryServer: ${SchemaRegistry__Url:-http://schema-registry:8085}
       ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver,1434;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
       MongoDb__Username: root
@@ -75,7 +75,8 @@ services:
       - broker2
       - broker3
       - schema-registry
-    
+    networks:
+      cshop-network:
   userservice:
     container_name: userservice
     ports:
@@ -83,7 +84,7 @@ services:
 
     image: chinhval/cshopuserservice
     environment:
-      Kafka__BootstrapServers: broker1:9092,broker2:9092,broker3:9092
+      Kafka__BootstrapServers: broker1:9092,broker2:9093,broker3:9094
       Kafka__SchemaRegistryServer: ${SchemaRegistry__Url:-http://schema-registry:8085}
       ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver,1434;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
     depends_on:
@@ -92,15 +93,16 @@ services:
       - broker2
       - broker3
       - schema-registry
-  
+    networks:
+      cshop-network:
   notificationservice:
     container_name: notificationservice
     ports:
       - "7004:80"
 
-    image: chinhval/notificationservice
+    image: chinhval/cshopnotificationservice
     environment:
-      Kafka__BootstrapServers: broker1:9092,broker2:9092,broker3:9092
+      Kafka__BootstrapServers: broker1:9092,broker2:9093,broker3:9094
       Kafka__SchemaRegistryServer: ${SchemaRegistry__Url:-http://schema-registry:8085}
       ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver,1434;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
     depends_on:
@@ -109,14 +111,15 @@ services:
       - broker2
       - broker3
       - schema-registry
+    networks:
+      cshop-network:
   shippingservice:
-    container_name: notificationservice
+    container_name: shippingservice
     ports:
       - "7005:80"
-
     image: chinhval/cshopshippingservice
     environment:
-      Kafka__BootstrapServers: broker1:9092,broker2:9092,broker3:9092
+      Kafka__BootstrapServers: broker1:9092,broker2:9093,broker3:9094
       Kafka__SchemaRegistryServer: ${SchemaRegistry__Url:-http://schema-registry:8085}
       ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver,1434;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
     depends_on:
@@ -125,13 +128,12 @@ services:
       - broker2
       - broker3
       - schema-registry
-  
+    networks:
+      cshop-network: 
   gatewayservice:
     ports:
       - "11111:80"
-    build:
-      context: .
-      dockerfile: ./src/Services/Proxy/AppGateway/Dockerfile
+    image: chinhval/cshopgatewayservice
     environment:
       ReverseProxy__Routes__identityserver__ClusterId: identityserver
       ReverseProxy__Routes__identityserver__Match__Path: /identityserver/{**catch-all}
@@ -189,9 +191,7 @@ services:
       
       ReverseProxy__Clusters__shippingservice__ClusterId: shippingservice
       ReverseProxy__Clusters__shippingservice__Destinations__destination1__Address: http://shippingservice
-      
-      
-      
+
     depends_on:
       - orderservice
       - basketservice
@@ -199,32 +199,32 @@ services:
       - notificationservice
       - userservice
       - shippingservice
-      - 
-  
+    networks:
+      cshop-network:
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
+    hostname: sqlserver
+    container_name: sqlserver
     ports:
       - "1434:1433"
     environment:
-      SA_PASSWORD: ${MSSQL_PASSWORD:-@P@ssw0rd02}
+      SA_PASSWORD: ${MSSQL_PASSWORD:-Password123@}
       ACCEPT_EULA: "Y"
       MSSQL_PID: "Standard"
       MSSQL_AGENT_ENABLED: true
-    
+    networks:
+      cshop-network:
     volumes:
-      - data:/var/opt/mssql
+      - ./data:/var/opt/mssql
     
-
-
-  
-
   redis:
     image: redis/redis-stack
     container_name: redis
     ports:
       - "6379:6379"
       - "8001:8001"
-
+    networks:
+      cshop-network:
   debezium:
     image: quay.io/debezium/connect
     ports:
@@ -247,8 +247,8 @@ services:
       - broker1
       - broker2
       - broker3
-  
-  
+    networks:
+      cshop-network:
   mongodb:
     image: mongo
     container_name: mongodb
@@ -257,6 +257,8 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=@P@ssw0rd02
+    networks:
+      cshop-network:
   smtp4dev:
     image: rnwood/smtp4dev:v3
     restart: always
@@ -265,35 +267,39 @@ services:
       - '2525:25'
       - '143:143'
     volumes:
-      - smtp4dev-data:/smtp4dev
+      - ./data/smtp4dev-data:/smtp4dev
     environment:
       ServerOptions__Urls: http://0.0.0.0:80
       ServerOptions__HostName: smtp4dev
-
+    networks:
+      cshop-network:
   schema-registry-ui:
     image: landoop/schema-registry-ui
     ports:
-      - 8000:8000
+      - "8000:8000"
     environment:
       - SCHEMAREGISTRY_URL=http://schema-registry:8085
       - PROXY=true
     depends_on:
       - schema-registry
+    networks:
+      cshop-network:
     
     
   schema-registry:
     image: confluentinc/cp-schema-registry
     container_name: schema-registry
     depends_on:
-      - kafka
+      - broker1
     environment:
-      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://kafka:29092
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://broker1:29092
       SCHEMA_REGISTRY_LISTENERS: http://schema-registry:8085
       SCHEMA_REGISTRY_HOST_NAME: schema-registry
       SCHEMA_REGISTRY_LOG4J_ROOT_LOGLEVEL: 'INFO'
     ports:
       - "8085:8085"
-
+    networks:
+      cshop-network:
   zookeeper:
     image: confluentinc/cp-zookeeper
     hostname: zookeeper
@@ -303,7 +309,8 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
-
+    networks:
+      cshop-network:
   broker1:
     image: confluentinc/cp-kafka
     hostname: broker1
@@ -316,8 +323,10 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker1:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker1:29092,PLAINTEXT_HOST://broker1:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+    networks:
+      cshop-network:
   broker2:
     image: confluentinc/cp-kafka
     hostname: broker2
@@ -330,8 +339,10 @@ services:
       KAFKA_BROKER_ID: 2
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker2:29092,PLAINTEXT_HOST://localhost:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker2:29092,PLAINTEXT_HOST://broker2:9093
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+    networks:
+      cshop-network:
   broker3:
     image: confluentinc/cp-kafka
     hostname: broker3
@@ -344,25 +355,24 @@ services:
       KAFKA_BROKER_ID: 3
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker3:29092,PLAINTEXT_HOST://localhost:9094
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker3:29092,PLAINTEXT_HOST://broker3:9094
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
-  
-  
+    networks:
+      cshop-network:
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
     container_name: kafka-ui
     ports:
       - "8080:8080"
     environment:
-      - KAFKA_CLUSTERS_0_NAME=local
-      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:29092
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: broker1:29092,broker3:29092,broker2:29092
     depends_on:
-      - kafka
+      - broker1
+      - broker2
+      - broker3
+    networks:
+      cshop-network:
 
-
-
-  webapi:
-    image: webapi
-    build:
-      context: .
-      dockerfile: src/Services/Shipping/WebApi/Dockerfile
+networks:
+  cshop-network:
