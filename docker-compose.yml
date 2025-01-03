@@ -4,12 +4,12 @@ services:
   
   
   catalogservice:
-    image: chinhval/catalogservice
+    image: chinhval/cshopcatalogservice
     container_name: catalogservice
     environment:
-      IdentityServer__Url: http://localhost:5555
-      ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
-      Kafka__BootstrapServers: kafka:9092
+#      IdentityServer__Url: http://localhost:5555
+      ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver,1434;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
+      Kafka__BootstrapServers: broker1:9092,broker2:9092,broker3:9092
       SchemaRegistry__Url: ${SchemaRegistry__Url:-http://schema-registry}
       ASPNETCORE_Kestrel__Endpoints__Https__Url: https://+:443
       ASPNETCORE_Kestrel__Endpoints__Https__Protocols: Http2
@@ -23,7 +23,9 @@ services:
     volumes:
       - ./certs/https.pfx:/https.pfx
     depends_on:
-      - kafka
+      - broker1
+      - broker2
+      - broker3
       - schema-registry
       - mongodb
       - sqlserver
@@ -34,10 +36,13 @@ services:
       - "7001:80"
     depends_on:
       - redis
+      - broker1
+      - broker2
+      - broker3
     image: chinhval/cshopbasketservice
     environment:
-      IdentityServer__Url: http://localhost:5555
-      Kafka__BootstrapServers: kafka:9092
+#      IdentityServer__Url: http://localhost:5555
+      Kafka__BootstrapServers: broker1:9092,broker2:9092,broker3:9092
       SchemaRegistry__Url: ${SchemaRegistry__Url:-http://schema-registry:8085}
       CatalogGrpc__Url: https://catalogservice
       Redis__Server: redis
@@ -49,15 +54,16 @@ services:
     
     
     
+    
   orderservice:
     ports:
       - "7002:80"
     
-    image: chinhval/orderservice
+    image: chinhval/cshoporderservice
     environment:
-      Kafka__BootstrapServers: kafka:9092
+      Kafka__BootstrapServers: broker1:9092,broker2:9092,broker3:9092
       Kafka__SchemaRegistryServer: ${SchemaRegistry__Url:-http://schema-registry:8085}
-      ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
+      ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver,1434;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
       MongoDb__Username: root
       MongoDb__Password: "%40P%40ssw0rd02"
       MongoDb__DatabaseName: orderdb
@@ -65,7 +71,9 @@ services:
       MongoDb__ServerName: mongodb
     depends_on:
       - mongodb
-      - kafka
+      - broker1
+      - broker2
+      - broker3
       - schema-registry
     
   userservice:
@@ -73,14 +81,16 @@ services:
     ports:
       - "7003:80"
 
-    image: chinhval/userservice
+    image: chinhval/cshopuserservice
     environment:
-      Kafka__BootstrapServers: kafka:9092
+      Kafka__BootstrapServers: broker1:9092,broker2:9092,broker3:9092
       Kafka__SchemaRegistryServer: ${SchemaRegistry__Url:-http://schema-registry:8085}
-      ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
+      ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver,1434;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
     depends_on:
       - mongodb
-      - kafka
+      - broker1
+      - broker2
+      - broker3
       - schema-registry
   
   notificationservice:
@@ -90,12 +100,30 @@ services:
 
     image: chinhval/notificationservice
     environment:
-      Kafka__BootstrapServers: kafka:9092
+      Kafka__BootstrapServers: broker1:9092,broker2:9092,broker3:9092
       Kafka__SchemaRegistryServer: ${SchemaRegistry__Url:-http://schema-registry:8085}
-      ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
+      ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver,1434;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
     depends_on:
       - mongodb
-      - kafka
+      - broker1
+      - broker2
+      - broker3
+      - schema-registry
+  shippingservice:
+    container_name: notificationservice
+    ports:
+      - "7005:80"
+
+    image: chinhval/cshopshippingservice
+    environment:
+      Kafka__BootstrapServers: broker1:9092,broker2:9092,broker3:9092
+      Kafka__SchemaRegistryServer: ${SchemaRegistry__Url:-http://schema-registry:8085}
+      ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver,1434;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
+    depends_on:
+      - mongodb
+      - broker1
+      - broker2
+      - broker3
       - schema-registry
   
   gatewayservice:
@@ -105,8 +133,7 @@ services:
       context: .
       dockerfile: ./src/Services/Proxy/AppGateway/Dockerfile
     environment:
-      ReverseProxy__Routes__identityserver__ClusterId: 
-        
+      ReverseProxy__Routes__identityserver__ClusterId: identityserver
       ReverseProxy__Routes__identityserver__Match__Path: /identityserver/{**catch-all}
       ReverseProxy__Routes__identityserver__Transforms_0__PathRemovePrefix: /identityserver
       ReverseProxy__Routes__identityserver__Transforms_1__PathPrefix: /
@@ -125,6 +152,21 @@ services:
       ReverseProxy__Routes__basketservice__Match__Path: /basketservice/{**catch-all}
       ReverseProxy__Routes__basketservice__Transforms_0__PathRemovePrefix: /catalogservice
       ReverseProxy__Routes__basketservice__Transforms_1__PathPrefix: /
+      
+      ReverseProxy__Routes__shippingservice__ClusterId: shippingservice
+      ReverseProxy__Routes__shippingservice__Match__Path: /shippingservice/{**catch-all}
+      ReverseProxy__Routes__shippingservice__Transforms_0__PathRemovePrefix: /shippingservice
+      ReverseProxy__Routes__shippingservice__Transforms_1__PathPrefix: /
+      
+      ReverseProxy__Routes__userservice__ClusterId: userservice
+      ReverseProxy__Routes__userservice__Match__Path: /userservice/{**catch-all}
+      ReverseProxy__Routes__userservice__Transforms_0__PathRemovePrefix: /userservice
+      ReverseProxy__Routes__userservice__Transforms_1__PathPrefix: /
+      
+      ReverseProxy__Routes__notificationservice__ClusterId: notificationservice
+      ReverseProxy__Routes__notificationservice__Match__Path: /notificationservice/{**catch-all}
+      ReverseProxy__Routes__notificationservice__Transforms_0__PathRemovePrefix: /notificationservice
+      ReverseProxy__Routes__notificationservice__Transforms_1__PathPrefix: /
         
       
       ReverseProxy__Clusters__userservice__ClusterId: userservice
@@ -132,8 +174,6 @@ services:
       
       ReverseProxy__Clusters__notificationservice__ClusterId: notificationservice
       ReverseProxy__Clusters__notificationservice__Destinations__destination1__Address: http://notificationservice
-      
-      
         
       ReverseProxy__Clusters__orderservice__ClusterId: orderservice
       ReverseProxy__Clusters__orderservice__Destinations__destination1__Address: http://orderservice
@@ -147,6 +187,10 @@ services:
       ReverseProxy__Clusters__basketservice__ClusterId: basketservice
       ReverseProxy__Clusters__basketservice__Destinations__destination1__Address: http://basketservice
       
+      ReverseProxy__Clusters__shippingservice__ClusterId: shippingservice
+      ReverseProxy__Clusters__shippingservice__Destinations__destination1__Address: http://shippingservice
+      
+      
       
     depends_on:
       - orderservice
@@ -154,11 +198,13 @@ services:
       - catalogservice
       - notificationservice
       - userservice
+      - shippingservice
+      - 
   
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
     ports:
-      - "1433:1433"
+      - "1434:1433"
     environment:
       SA_PASSWORD: ${MSSQL_PASSWORD:-@P@ssw0rd02}
       ACCEPT_EULA: "Y"
@@ -184,7 +230,7 @@ services:
     ports:
       - "8083:8083"
     environment:
-      BOOTSTRAP_SERVERS: kafka:29092
+      BOOTSTRAP_SERVERS: broker1:29092,broker2:29092,broker3:29092
       GROUP_ID: 1
       CONFIG_STORAGE_TOPIC: debezium_config
       OFFSET_STORAGE_TOPIC: debezium_offset
@@ -193,12 +239,14 @@ services:
       VALUE_CONVERTER: io.debezium.converters.BinaryDataConverter
       INTERNAL_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
       INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-      KAFKA_CONNECT_PLUGIN_PATH: /kafka/connect
-    volumes:
-      - ./deployments/connectors/confluentinc-kafka-connect-avro-converter-7.7.1/:/kafka/connect/lib/
-      - ./deployments/connectors/confluentinc-kafka-connect-jdbc-10.8.0/:/kafka/connect/lib-db/
+#      KAFKA_CONNECT_PLUGIN_PATH: /kafka/connect
+#    volumes:
+#      - ./deployments/connectors/confluentinc-kafka-connect-avro-converter-7.7.1/:/kafka/connect/lib/
+#      - ./deployments/connectors/confluentinc-kafka-connect-jdbc-10.8.0/:/kafka/connect/lib-db/
     depends_on:
-      - kafka
+      - broker1
+      - broker2
+      - broker3
   
   
   mongodb:
@@ -256,21 +304,50 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
 
-  kafka:
+  broker1:
     image: confluentinc/cp-kafka
-    container_name: kafka
+    hostname: broker1
+    container_name: broker1
     depends_on:
       - zookeeper
     ports:
       - "9092:9092"
-      - "9997:9997"
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://kafka:9092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker1:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+  broker2:
+    image: confluentinc/cp-kafka
+    hostname: broker2
+    container_name: broker2
+    depends_on:
+      - zookeeper
+    ports:
+      - "9093:9093"
+    environment:
+      KAFKA_BROKER_ID: 2
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker2:29092,PLAINTEXT_HOST://localhost:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+  broker3:
+    image: confluentinc/cp-kafka
+    hostname: broker3
+    container_name: broker3
+    depends_on:
+      - zookeeper
+    ports:
+      - "9094:9094"
+    environment:
+      KAFKA_BROKER_ID: 3
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker3:29092,PLAINTEXT_HOST://localhost:9094
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+  
+  
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
     container_name: kafka-ui
@@ -281,39 +358,11 @@ services:
       - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:29092
     depends_on:
       - kafka
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.4.0
-    container_name: elasticsearch
-    restart: always
-    environment:
-      - xpack.security.enabled=false
-      - discovery.type=single-node
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
-    cap_add:
-      - IPC_LOCK
-    volumes:
-      - elasticsearch-data:/usr/share/elasticsearch/data
-    ports:
-      - 9200:9200
-  kibana:
-    container_name: kibana
-    image: docker.elastic.co/kibana/kibana:7.4.0
-    restart: always
-    environment:
-      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-    ports:
-      - 5601:5601
-    depends_on:
-      - elasticsearch
 
 
-volumes:
-  data:
-  elasticsearch-data:
-  smtp4dev-data:
+
+  webapi:
+    image: webapi
+    build:
+      context: .
+      dockerfile: src/Services/Shipping/WebApi/Dockerfile

@@ -80,6 +80,13 @@ jobs:
           file: src/Services/Notification/WebApi/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_NOTIFICATION_SERVICE_NAME}}:latest
+      - name: Build and push Docker image Shipping Service
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: src/Services/Shipping/WebApi/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_SHIPPING_SERVICE_NAME}}:latest
   
   
   build:

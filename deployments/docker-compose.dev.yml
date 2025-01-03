@@ -32,10 +32,10 @@ services:
       VALUE_CONVERTER: io.debezium.converters.BinaryDataConverter
       INTERNAL_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
       INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-      KAFKA_CONNECT_PLUGIN_PATH: /kafka/connect
-    volumes:
-      - ./connectors/confluentinc-kafka-connect-avro-converter-7.7.1/:/kafka/connect/lib/
-      - ./connectors/confluentinc-kafka-connect-jdbc-10.8.0/:/kafka/connect/lib-db/
+#      KAFKA_CONNECT_PLUGIN_PATH: /kafka/connect
+#    volumes:
+#      - ./connectors/confluentinc-kafka-connect-avro-converter-7.7.1/:/kafka/connect/lib/
+#      - ./connectors/confluentinc-kafka-connect-jdbc-10.8.0/:/kafka/connect/lib-db/
     depends_on:
       - broker1
       - broker2
@@ -144,7 +144,7 @@ services:
       - "8080:8080"
     environment:
       KAFKA_CLUSTERS_0_NAME: local
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: broker1:29092,broker2:29092,broker3:29092
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: broker1:29092,broker2:29093,broker3:29094
     depends_on:
       - broker1
       - broker2
