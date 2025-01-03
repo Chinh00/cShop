@@ -16,9 +16,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Data\Migrations\" />
-      <Folder Include="GrpcService\" />
-    </ItemGroup>
+        <Folder Include="GrpcService\" />
+        <Folder Include="Data\Migrations\" />
+    </ItemGroup>  
 
     <ItemGroup>
       <Protobuf Include="..\..\..\BuildingBlock\cShop.Contracts\Protos\Catalog\catalog.proto">
