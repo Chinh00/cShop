@@ -215,7 +215,7 @@ services:
     networks:
       cshop-network:
     volumes:
-      - ./data:/var/opt/mssql
+      - ./__data:/var/opt/mssql
     
   redis:
     image: redis/redis-stack
@@ -267,7 +267,7 @@ services:
       - '2525:25'
       - '143:143'
     volumes:
-      - ./data/smtp4dev-data:/smtp4dev
+      - ./__data/smtp4dev-data:/smtp4dev
     environment:
       ServerOptions__Urls: http://0.0.0.0:80
       ServerOptions__HostName: smtp4dev
