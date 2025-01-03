@@ -3,8 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data;
 
-public class CatalogMigrationHostedDb(IServiceProvider serviceProvider, ILogger<CatalogMigrationHostedDb> logger)
-    : MigrationHostedwService<CatalogContext>(serviceProvider, logger)
+public class CatalogMigrationHostedDb(IServiceProvider serviceProvider, ILogger<CatalogMigrationHostedDb> logger) : MigrationHostedService<CatalogContext>(serviceProvider, logger)
 {
     public override async Task DoMoreAction(CatalogContext dbContext, CancellationToken cancellationToken)
     {
