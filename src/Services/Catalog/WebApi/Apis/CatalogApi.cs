@@ -9,13 +9,15 @@ namespace WebApi.Apis;
 
 public static class CatalogApi
 {
-    private const string BaseUrl = "/api/v{version:apiVersion}/catalog";
+    private const string BaseUrl = "/api/v{version:apiVersion}/catalogs";
     
     public static IVersionedEndpointRouteBuilder MapCatalogApiV1(this IVersionedEndpointRouteBuilder endpoints)
     {
         var group = endpoints.MapGroup(BaseUrl).HasApiVersion(1);
 
         group.MapPost(string.Empty, async (ISender sender, CreateCatalogCommand command) => await sender.Send(command));
+        
+
         group.MapPut("/{id:guid}/active", async (ISender sender, Guid id) => await sender.Send(new ActiveCatalogCommand(id)));
         group.MapPut("/{id:guid}/inactive", async (ISender sender, Guid id) => await sender.Send(new InactiveCatalogCommand(id)));
 
@@ -28,7 +30,9 @@ public static class CatalogApi
             var query = context.GetQuery<GetCatalogsQuery>(stringQuery);
             return await sender.Send(query);
         });
-        
+        group
+            .MapPost("/file",
+                async (ISender sender, IFormFile file) => await sender.Send(new CreateCatalogsCommand(file))).DisableAntiforgery();
         return endpoints;
     }
 }

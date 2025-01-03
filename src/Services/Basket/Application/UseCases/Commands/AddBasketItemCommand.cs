@@ -26,7 +26,9 @@ public record AddBasketItemCommand(Guid UserId, Guid BasketId, Guid ProductId) :
     {
         public async Task<IResult> Handle(AddBasketItemCommand request, CancellationToken cancellationToken)
         {
-            var catalog = await catalogClient.getProductByIdAsync(new GetCatalogByIdRequest() { Id = request.ProductId.ToString() }, cancellationToken: cancellationToken);
+            var catalog = await catalogClient.getProductByIdAsync(
+                new GetCatalogByIdRequest() { Id = request.ProductId.ToString() },
+                cancellationToken: cancellationToken);
 
             if (catalog is null)
             {

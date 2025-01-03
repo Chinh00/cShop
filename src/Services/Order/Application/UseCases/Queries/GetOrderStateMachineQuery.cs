@@ -25,8 +25,8 @@ public record GetOrderStateMachineQuery(Guid OrderId) : IRequest<IResult>
         public async Task<IResult> Handle(GetOrderStateMachineQuery request, CancellationToken cancellationToken)
         {
             
-            var orderStatus = await _client.GetResponse<OrderStatus, OrderNotFound>(new { OrderId = request.OrderId }, cancellationToken,
-                timeout: TimeSpan.FromSeconds(60)
+            var orderStatus = await _client.GetResponse<OrderStatus, OrderNotFound>(new { OrderId = request.OrderId },
+                cancellationToken
             );
 
             return Results.Ok(orderStatus);

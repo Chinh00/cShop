@@ -39,7 +39,7 @@ app.NewVersionedApi("Catalog").MapCatalogApiV1();
 app.UseAuthenticationDefault(builder.Configuration)
     .ConfigureSwagger(builder.Configuration)
     .MapGrpcService<CatalogGrpcService>();
-
+app.UseAntiforgery();
 
 
 

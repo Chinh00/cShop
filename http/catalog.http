@@ -3,26 +3,38 @@
 
 
 ### Create catalog
-POST {{host}}/catalogservice/api/v1/catalog
+POST {{host}}/catalogservice/api/v1/catalogs
 Content-Type: application/json
 
 {
-  "name": "string",
-  "availableStock": 1,
-  "price": 1,
-  "imageSrc": "string",
-  "categoryId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+  "name": "Samsung Galaxy M55",
+  "availableStock": 10,
+  "price": 10190000,
+  "imageSrc": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-samsung-galaxy-m55.png",
+  "catalogType": {
+    "id": null,
+    "name": "Điện thoại, Tablet"
+  },
+  "catalogBrand": {
+    "id": null,
+    "name": "Samsung"
+  }
 }
+
+
+
+
+
 ### Active catalog
 @productId = c1f98678-9d05-4c2a-ad1d-0c3756e22307
 
-PUT {{host}}/catalogservice/api/v1/catalog/{{productId}}/active
+PUT {{host}}/catalogservice/api/v1/catalogs/{{productId}}/active
 Content-Type: application/json
 
 
 ### Inactive catalog
 
-PUT {{host}}/catalogservice/api/v1/catalog/{{productId}}/inactive
+PUT {{host}}/catalogservice/api/v1/catalogs/{{productId}}/inactive
 Content-Type: application/json
 
 
