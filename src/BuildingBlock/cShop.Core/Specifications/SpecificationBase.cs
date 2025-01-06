@@ -3,7 +3,7 @@ using cShop.Core.Domain;
 
 namespace cShop.Core.Specifications;
 
-public abstract class SpecificationBase<TEntity> : ISpecification<TEntity> where TEntity : EntityBase
+public class SpecificationBase<TEntity> : ISpecification<TEntity> where TEntity : EntityBase
 {
     public virtual Expression<Func<TEntity, bool>> Filter { get; set; }
     public List<Expression<Func<TEntity, object>>> Includes { get; set; } = [];

@@ -48,9 +48,9 @@ public class RepositoryBase<TDbContext, TEntity> : IRepository<TEntity>, IListRe
     }
 
     public async Task<TEntity> FindOneAsync(ISpecification<TEntity> specification, CancellationToken cancellationToken)
-    {
+    { 
         var query = GetQuery(_dbSet, specification);
-        return await query.FirstOrDefaultAsync(cancellationToken);
+        return await _dbSet.Where(specification.Filter).FirstOrDefaultAsync(cancellationToken);
     }
 
     public async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken)

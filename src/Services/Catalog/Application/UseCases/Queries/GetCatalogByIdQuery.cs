@@ -24,6 +24,7 @@ public record GetCatalogByIdQuery(Guid Id) : IRequest<ResultModel<CatalogItemDto
 
         public async Task<ResultModel<CatalogItemDto>> Handle(GetCatalogByIdQuery request, CancellationToken cancellationToken)
         {
+            Console.WriteLine(request.Id);
             var spec = new GetCatalogByIdSpec(request.Id);
             var catalog = await repository.FindOneAsync(spec, cancellationToken);
             return ResultModel<CatalogItemDto>.Create(catalog is null ? null : mapper.Map<CatalogItemDto>(catalog));
