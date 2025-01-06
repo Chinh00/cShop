@@ -5,7 +5,7 @@ namespace cShop.Core.Specifications;
 
 public class SpecificationBase<TEntity> : ISpecification<TEntity> where TEntity : EntityBase
 {
-    public virtual Expression<Func<TEntity, bool>> Filter { get; set; }
+    public virtual Expression<Func<TEntity, bool>> Filter { get; set; } 
     public List<Expression<Func<TEntity, object>>> Includes { get; set; } = [];
     public List<string> IncludeStrings { get; } = [];
     public List<Expression<Func<TEntity, object>>> OrderBys { get; set; } = [];
@@ -15,7 +15,7 @@ public class SpecificationBase<TEntity> : ISpecification<TEntity> where TEntity 
     public int Take { get; set; }
 
 
-    public void ApplyFilter(Expression<Func<TEntity, bool>> filter) => Filter = filter;
+    public void ApplyFilter(Expression<Func<TEntity, bool>> filter) => Filter ??= filter;
 
     public void ApplyFilterList(ICollection<FilterModel> filterModels)
     {
@@ -26,11 +26,13 @@ public class SpecificationBase<TEntity> : ISpecification<TEntity> where TEntity 
 
     }
 
-    public void ApplyIncludes(params Expression<Func<TEntity, object>>[] includeExpressions)
+    public void ApplyInclude(Expression<Func<TEntity, object>> includeExpression) => Includes.Add(includeExpression);
+
+    public void ApplyIncludes(Expression<Func<TEntity, object>>[] includeExpressions)
     {
         foreach (var includeExpression in includeExpressions)
-        {
-            Includes.Add(includeExpression);
+        {   
+            ApplyInclude(includeExpression);
         }
     }
 }

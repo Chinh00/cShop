@@ -19,10 +19,10 @@ public class RepositoryBase<TDbContext, TEntity> : IRepository<TEntity>, IListRe
 
     IQueryable<TEntity> GetQuery(IQueryable<TEntity> source, ISpecification<TEntity> specification)
     {
-        source = source.Where(specification.Filter);
-        specification?.Includes.ForEach(e => source = source.Include(e));
-        specification?.IncludeStrings.ForEach(e => source = source.Include(e));
-        source = source.Skip(specification.Skip).Take(specification.Take);
+        if (specification.Filter is not null) source = source.Where(specification.Filter);
+        specification.Includes.ForEach(e => source = source.Include(e));
+        specification.IncludeStrings.ForEach(e => source = source.Include(e));
+        // source = source.Skip(specification.Skip).Take(specification.Take);
         return source;
     }
     IQueryable<TEntity> GetQuery(IQueryable<TEntity> source, IListSpecification<TEntity> specification)
@@ -50,7 +50,7 @@ public class RepositoryBase<TDbContext, TEntity> : IRepository<TEntity>, IListRe
     public async Task<TEntity> FindOneAsync(ISpecification<TEntity> specification, CancellationToken cancellationToken)
     { 
         var query = GetQuery(_dbSet, specification);
-        return await _dbSet.Where(specification.Filter).FirstOrDefaultAsync(cancellationToken);
+        return await query.FirstOrDefaultAsync(cancellationToken);
     }
 
     public async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken)

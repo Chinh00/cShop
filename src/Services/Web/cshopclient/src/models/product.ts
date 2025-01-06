@@ -1,3 +1,6 @@
+import { CatalogBrand } from "./catalogBrand";
+import { CatalogType } from "./catalogType";
+
 export interface Product {
     id: string;
     name: string,
@@ -5,7 +8,7 @@ export interface Product {
     imageUrl: string,
     isActive: boolean,
     catalogTypeId: string,
-    catalogType: null,
+    catalogType?: CatalogType,
     catalogBrandId: string,
-    catalogBrand: null
+    catalogBrand?: CatalogBrand
 }   
