@@ -6,6 +6,11 @@ x-query: {"includes": ["CatalogType", "CatalogBrand"]}
 
 Content-Type: application/json
 
+### Get Catalog detail
+@catalogId = 90de2b0d-d9de-4267-9237-062cb61fb166
+GET {{host}}/catalogservice/api/v1/catalogs/{{catalogId}}
+Content-Type: application/json
+
 
 
 
