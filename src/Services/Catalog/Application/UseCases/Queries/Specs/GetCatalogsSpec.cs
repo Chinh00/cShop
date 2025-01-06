@@ -10,5 +10,6 @@ public class GetCatalogsSpec : ListSpecification<CatalogItem>
         ApplyFilterList(query.Filters);
         ApplyIncludeList(query.Includes);
         ApplyOrderList(query.Sorts);
+        ApplyPagination(query.Page, query.PageSize);
     }
 }

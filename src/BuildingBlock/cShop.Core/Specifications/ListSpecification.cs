@@ -37,6 +37,12 @@ public class ListSpecification<TEntity> : IListSpecification<TEntity> where TEnt
     public void ApplyOrderList(List<string> orderBys)
     {
         orderBys.ForEach(e => this.ApplySorting(e, nameof(ApplyOrderAsc), nameof(ApplyOrderDesc)));
-    } 
+    }
+
+    public void ApplyPagination(int page, int pageSize)
+    {
+        Skip = (page - 1) * pageSize;
+        Take = pageSize;
+    }
     
 }

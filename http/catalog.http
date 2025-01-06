@@ -1,5 +1,12 @@
-@host = http://localhost:9999
-###
+@host = https://22db-117-6-133-148.ngrok-free.app
+### Get Catalogs
+
+GET {{host}}/catalogservice/api/v1/catalogs/
+x-query: {"includes": ["CatalogType", "CatalogBrand"]}
+
+Content-Type: application/json
+
+
 
 
 ### Create catalog

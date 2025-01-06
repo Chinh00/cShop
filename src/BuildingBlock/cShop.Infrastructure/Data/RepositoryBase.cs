@@ -22,6 +22,7 @@ public class RepositoryBase<TDbContext, TEntity> : IRepository<TEntity>, IListRe
         source = source.Where(specification.Filter);
         specification?.Includes.ForEach(e => source = source.Include(e));
         specification?.IncludeStrings.ForEach(e => source = source.Include(e));
+        source = source.Skip(specification.Skip).Take(specification.Take);
         return source;
     }
     IQueryable<TEntity> GetQuery(IQueryable<TEntity> source, IListSpecification<TEntity> specification)
@@ -31,6 +32,7 @@ public class RepositoryBase<TDbContext, TEntity> : IRepository<TEntity>, IListRe
         specification.IncludeStrings.ForEach(e => source = source.Include(e));
         specification.OrderBys.ForEach(e => source = source.OrderBy(e));
         specification.OrderDescBys.ForEach(e => source = source.OrderByDescending(e));
+        source = source.Skip(specification.Skip).Take(specification.Take);
         return source;
     }
 
