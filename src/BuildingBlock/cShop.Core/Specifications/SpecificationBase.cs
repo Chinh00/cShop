@@ -25,4 +25,12 @@ public abstract class SpecificationBase<TEntity> : ISpecification<TEntity> where
         }
 
     }
+
+    public void ApplyIncludes(params Expression<Func<TEntity, object>>[] includeExpressions)
+    {
+        foreach (var includeExpression in includeExpressions)
+        {
+            Includes.Add(includeExpression);
+        }
+    }
 }

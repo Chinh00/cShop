@@ -30,6 +30,7 @@ public static class CatalogApi
             var query = context.GetQuery<GetCatalogsQuery>(stringQuery);
             return await sender.Send(query);
         });
+        group.MapGet("/{id:guid}", async (ISender sender, Guid id) => await sender.Send(new GetCatalogByIdQuery(id)));
         group
             .MapPost("/file",
                 async (ISender sender, IFormFile file) => await sender.Send(new CreateCatalogsCommand(file))).DisableAntiforgery();

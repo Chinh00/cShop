@@ -1,4 +1,5 @@
 using cShop.Core.Specifications;
+using Domain.Aggregate;
 using Domain.Entities;
 
 namespace Application.UseCases.Queries.Specs;

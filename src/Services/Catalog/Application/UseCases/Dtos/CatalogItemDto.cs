@@ -2,6 +2,7 @@ namespace Application.UseCases.Dtos;
 
 public record CatalogItemDto
 {
+    public Guid Id { get; init; }
     public string Name { get; set; }
     public decimal Price { get; set; }
     public string? ImageUrl { get; set; }
