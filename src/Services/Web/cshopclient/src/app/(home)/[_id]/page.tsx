@@ -21,7 +21,9 @@ const ProductDetail = () => {
                     <Image src={data?.data?.imageUrl} alt=""/>
                 </div>
                 <div className={"col-span-2 flex flex-col"}>
-                    <div>Loại: <span>{data?.data?.catalogType?.name}</span></div>
+                    <div>Loại: <span className={"font-bold"}>{data?.data?.catalogType?.name}</span></div>
+                    <div>Hãng sản xuất: <span className={"font-bold"}>{data?.data?.catalogBrand?.brandName}</span></div>
+                    
                 </div>
             </>}
 

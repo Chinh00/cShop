@@ -6,11 +6,11 @@ using MediatR;
 
 namespace Application.UseCases.Queries;
 
-public record GetBasketQuery(Guid UserId) : ICommand<IResult>
+public record GetBasketByUserQuery(Guid UserId) : ICommand<IResult>
 {
     
     
-    public class Validator : AbstractValidator<GetBasketQuery>
+    public class Validator : AbstractValidator<GetBasketByUserQuery>
     {
         public Validator()
         {
@@ -18,10 +18,10 @@ public record GetBasketQuery(Guid UserId) : ICommand<IResult>
         }
     }
     
-    internal class Handler(IRedisService redisService) : IRequestHandler<GetBasketQuery, IResult>
+    internal class Handler(IRedisService redisService) : IRequestHandler<GetBasketByUserQuery, IResult>
     {
 
-        public async Task<IResult> Handle(GetBasketQuery request, CancellationToken cancellationToken)
+        public async Task<IResult> Handle(GetBasketByUserQuery request, CancellationToken cancellationToken)
         {
             var basket = await redisService.HashGetAsync<Basket>(nameof(Basket), request.UserId.ToString(), cancellationToken);
             return TypedResults.Ok(ResultModel<Basket>.Create(basket));
