@@ -9,7 +9,7 @@ const BasketPage = () => {
     const {data, isLoading, isSuccess} = useGetBasketDetail();
     const {mutate} = useCreateBasket()
     useEffect(() => {
-        if (isSuccess && data?.data == null) {
+        if (data?.data == undefined) {
             mutate()
         }
     }, []);
