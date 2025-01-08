@@ -19,7 +19,8 @@ public record CreateCatalogCommand(
     string Name, 
     int AvailableStock, 
     decimal Price, 
-    string ImageSrc, 
+    string Description,
+    List<string> Pictures, 
     CreateCatalogCommand.CatalogTypeCreateModel CatalogType,
     CreateCatalogCommand.CatalogBrandCreateModel CatalogBrand) : ICommand<IResult>
 {
@@ -32,7 +33,7 @@ public record CreateCatalogCommand(
             RuleFor(x => x.Name).NotNull().NotEmpty();
             RuleFor(x => x.AvailableStock).NotNull().GreaterThanOrEqualTo(1).LessThanOrEqualTo(int.MaxValue);
             RuleFor(x => x.Price).NotNull().GreaterThanOrEqualTo(1).LessThanOrEqualTo(int.MaxValue);
-            RuleFor(x => x.ImageSrc).NotNull().NotEmpty();
+            RuleFor(x => x.Pictures).NotNull().NotEmpty();
         }
     }
     
@@ -47,11 +48,11 @@ public record CreateCatalogCommand(
         public async Task<IResult> Handle(CreateCatalogCommand request, CancellationToken cancellationToken)
         {
             CatalogItem catalogItem = new();
-            var (name, availableStock, price, imageSrc, catalogType, categoryBrandId) = request;
+            var (name, availableStock, price, description, pictures, catalogType, categoryBrandId) = request;
             var (catalogTypeId, catalogTypeName) = catalogType;
             var (catalogBrandId, catalogBrandName) = categoryBrandId;
             
-            catalogItem.CreateCatalog(name, availableStock, price, imageSrc);
+            catalogItem.CreateCatalog(name, availableStock, price, description, pictures);
 
 
 

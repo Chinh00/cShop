@@ -16,7 +16,7 @@ public class CatalogCdcConsumer(IRepository<ProductInfo> productRepository, ILog
         {
             Id = Guid.Parse(notification.Id),
             ProductName = notification.Name,
-            ProductPrice = notification.Price
+            ProductPrice = (decimal)notification.Price
         }, cancellationToken);
     }
 }

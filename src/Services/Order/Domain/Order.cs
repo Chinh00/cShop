@@ -8,10 +8,18 @@ public class Order : EntityBase
     public virtual CustomerInfo Customer { get; set; }
     public DateTime OrderDate { get; set; }
     
+    public decimal TotalPrice { get; set; }
     
+    public float Discount { get; set; }
     
     public string Description { get; set; }
     
     public List<OrderDetail> OrderDetails { get; init; } = [];
+
+    public void AddOrderDetail(OrderDetail orderDetail)
+    {
+        OrderDetails.Add(orderDetail);
+        TotalPrice += orderDetail.Quantity * orderDetail.ProductInfo.ProductPrice;
+    }
     
 }

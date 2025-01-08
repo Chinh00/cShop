@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(CatalogContext))]
-    [Migration("20250103143200_InitDb")]
+    [Migration("20250108164740_InitDb")]
     partial class InitDb
     {
         /// <inheritdoc />
@@ -43,7 +43,7 @@ namespace Infrastructure.Data.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ImageUrl")
+                    b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
@@ -66,6 +66,8 @@ namespace Infrastructure.Data.Migrations
                     b.HasIndex("CatalogBrandId");
 
                     b.HasIndex("CatalogTypeId");
+
+                    b.HasIndex("Id");
 
                     b.ToTable("CatalogItems");
                 });
@@ -90,7 +92,41 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Id");
+
                     b.ToTable("CatalogBrands");
+                });
+
+            modelBuilder.Entity("Domain.Entities.CatalogPicture", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CatalogItemId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PictureUrl")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CatalogItemId");
+
+                    b.HasIndex("Id");
+
+                    b.HasIndex("PictureUrl");
+
+                    b.ToTable("CatalogPictures");
                 });
 
             modelBuilder.Entity("Domain.Entities.CatalogType", b =>
@@ -112,6 +148,8 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Id");
 
                     b.ToTable("CatalogTypes");
                 });
@@ -142,6 +180,8 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Id");
+
                     b.ToTable("CatalogOutboxes");
                 });
 
@@ -158,6 +198,22 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("CatalogBrand");
 
                     b.Navigation("CatalogType");
+                });
+
+            modelBuilder.Entity("Domain.Entities.CatalogPicture", b =>
+                {
+                    b.HasOne("Domain.Aggregate.CatalogItem", "CatalogItem")
+                        .WithMany("Pictures")
+                        .HasForeignKey("CatalogItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CatalogItem");
+                });
+
+            modelBuilder.Entity("Domain.Aggregate.CatalogItem", b =>
+                {
+                    b.Navigation("Pictures");
                 });
 
             modelBuilder.Entity("Domain.Entities.CatalogBrand", b =>

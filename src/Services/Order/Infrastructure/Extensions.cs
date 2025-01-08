@@ -171,7 +171,7 @@ public static class Extensions
         services.AddKafkaConsumer<CatalogConsumerConfig>(e =>
         {
             e.Topic = "catalog_cdc_events";
-            e.GroupId = "catalog_cdc_order_group";
+            e.GroupId = "catalog_cdc_events_order_group";
             e.HandlePayload = async (ISchemaRegistryClient schemaRegistryClient, string eventName, byte[] payload) =>
             {
 
@@ -188,7 +188,7 @@ public static class Extensions
         services.AddKafkaConsumer<CustomerConsumerConfig>(e =>
         {
             e.Topic = "customer_cdc_events";
-            e.GroupId = "customer_cdc_order_group";
+            e.GroupId = "customer_cdc_events_order_group";
             e.HandlePayload = async (ISchemaRegistryClient schemaRegistryClient, string eventName, byte[] payload) =>
             {
                 return  (eventName switch

@@ -1,7 +1,8 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace cShop.Core.Domain;
-
+[Index(nameof(Id))]
 public class EntityBase
 {
     public Guid Id { get; set; } = Guid.NewGuid();

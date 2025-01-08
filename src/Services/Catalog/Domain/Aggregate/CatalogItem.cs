@@ -4,14 +4,18 @@ using Domain.Entities;
 
 namespace Domain.Aggregate;
 
+
 public class CatalogItem : AggregateBase
 {
     
     public string Name { get; set; }
     public decimal Price { get; set; }
-    public string? ImageUrl { get; set; }
+    
+    public virtual ICollection<CatalogPicture> Pictures { get; set; }
     
     public bool IsActive { get; set; }
+    
+    public string Description { get; set; }
     
     public Guid? CatalogTypeId { get; set; }
     
@@ -61,12 +65,17 @@ public class CatalogItem : AggregateBase
     }
     
 
-    public void CreateCatalog(string name, int quantity, decimal price, string imageUrl)
+    public void CreateCatalog(string name, int quantity, decimal price, string description, List<string> pictures)
     {
         Name = name;
         AvailableStock = quantity;
         Price = price;
-        ImageUrl = imageUrl;
+        Description = description;  
+        Pictures = pictures.Select(e => new CatalogPicture()
+        {
+            PictureUrl = e,
+            Description = e
+        }).ToList();
         IsActive = false;
     }
 
@@ -105,7 +114,6 @@ public class CatalogItem : AggregateBase
         Name = @event.Name;
         AvailableStock = @event.Quantity;
         Price = @event.Price;
-        ImageUrl = @event.ImageUrl;
         CatalogTypeId = @event.CategoryTypeId;
         CatalogBrandId = @event.CategoryBrandId;
         IsActive = @event.IsActive;

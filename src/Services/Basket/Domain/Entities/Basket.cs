@@ -15,9 +15,10 @@ public class Basket : EntityBase
     {
         BasketItems ??= [];
         var basketItem = BasketItems.FirstOrDefault(e => e.BasketId == item.BasketId && e.ProductId == item.ProductId);
-
+        
         if (basketItem is null)
         {
+            item.Quantity = 1;
             BasketItems.Add(item);
         }
         else

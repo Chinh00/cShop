@@ -1,16 +1,16 @@
+using Application.UseCases.Specs;
 using cShop.Core.Domain;
 using cShop.Core.Repository;
+using cShop.Infrastructure.IdentityServer;
 using Domain;
 using FluentValidation;
 using IntegrationEvents;
 using MassTransit;
 using MediatR;
-using OrderDetail = Domain.OrderDetail;
 
 namespace Application.UseCases.Commands;
 
 public record CreateOrderCommand(
-   Guid UserId, 
    List<CreateOrderCommand.OrderItemDetail> Items,
    DateTime OrderDate) : ICommand<IResult>
 {
@@ -21,27 +21,38 @@ public record CreateOrderCommand(
    {
       public Validator()
       {
-         RuleFor(x => x.UserId).NotEmpty();
          RuleFor(x => x.OrderDate).NotNull();
          RuleFor(e => e.Items).NotEmpty().Must(e => e.Count > 0);
       }
    }
    
-   internal class Handler(IRepository<Order> orderRepository, ITopicProducer<OrderStartedIntegrationEvent> orderStartedTopic)
+   internal class Handler(
+      IRepository<Order> orderRepository,
+      IListRepository<ProductInfo> productInfoRepository,
+      ITopicProducer<OrderStartedIntegrationEvent> orderStartedTopic,
+      IClaimContextAccessor contextAccessor)
       : IRequestHandler<CreateOrderCommand, IResult>
    {
       public async Task<IResult> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
       {
+         var listProductInfo = await productInfoRepository.FindAsync(
+            new GetProductInfoByListIdSpec(request.Items.Select(x => x.ProductId).ToList()), cancellationToken);
          var order = new Order()
          {
-            CustomerId = request.UserId,
+            CustomerId = contextAccessor.GetUserId(),
             OrderDate = request.OrderDate,
-            OrderDetails = request.Items.Select(e => new OrderDetail()
-            {
-               ProductId = e.ProductId,
-               Quantity = e.Quantity
-            }).ToList()
+            TotalPrice = 0
          };
+         listProductInfo.ForEach(e =>
+         {
+            order.AddOrderDetail(new OrderDetail()
+            {
+               OrderId = order.Id,
+               ProductInfo = e,
+               Quantity = request.Items.FirstOrDefault(c => c.ProductId == e.Id)?.Quantity ?? 1,
+            });
+         });
+         
          await orderRepository.AddAsync(order, cancellationToken);
          
          await orderStartedTopic.Produce(

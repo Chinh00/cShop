@@ -1,8 +1,6 @@
 'use client'
-import { GetServerSideProps } from "next";
 import { useParams } from "next/navigation";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
+import {  toast } from 'react-toastify';
 import useGetProductDetail from "../hooks/useGetProductDetail";
 
 import {Button, Image, Spin} from "antd"
@@ -22,12 +20,16 @@ const ProductDetail = () => {
                     <div className={"text-[40px] font-bold"}>{data?.data?.name}</div>
                     <Image src={data?.data?.imageUrl} alt=""/>
                 </div>
-                <div className={"col-span-2 flex flex-col"}>
+                <div className={"col-span-2 flex flex-col gap-5"}>
                     <div>Loại: <span className={"font-bold"}>{data?.data?.catalogType?.name}</span></div>
                     <div>Hãng sản xuất: <span className={"font-bold"}>{data?.data?.catalogBrand?.brandName}</span></div>
-                    <Button type={"dashed"} onClick={() => {
+                    <Button type={"dashed"} className={"w-min"} onClick={() => {
                         mutate({
                             productId: data?.data?.id!
+                        }, {
+                            onSuccess: () => {
+                                toast("Thêm vào giỏ hàng")
+                            }
                         })
                     }}>Thêm vào giỏ hàng {isPending && <Spin />}</Button>
                 </div>

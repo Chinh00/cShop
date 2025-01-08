@@ -15,15 +15,16 @@ export default function Home() {
           </div>
           <div className={"p-10 col-span-4 grid grid-cols-4 gap-10 w-full"}>
               {isLoading && <div className={"w-full flex justify-content-center"}><Spin size="large"/></div>}
-              {!!data && data?.data?.items.map((item, id) =>
+              {!!data?.data && data?.data?.items.map((item, id) =>
                   (<Card onClick={() => {
                       router.push(`/${item.id}`);
                   }} key={id} className={"w-[200px] text-center cursor-pointer"}>
                       <Image src={item.imageUrl} alt=""/>
                       {item.name}
+                      <div className={"font-bold text-red"}>{item?.price}đ</div>
                   </Card>))}
               
-          </div>
+          </div>    
       </div>
   );
 }

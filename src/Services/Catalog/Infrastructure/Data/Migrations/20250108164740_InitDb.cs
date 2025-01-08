@@ -65,8 +65,8 @@ namespace Infrastructure.Data.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CatalogTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CatalogBrandId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     AvailableStock = table.Column<int>(type: "int", nullable: false),
@@ -89,6 +89,33 @@ namespace Infrastructure.Data.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "CatalogPictures",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CatalogItemId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PictureUrl = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CatalogPictures", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CatalogPictures_CatalogItems_CatalogItemId",
+                        column: x => x.CatalogItemId,
+                        principalTable: "CatalogItems",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CatalogBrands_Id",
+                table: "CatalogBrands",
+                column: "Id");
+
             migrationBuilder.CreateIndex(
                 name: "IX_CatalogItems_CatalogBrandId",
                 table: "CatalogItems",
@@ -98,16 +125,49 @@ namespace Infrastructure.Data.Migrations
                 name: "IX_CatalogItems_CatalogTypeId",
                 table: "CatalogItems",
                 column: "CatalogTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CatalogItems_Id",
+                table: "CatalogItems",
+                column: "Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CatalogOutboxes_Id",
+                table: "CatalogOutboxes",
+                column: "Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CatalogPictures_CatalogItemId",
+                table: "CatalogPictures",
+                column: "CatalogItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CatalogPictures_Id",
+                table: "CatalogPictures",
+                column: "Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CatalogPictures_PictureUrl",
+                table: "CatalogPictures",
+                column: "PictureUrl");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CatalogTypes_Id",
+                table: "CatalogTypes",
+                column: "Id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CatalogItems");
+                name: "CatalogOutboxes");
 
             migrationBuilder.DropTable(
-                name: "CatalogOutboxes");
+                name: "CatalogPictures");
+
+            migrationBuilder.DropTable(
+                name: "CatalogItems");
 
             migrationBuilder.DropTable(
                 name: "CatalogBrands");
