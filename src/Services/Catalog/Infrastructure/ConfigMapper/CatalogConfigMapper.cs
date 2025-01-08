@@ -12,6 +12,7 @@ public sealed class CatalogConfigMapper : Profile
         CreateMap<CatalogItem, CatalogItemDto>();
         CreateMap<CatalogBrand, CatalogBrandDto>();
         CreateMap<CatalogType, CatalogTypeDto>();
+        CreateMap<CatalogPicture, CatalogPictureDto>();
 
     }
 }

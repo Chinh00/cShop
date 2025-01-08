@@ -1,6 +1,7 @@
 using cShop.Core.Domain;
 using FluentValidation;
 using MediatR;
+using MongoDB.Driver.Linq;
 using OfficeOpenXml;
 
 namespace Application.UseCases.Command;
@@ -45,13 +46,13 @@ public record CreateCatalogsCommand(IFormFile File) : ICommand<IResult>
                     }
 
                     var price = worksheet.Cells[row, 2].Text.Replace(".", "").Replace("đ", "");
-                    Console.WriteLine(price);
-                    // await mediator.Send(
-                    //     new CreateCatalogCommand(worksheet.Cells[row, 1].Text, 10, decimal.Parse(price),
-                    //         worksheet.Cells[row, 3].Text.Split(",").ToList(),
-                    //         new CreateCatalogCommand.CatalogTypeCreateModel(null, worksheet.Cells[row, 4].Text),
-                    //         new CreateCatalogCommand.CatalogBrandCreateModel(null, worksheet.Cells[row, 5].Text)),
-                    //     cancellationToken);
+                    var listImageSrc = worksheet.Cells[row, 3].Text.Split(',').Where(e => e != string.Empty).ToList();
+                    await mediator.Send(
+                        new CreateCatalogCommand(worksheet.Cells[row, 1].Text, 10, decimal.Parse(price),
+                            worksheet.Cells[row, 4].Text, listImageSrc,
+                            new CreateCatalogCommand.CatalogTypeCreateModel(null, worksheet.Cells[row, 5].Text),
+                            new CreateCatalogCommand.CatalogBrandCreateModel(null, worksheet.Cells[row, 6].Text)),
+                        cancellationToken);
                     data.Add(rowData);
                     
 
