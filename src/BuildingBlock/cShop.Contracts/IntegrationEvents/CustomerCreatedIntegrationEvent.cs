@@ -16,11 +16,12 @@ namespace IntegrationEvents
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.12.0+8c27801dc8d42ccc00997f25c0b8f45f8d4a233e")]
 	public partial class CustomerCreatedIntegrationEvent : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"CustomerCreatedIntegrationEvent\",\"namespace\":\"Integratio" +
-				"nEvents\",\"fields\":[{\"name\":\"Id\",\"type\":\"string\"},{\"name\":\"Name\",\"type\":\"string\"}" +
-				"]}");
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""CustomerCreatedIntegrationEvent"",""namespace"":""IntegrationEvents"",""fields"":[{""name"":""Id"",""type"":""string""},{""name"":""Name"",""type"":""string""},{""name"":""PhoneNumber"",""type"":""string""},{""name"":""Email"",""type"":""string""},{""name"":""Password"",""type"":""string""}]}");
 		private string _Id;
 		private string _Name;
+		private string _PhoneNumber;
+		private string _Email;
+		private string _Password;
 		public virtual global::Avro.Schema Schema
 		{
 			get
@@ -50,12 +51,48 @@ namespace IntegrationEvents
 				this._Name = value;
 			}
 		}
+		public string PhoneNumber
+		{
+			get
+			{
+				return this._PhoneNumber;
+			}
+			set
+			{
+				this._PhoneNumber = value;
+			}
+		}
+		public string Email
+		{
+			get
+			{
+				return this._Email;
+			}
+			set
+			{
+				this._Email = value;
+			}
+		}
+		public string Password
+		{
+			get
+			{
+				return this._Password;
+			}
+			set
+			{
+				this._Password = value;
+			}
+		}
 		public virtual object Get(int fieldPos)
 		{
 			switch (fieldPos)
 			{
 			case 0: return this.Id;
 			case 1: return this.Name;
+			case 2: return this.PhoneNumber;
+			case 3: return this.Email;
+			case 4: return this.Password;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Get()");
 			};
 		}
@@ -65,6 +102,9 @@ namespace IntegrationEvents
 			{
 			case 0: this.Id = (System.String)fieldValue; break;
 			case 1: this.Name = (System.String)fieldValue; break;
+			case 2: this.PhoneNumber = (System.String)fieldValue; break;
+			case 3: this.Email = (System.String)fieldValue; break;
+			case 4: this.Password = (System.String)fieldValue; break;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Put()");
 			};
 		}

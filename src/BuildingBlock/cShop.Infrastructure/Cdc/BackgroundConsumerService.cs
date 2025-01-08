@@ -20,6 +20,7 @@ public class BackgroundConsumerService<TConfig> : BackgroundService
         _logger = logger;
         _scopeFactory = scopeFactory;
         _config = config.Value;
+        Console.WriteLine(config.Value.Topic);
     }
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -39,7 +40,6 @@ public class BackgroundConsumerService<TConfig> : BackgroundService
             .SetStatisticsHandler((_, json) => _logger.LogInformation($"Statistics: {json}"))
             .SetValueDeserializer(new AvroDeserializer<GenericRecord>(schemaRegistryClient).AsSyncOverAsync())
             .Build();
-        _logger.LogInformation(_config.Topic);
         consumerBuilder.Subscribe(_config.Topic);
         
         try

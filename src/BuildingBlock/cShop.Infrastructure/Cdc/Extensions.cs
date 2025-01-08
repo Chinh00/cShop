@@ -9,7 +9,7 @@ public static class Extensions
 {
     public static IServiceCollection AddKafkaConsumer<TConfig>(this IServiceCollection services,
         Action<TConfig> action) where TConfig : BackgroundConsumerConfig
-    {        
+    {
         services.AddOptions<TConfig>().BindConfiguration(BackgroundConsumerConfig.Name).Configure(action);
         services.AddHostedService<BackgroundConsumerService<TConfig>>();
         return services;

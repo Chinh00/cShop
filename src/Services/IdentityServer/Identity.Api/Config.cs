@@ -29,7 +29,8 @@ public static class Config
                 RequirePkce = false,
                 AllowOfflineAccess = true,
                 AllowedScopes = { "openid", "profile", "api" },
-                AlwaysIncludeUserClaimsInIdToken = true
+                AlwaysIncludeUserClaimsInIdToken = true,
+                AccessTokenLifetime = int.MaxValue
             }
     ];
     public static List<TestUser> TestUsers =>

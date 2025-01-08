@@ -45,12 +45,6 @@
       <ProjectReference Include="..\cShop.Contracts\cShop.Contracts.csproj" />
       <ProjectReference Include="..\cShop.Core\cShop.Core.csproj" />
     </ItemGroup>
-
-  
-
-    <ItemGroup>
-      <Folder Include="Behavior\" />
-    </ItemGroup>
     
 
 </Project>

@@ -7,6 +7,7 @@ public class DbMigrationService(IServiceProvider serviceProvider) : IHostedServi
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
+        Console.WriteLine("Database Migration Service is starting.");
         using var scope = serviceProvider.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         await dbContext.Database.MigrateAsync(cancellationToken: cancellationToken);

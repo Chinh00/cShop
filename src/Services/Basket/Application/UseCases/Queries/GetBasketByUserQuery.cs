@@ -1,12 +1,13 @@
 using cShop.Core.Domain;
 using cShop.Infrastructure.Cache.Redis;
+using cShop.Infrastructure.IdentityServer;
 using Domain.Entities;
 using FluentValidation;
 using MediatR;
 
 namespace Application.UseCases.Queries;
 
-public record GetBasketByUserQuery(Guid UserId) : ICommand<IResult>
+public record GetBasketByUserQuery : ICommand<IResult>
 {
     
     
@@ -14,16 +15,14 @@ public record GetBasketByUserQuery(Guid UserId) : ICommand<IResult>
     {
         public Validator()
         {
-            RuleFor(e => e.UserId).NotEmpty();
         }
     }
     
-    internal class Handler(IRedisService redisService) : IRequestHandler<GetBasketByUserQuery, IResult>
+    internal class Handler(IRedisService redisService, IClaimContextAccessor claimContextAccessor) : IRequestHandler<GetBasketByUserQuery, IResult>
     {
-
         public async Task<IResult> Handle(GetBasketByUserQuery request, CancellationToken cancellationToken)
         {
-            var basket = await redisService.HashGetAsync<Basket>(nameof(Basket), request.UserId.ToString(), cancellationToken);
+            var basket = await redisService.HashGetAsync<Basket>(nameof(Basket), claimContextAccessor.GetUserId().ToString(), cancellationToken);
             return TypedResults.Ok(ResultModel<Basket>.Create(basket));
 
         }

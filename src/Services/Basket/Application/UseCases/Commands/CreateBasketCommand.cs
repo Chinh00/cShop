@@ -1,39 +1,34 @@
 using cShop.Core.Domain;
 using cShop.Infrastructure.Cache.Redis;
+using cShop.Infrastructure.IdentityServer;
 using Domain.Entities;
 using FluentValidation;
 using MediatR;
 
 namespace Application.UseCases.Commands;
 
-public record CreateBasketCommand(Guid UserId) : ICommand<IResult>
+public record CreateBasketCommand : ICommand<IResult>
 {
 
     public class Validator : AbstractValidator<CreateBasketCommand>
     {
         public Validator()
         {
-            RuleFor(x => x.UserId).NotEmpty();
         }
     }
     
-    public class Handler : IRequestHandler<CreateBasketCommand, IResult>
+    public class Handler(IRedisService redisService, IClaimContextAccessor claimContextAccessor)
+        : IRequestHandler<CreateBasketCommand, IResult>
     {
-        
-        private readonly IRedisService _redisService;
 
-        public Handler(IRedisService redisService)
-        {
-            _redisService = redisService;
-        }
         public async Task<IResult> Handle(CreateBasketCommand request, CancellationToken cancellationToken)
         {
-            var basket = await _redisService.HashGetOrSetAsync(nameof(Basket),
-                request.UserId.ToString(), () => Task.FromResult(new Basket()
+            var basket = await redisService.HashGetOrSetAsync(nameof(Basket),
+                claimContextAccessor.GetUserId().ToString(), () => Task.FromResult(new Basket()
                 {
-                    UserId = request.UserId,
+                    UserId = claimContextAccessor.GetUserId(),
                 }), cancellationToken);
-            return Results.Ok(ResultModel<Guid>.Create(basket.Id));
+            return Results.Ok(ResultModel<Basket>.Create(basket));
         }
     }
 }

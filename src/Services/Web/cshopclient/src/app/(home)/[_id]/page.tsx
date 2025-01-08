@@ -5,7 +5,8 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import useGetProductDetail from "../hooks/useGetProductDetail";
 
-import {Image, Spin} from "antd"
+import {Button, Image, Spin} from "antd"
+import useAddBasketItem from "@/app/(basket)/hooks/useAddBasketItem";
 interface ProductDetailProps {
     _id: string;
 }
@@ -13,6 +14,7 @@ interface ProductDetailProps {
 const ProductDetail = () => {
     const params = useParams();
     const {data, isLoading} = useGetProductDetail(params._id as string);
+    const {mutate, isPending} = useAddBasketItem({productId: ""})
     return <div className={"p-10 grid grid-cols-5 gap-10"}>
         {isLoading ? <div className={"flex justify-content-center col-span-5 p-5"}><Spin size={"large"}/></div> :
             <>
@@ -23,7 +25,11 @@ const ProductDetail = () => {
                 <div className={"col-span-2 flex flex-col"}>
                     <div>Loại: <span className={"font-bold"}>{data?.data?.catalogType?.name}</span></div>
                     <div>Hãng sản xuất: <span className={"font-bold"}>{data?.data?.catalogBrand?.brandName}</span></div>
-                    
+                    <Button type={"dashed"} onClick={() => {
+                        mutate({
+                            productId: data?.data?.id!
+                        })
+                    }}>Thêm vào giỏ hàng {isPending && <Spin />}</Button>
                 </div>
             </>}
 

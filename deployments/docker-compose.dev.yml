@@ -16,7 +16,7 @@ services:
       MSSQL_PID: "Standard"
       MSSQL_AGENT_ENABLED: true
     volumes:
-      - ../data/sqlserver:/var/opt/mssql
+      - ../__data/sqlserver:/var/opt/mssql
 
   debezium:
     image: quay.io/debezium/connect
@@ -57,7 +57,7 @@ services:
       - '2525:25'
       - '143:143'
     volumes:
-      - ../data/smtp4dev:/smtp4dev
+      - ../__data/smtp4dev:/smtp4dev
     environment:
       ServerOptions__Urls: http://0.0.0.0:80
       ServerOptions__HostName: smtp4dev
@@ -166,7 +166,7 @@ services:
     cap_add:
       - IPC_LOCK
     volumes:
-      - ../data/elasticsearch:/usr/share/elasticsearch/data
+      - ../__data/elasticsearch:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
   kibana:

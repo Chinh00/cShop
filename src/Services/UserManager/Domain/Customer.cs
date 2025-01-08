@@ -5,9 +5,12 @@ namespace Domain;
 public class Customer : AggregateBase
 {
     
-    public string Name { get; set; }
-    public string Email { get; set; }
-    public string Address { get; set; }
+    public string Name { get; init; }
+    public string Email { get; init; }
+    
+    public string PhoneNumber { get; init; }
+
+    public string Address { get; init; }
     
     public override void ApplyEvent(IDomainEvent @event)
     {

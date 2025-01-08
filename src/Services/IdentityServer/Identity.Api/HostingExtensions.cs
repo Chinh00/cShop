@@ -1,10 +1,15 @@
+using Confluent.SchemaRegistry;
 using cShop.Core.Repository;
+using cShop.Infrastructure.Cdc;
 using cShop.Infrastructure.Data;
+using cShop.Infrastructure.SchemaRegistry;
 using Duende.IdentityServer;
 using Duende.IdentityServer.Configuration;
+using Identity.Api.Cdc;
 using Identity.Api.Data;
 using Identity.Api.Models;
 using Identity.Api.Services;
+using IntegrationEvents;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -15,6 +20,22 @@ internal static class HostingExtensions
 {
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
+        
+        builder.Services.AddSchemaRegistry(builder.Configuration);
+        builder.Services.AddKafkaConsumer<UserConsumerConfig>((config) =>
+        {
+            config.Topic = "customer_cdc_events";
+            config.GroupId = "customer_cdc_events_identity_group";
+            config.HandlePayload = async (ISchemaRegistryClient schemaRegistry,string eventName, byte[] payload) =>
+            {
+                return eventName switch
+                {
+                    nameof(CustomerCreatedIntegrationEvent) => await payload.AsRecord<CustomerCreatedIntegrationEvent>(
+                        schemaRegistry),
+                    _ => null
+                };
+            };
+        }); 
         builder.Services.AddRazorPages();
 
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -35,7 +56,7 @@ internal static class HostingExtensions
                 options.Events.RaiseInformationEvents = true;
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseSuccessEvents = true;
-
+                
                 // see https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/
                 options.EmitStaticAudienceClaim = true;
             })
@@ -54,10 +75,11 @@ internal static class HostingExtensions
                 // register your IdentityServer with Google at https://console.developers.google.com
                 // enable the Google+ API
                 // set the redirect URI to https://localhost:5001/signin-google
-                options.ClientId = "copy client ID from Google here";
-                options.ClientSecret = "copy client secret from Google here";
+                options.ClientId = "";
+                options.ClientSecret = "";
             });
-
+        
+        
         return builder.Build();
     }
 

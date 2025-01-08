@@ -5,7 +5,7 @@ import { getCatalogDetail } from "../services/home.service";
 const useGetProductDetail = (id: string) => {
     return useQuery({
         queryKey: ['productId', id],
-        queryFn: () => getCatalogDetail(id)
+        queryFn: () => getCatalogDetail(id),
     });
 }
 export default useGetProductDetail;

@@ -11,6 +11,19 @@
       "name": "Name",
       "type": "string"
     },
-   
+    {
+      "name": "PhoneNumber",
+      "type": "string"
+    },
+    {
+      "name": "Email",
+      "type": "string"
+    },
+    {
+      "name": "Password",
+      "type": "string"
+    },
+
+
   ],
 }
