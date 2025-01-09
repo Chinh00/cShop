@@ -6,6 +6,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
+ENV ASPNETCORE_HTTP_PORTS=80
 WORKDIR /src
 COPY ["src/Services/Notification/WebApi/WebApi.csproj", "src/Services/Notification/WebApi/"]
 COPY ["src/Services/Notification/Application/Application.csproj", "src/Services/Notification/Application/"]
@@ -24,5 +25,6 @@ RUN dotnet publish "WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:Us
 
 FROM base AS final
 WORKDIR /app
+ENV ASPNETCORE_HTTP_PORTS=80
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "WebApi.dll"]
