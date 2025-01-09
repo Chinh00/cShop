@@ -1,20 +1,23 @@
+###
+@host = http://100.116.190.43:8083
+
 ### 
-GET http://localhost:8083/connector-plugins
+GET {{host}}/connector-plugins
 
 
 ###
-GET http://localhost:8083/connectors HTTP/1.1
+GET {{host}}/connectors HTTP/1.1
 content-type: application/json
 
 
 ###
-GET http://localhost:8083/connectors/user-outbox-source/config HTTP/1.1
+GET {{host}}/connectors/user-outbox-source/config HTTP/1.1
 content-type: application/json
 
 
 
 ### GET request to example server
-POST http://localhost:8083/connectors HTTP/1.1
+POST {{host}}/connectors HTTP/1.1
 Content-Type: application/json
 
 {
@@ -57,11 +60,11 @@ Content-Type: application/json
   }
 }
 ### Remove connector source
-DELETE http://localhost:8083/connectors/catalog-outbox-source HTTP/1.1
+DELETE {{host}}/connectors/catalog-outbox-source HTTP/1.1
 
 ### Add OrderOutbox
 
-POST http://localhost:8083/connectors HTTP/1.1
+POST {{host}}/connectors HTTP/1.1
 Content-Type: application/json
 
 {
@@ -106,13 +109,13 @@ Content-Type: application/json
   }
 }
 ### Remove connector source
-DELETE http://localhost:8083/connectors/order-outbox-source HTTP/1.1
+DELETE {{host}}/connectors/order-outbox-source HTTP/1.1
 
 
 
 ### Add Shipper Outbox
 
-POST http://localhost:8083/connectors HTTP/1.1
+POST {{host}}/connectors HTTP/1.1
 Content-Type: application/json
 
 {
@@ -163,7 +166,7 @@ DELETE http://localhost:8083/connectors/shipper-outbox-source HTTP/1.1
 
 ### Add Customer Outbox
 
-POST http://localhost:8083/connectors HTTP/1.1
+POST {{host}}/connectors HTTP/1.1
 Content-Type: application/json
 
 {
@@ -208,6 +211,6 @@ Content-Type: application/json
   }
 }
 ### Remove connector source
-DELETE http://localhost:8083/connectors/customer-outbox-source HTTP/1.1
+DELETE {{host}}/connectors/customer-outbox-source HTTP/1.1
 
 
