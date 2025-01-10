@@ -49,6 +49,16 @@ namespace Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_ShipperInfos_Id",
+                table: "ShipperInfos",
+                column: "Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShipperOrders_Id",
+                table: "ShipperOrders",
+                column: "Id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ShipperOrders_ShipperInfoId",
                 table: "ShipperOrders",
                 column: "ShipperInfoId");

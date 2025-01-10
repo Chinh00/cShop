@@ -78,6 +78,26 @@ namespace Infrastructure.Data.Migrations
                 {
                     table.PrimaryKey("PK_Shippers", x => x.Id);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomerOutboxes_Id",
+                table: "CustomerOutboxes",
+                column: "Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Customers_Id",
+                table: "Customers",
+                column: "Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShipperOutboxes_Id",
+                table: "ShipperOutboxes",
+                column: "Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Shippers_Id",
+                table: "Shippers",
+                column: "Id");
         }
 
         /// <inheritdoc />

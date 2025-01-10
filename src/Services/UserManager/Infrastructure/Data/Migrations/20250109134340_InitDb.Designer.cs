@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20250107150127_InitDb")]
+    [Migration("20250109134340_InitDb")]
     partial class InitDb
     {
         /// <inheritdoc />
@@ -54,6 +54,8 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Id");
+
                     b.ToTable("Customers");
                 });
 
@@ -82,6 +84,8 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Id");
 
                     b.ToTable("CustomerOutboxes");
                 });
@@ -112,6 +116,8 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Id");
+
                     b.ToTable("ShipperOutboxes");
                 });
 
@@ -137,6 +143,8 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Id");
 
                     b.ToTable("Shippers");
                 });

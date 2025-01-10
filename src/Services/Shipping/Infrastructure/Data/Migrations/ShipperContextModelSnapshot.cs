@@ -42,6 +42,8 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Id");
+
                     b.ToTable("ShipperInfos");
                 });
 
@@ -70,6 +72,8 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Id");
 
                     b.HasIndex("ShipperInfoId");
 

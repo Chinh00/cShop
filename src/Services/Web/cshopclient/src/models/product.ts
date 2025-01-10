@@ -1,7 +1,8 @@
 import { CatalogBrand } from "./catalogBrand";
 import { CatalogType } from "./catalogType";
+import {CatalogPicture} from "@/models/catalogPicture";
 
-export interface Product {
+type Product =  {
     id: string;
     name: string,
     price: number,
@@ -11,4 +12,8 @@ export interface Product {
     catalogType?: CatalogType,
     catalogBrandId: string,
     catalogBrand?: CatalogBrand
+    description: string,
+    pictures: CatalogPicture[],
 }   
+
+export default Product;

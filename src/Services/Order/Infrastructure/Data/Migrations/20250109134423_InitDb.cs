@@ -109,6 +109,16 @@ namespace Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_CustomerInfos_Id",
+                table: "CustomerInfos",
+                column: "Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderDetails_Id",
+                table: "OrderDetails",
+                column: "Id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OrderDetails_OrderId",
                 table: "OrderDetails",
                 column: "OrderId");
@@ -119,9 +129,24 @@ namespace Infrastructure.Data.Migrations
                 column: "ProductInfoId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OrderOutboxes_Id",
+                table: "OrderOutboxes",
+                column: "Id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Orders_CustomerId",
                 table: "Orders",
                 column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_Id",
+                table: "Orders",
+                column: "Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductInfos_Id",
+                table: "ProductInfos",
+                column: "Id");
         }
 
         /// <inheritdoc />

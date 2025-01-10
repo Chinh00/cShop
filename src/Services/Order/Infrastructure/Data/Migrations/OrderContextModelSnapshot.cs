@@ -36,6 +36,8 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Id");
+
                     b.ToTable("CustomerInfos");
                 });
 
@@ -70,6 +72,8 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("CustomerId");
 
+                    b.HasIndex("Id");
+
                     b.ToTable("Orders");
                 });
 
@@ -98,6 +102,8 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Id");
 
                     b.HasIndex("OrderId");
 
@@ -132,6 +138,8 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Id");
+
                     b.ToTable("OrderOutboxes");
                 });
 
@@ -154,6 +162,8 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Id");
 
                     b.ToTable("ProductInfos");
                 });

@@ -51,6 +51,8 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Id");
+
                     b.ToTable("Customers");
                 });
 
@@ -79,6 +81,8 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Id");
 
                     b.ToTable("CustomerOutboxes");
                 });
@@ -109,6 +113,8 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Id");
+
                     b.ToTable("ShipperOutboxes");
                 });
 
@@ -134,6 +140,8 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Id");
 
                     b.ToTable("Shippers");
                 });

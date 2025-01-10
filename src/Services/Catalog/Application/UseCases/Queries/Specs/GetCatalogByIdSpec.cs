@@ -13,5 +13,6 @@ public sealed class GetCatalogByIdSpec : SpecificationBase<CatalogItem>
         ApplyFilter(e => e.Id == id);
         ApplyInclude(e => e.CatalogBrand);
         ApplyInclude(e => e.CatalogType);
+        ApplyInclude(e => e.Pictures);
     }
 }

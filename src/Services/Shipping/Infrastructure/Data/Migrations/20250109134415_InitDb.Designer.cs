@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ShipperContext))]
-    [Migration("20241203162526_InitDb")]
+    [Migration("20250109134415_InitDb")]
     partial class InitDb
     {
         /// <inheritdoc />
@@ -45,6 +45,8 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Id");
+
                     b.ToTable("ShipperInfos");
                 });
 
@@ -73,6 +75,8 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Id");
 
                     b.HasIndex("ShipperInfoId");
 

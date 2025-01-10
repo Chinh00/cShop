@@ -6,7 +6,9 @@ import {Card, Image, Spin} from "antd";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
-    const {data, isLoading} = useGetProducts();
+    const {data, isLoading} = useGetProducts({
+        includes: ["Pictures"]
+    });
     const router = useRouter();
   return (
       <div className={"grid grid-cols-5 gap-5 p-5"}>
@@ -19,7 +21,7 @@ export default function Home() {
                   (<Card onClick={() => {
                       router.push(`/${item.id}`);
                   }} key={id} className={"w-[200px] text-center cursor-pointer"}>
-                      <Image src={item.imageUrl} alt=""/>
+                      <Image src={item?.pictures[0]?.pictureUrl} alt=""/>
                       {item.name}
                       <div className={"font-bold text-red"}>{item?.price}đ</div>
                   </Card>))}

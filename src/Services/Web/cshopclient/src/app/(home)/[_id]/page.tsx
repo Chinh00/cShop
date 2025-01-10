@@ -18,7 +18,7 @@ const ProductDetail = () => {
             <>
                 <div className={"col-span-3 flex items-center justify-center flex-col gap-5"}>
                     <div className={"text-[40px] font-bold"}>{data?.data?.name}</div>
-                    <Image src={data?.data?.imageUrl} alt=""/>
+                    <Image src={data?.data?.pictures[0]?.pictureUrl} alt=""/>
                 </div>
                 <div className={"col-span-2 flex flex-col gap-5"}>
                     <div>Loại: <span className={"font-bold"}>{data?.data?.catalogType?.name}</span></div>

@@ -2,9 +2,15 @@
 import { ResultModel } from "@/utils/result-model"
 import http from "@/utils/http"
 import { ListResultModel } from "@/utils/list-result-model";
-import { Product } from "@/models/Product";
-export const getCatalogs = async (): Promise<ResultModel<ListResultModel<Product>>> => {
-    const res =  await http.get<ResultModel<ListResultModel<Product>>>("/catalogservice/api/v1/catalogs");
+import {XQuery} from "@/utils/xQuery";
+import Product from "@/models/Product";
+export const getCatalogs = async (xQuery: XQuery | null): Promise<ResultModel<ListResultModel<Product>>> => {
+    const res =  await http.get<ResultModel<ListResultModel<Product>>>("/catalogservice/api/v1/catalogs", {
+        headers: {
+            "Content-Type": "application/json",
+            "x-query": JSON.stringify(xQuery),
+        }
+    });
     return res.data;
 }
 
