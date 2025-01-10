@@ -69,8 +69,15 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
         During(Validate, Ignore(OrderStartedIntegrationEvent),
             When(OrderStockValidatedSuccessIntegrationEvent).ThenAsync(async (context) =>
                 {
+                    context.Saga.TotalAmount = context.Message.TotalAmount;
                     _logger.LogInformation($"Order submitted {context.Message.OrderId}");                    
                 })
+                .Produce(context => context.Init<PaymentPrepareIntegrationEvent>(new
+                {
+                    OrderId = context.Saga.CorrelationId,
+                    UserId = context.Saga.UserId,
+                    Amount = context.Saga.TotalAmount
+                }))
                 .TransitionTo(PaymentProcess),
             When(OrderStockValidatedFailIntegrationEvent).ThenAsync(async context => { }).TransitionTo(Cancel)
         );                  

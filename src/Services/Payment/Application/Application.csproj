@@ -15,4 +15,10 @@
       <None Remove="Properties\launchSettings.json" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\BuildingBlock\cShop.Contracts\cShop.Contracts.csproj" />
+      <ProjectReference Include="..\..\..\BuildingBlock\cShop.Core\cShop.Core.csproj" />
+      <ProjectReference Include="..\Domain\Domain.csproj" />
+    </ItemGroup>
+
 </Project>

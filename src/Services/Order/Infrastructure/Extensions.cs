@@ -32,10 +32,7 @@ public static class Extensions
                 r.AddProducer<MakeOrderStockValidateIntegrationEvent>(nameof(MakeOrderStockValidateIntegrationEvent));
                 
                 
-                r.AddProducer<PaymentProcessSuccessIntegrationEvent>(nameof(PaymentProcessSuccessIntegrationEvent));
-                r.AddProducer<PaymentProcessFailIntegrationEvent>(nameof(PaymentProcessFailIntegrationEvent));
-                
-                
+              
                 r.AddProducer<OrderPaidIntegrationEvent>(nameof(OrderPaidIntegrationEvent));
                 
                 r.AddProducer<OrderUnPaidIntegrationEvent>(nameof(OrderUnPaidIntegrationEvent));

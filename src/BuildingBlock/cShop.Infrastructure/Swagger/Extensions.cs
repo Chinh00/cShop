@@ -6,7 +6,7 @@ namespace cShop.Infrastructure.Swagger;
 
 public static class Extensions
 {
-    public static IServiceCollection AddSwaggerCustom(this IServiceCollection services, IConfiguration configuration,
+    public static IServiceCollection AddSwaggerCustom(this IServiceCollection services,
         Action<IServiceCollection>? action = null)
     {
 

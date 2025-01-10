@@ -15,7 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddLoggingCustom(builder.Configuration, "ShipperService")
     .AddValidation(typeof(Anchor))
     .AddAuthenticationDefault(builder.Configuration)
-    .AddSwaggerCustom(builder.Configuration)
+    .AddSwaggerCustom()
     .AddMediatorDefault([typeof(Anchor), typeof(Program)])
     .AddRepository(builder.Configuration)
     .AddMasstransits(builder.Configuration)

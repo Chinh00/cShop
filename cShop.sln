@@ -94,6 +94,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "src\Services
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "src\Services\Payment\Infrastructure\Infrastructure.csproj", "{BF907CB7-A703-4C36-8C39-BA104F3E115A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "src\Services\Payment\Domain\Domain.csproj", "{9B72C2CC-7A6F-4674-8908-CD7EF43F1F19}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -143,6 +145,7 @@ Global
 		{115DACE8-8B97-4195-9F20-9E75707A6481} = {64F43A16-5D32-42CD-AA06-3FA4A14FD944}
 		{EC0209D6-94B6-4EEA-A48C-56082A48307E} = {64F43A16-5D32-42CD-AA06-3FA4A14FD944}
 		{BF907CB7-A703-4C36-8C39-BA104F3E115A} = {64F43A16-5D32-42CD-AA06-3FA4A14FD944}
+		{9B72C2CC-7A6F-4674-8908-CD7EF43F1F19} = {64F43A16-5D32-42CD-AA06-3FA4A14FD944}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{EFB4AA85-FCEE-4233-B7DC-55C0DB26CBC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -277,5 +280,9 @@ Global
 		{BF907CB7-A703-4C36-8C39-BA104F3E115A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF907CB7-A703-4C36-8C39-BA104F3E115A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF907CB7-A703-4C36-8C39-BA104F3E115A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B72C2CC-7A6F-4674-8908-CD7EF43F1F19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B72C2CC-7A6F-4674-8908-CD7EF43F1F19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B72C2CC-7A6F-4674-8908-CD7EF43F1F19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B72C2CC-7A6F-4674-8908-CD7EF43F1F19}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

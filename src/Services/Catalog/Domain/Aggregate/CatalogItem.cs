@@ -29,6 +29,11 @@ public class CatalogItem : AggregateBase
     
     public int AvailableStock { get; set; }
 
+    public bool IsAvailable(int quantity)
+    {
+        return AvailableStock >= quantity;
+    }
+
 
     public void RemoveStock(int quantity)
     {
@@ -48,14 +53,7 @@ public class CatalogItem : AggregateBase
     {
         CatalogType = catalogType;
     }
-    public void AssignCatalogType(Guid catalogTypeId)
-    {
-        CatalogTypeId = catalogTypeId;
-    }
-    public void AssignCatalogBrand(Guid catalogBrandId)
-    {
-        CatalogBrandId = catalogBrandId;
-    }
+    
 
     
     

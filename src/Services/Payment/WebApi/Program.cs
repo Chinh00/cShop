@@ -1,41 +1,38 @@
+using Application;
+using cShop.Infrastructure.Auth;
+using cShop.Infrastructure.Bus;
+using cShop.Infrastructure.Logging;
+using cShop.Infrastructure.Mediator;
+using cShop.Infrastructure.SchemaRegistry;
+using cShop.Infrastructure.Swagger;
+using cShop.Infrastructure.Validation;
+using Infrastructure;
+using WebApi.Apis;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+
+builder.Services.AddLoggingCustom(builder.Configuration, "Payment service")
+    .AddAuthenticationDefault(builder.Configuration)
+    .AddValidation(typeof(Anchor))
+    .AddSwaggerCustom()
+    .AddMediatorDefault([typeof(Anchor)])
+    .AddMessageBus(builder.Configuration)
+    .AddMasstransitCustom(builder.Configuration)
+    .AddDbContextService(builder.Configuration)
+    .AddSchemaRegistry(builder.Configuration);
+    
+
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
 
-app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+app.NewVersionedApi("Payment").MapPaymentApiV1();
 
-app.MapGet("/weatherforecast", () =>
-    {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        return forecast;
-    })
-    .WithName("GetWeatherForecast");
+app.UseAuthenticationDefault(builder.Configuration)
+    .ConfigureSwagger(builder.Configuration);
+
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

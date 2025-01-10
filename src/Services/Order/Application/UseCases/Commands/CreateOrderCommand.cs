@@ -58,7 +58,8 @@ public record CreateOrderCommand(
          await orderStartedTopic.Produce(
             new
             {
-               OrderId = order.Id, UserId = order.CustomerId,
+               OrderId = order.Id, 
+               UserId = order.CustomerId,
                OrderCheckoutDetails =
                   order.OrderDetails.Select(e => new { ProductId = e.ProductId, Quantity = e.Quantity })
             }, cancellationToken);

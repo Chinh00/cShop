@@ -2,7 +2,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddLoggingCustom(builder.Configuration, "UserService")
     .AddAuthenticationDefault(builder.Configuration)
-    .AddSwaggerCustom(builder.Configuration)
+    .AddSwaggerCustom()
     .AddValidation(typeof(Anchor))
     .AddMediatorDefault([typeof(Anchor)])
     .AddAutoMapper(typeof(UserConfigMapper))

@@ -12,6 +12,7 @@ public class OrderState : SagaStateMachineInstance, ISagaVersion
     public string CurrentState { get; set; } = default!;
     
     public DateTime UpdatedTime { get; set; }
+    public decimal TotalAmount { get; set; } = default!;
 
     public int Version { get; set; }
 

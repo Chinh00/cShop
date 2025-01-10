@@ -10,7 +10,7 @@ using WebApi.Apis;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddLoggingCustom(builder.Configuration, "Notification")
-    .AddSwaggerCustom(builder.Configuration)
+    .AddSwaggerCustom()
     .AddMediatorDefault([typeof(Program), typeof(Infrastructure.Extensions), typeof(Anchor)])
     .AddSchemaRegistry(builder.Configuration)
     .AddCdcConsumer(builder.Configuration);

@@ -1,3 +1,4 @@
+using Application.UseCases.Queries.Specs;
 using cShop.Core.Repository;
 using Domain.Aggregate;
 using IntegrationEvents;
@@ -7,7 +8,7 @@ using MediatR;
 namespace Application.UseCases.IntegrationEventHandlers;
 
 public sealed class OrderStockValidateIntegrationEventHandler(
-    IRepository<CatalogItem> catalogItemRepository,
+    IListRepository<CatalogItem> repository,
     ITopicProducer<OrderStockValidatedSuccessIntegrationEvent> stockValidateSuccess,
     ITopicProducer<OrderStockValidatedFailIntegrationEvent> stockValidateFail)
     : INotificationHandler<MakeOrderStockValidateIntegrationEvent>
@@ -15,16 +16,32 @@ public sealed class OrderStockValidateIntegrationEventHandler(
 
     public async Task Handle(MakeOrderStockValidateIntegrationEvent notification, CancellationToken cancellationToken)
     {
-        // foreach (var notificationOrderItem in notification.OrderItems)
-        // {
-        //     var catalogItem =
-        //         await catalogItemRepository.FindByIdAsync(notificationOrderItem.ProductId, cancellationToken);
-        //     if (catalogItem.AvailableStock < notificationOrderItem.Quantity)
-        //     {
-        //         await stockValidateFail.Produce(new { notification.OrderItems }, cancellationToken);
-        //         return;
-        //     }
-        // }
-        await stockValidateSuccess.Produce(new { notification.OrderId }, cancellationToken);
+        var catalogsSpec = new GetCatalogByIdsSpec(notification.OrderItems.Select(c => c.ProductId).ToList());
+        var catalogs = await repository.FindAsync(catalogsSpec, cancellationToken);
+        decimal totalAmount = 0;
+        foreach (var notificationOrderItem in notification.OrderItems)
+        {
+            var catalogItem = catalogs.FirstOrDefault(c => c.Id == notificationOrderItem.ProductId);
+            if (catalogItem is null)
+            {
+                await stockValidateFail.Produce(new
+                {
+                    notification.OrderId
+                }, cancellationToken);
+                return;
+            }
+            
+            if (!catalogItem.IsAvailable(notificationOrderItem.Quantity))
+            {
+                await stockValidateFail.Produce(new
+                {
+                    notification.OrderId
+                }, cancellationToken);
+                return;
+            }
+            totalAmount += notificationOrderItem.Quantity * catalogItem.Price; 
+        }
+        
+        await stockValidateSuccess.Produce(new { notification.OrderId, TotalAmount = totalAmount }, cancellationToken);
     }
 }
