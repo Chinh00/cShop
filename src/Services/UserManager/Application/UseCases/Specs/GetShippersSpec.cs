@@ -12,5 +12,6 @@ public sealed class GetShippersSpec : ListSpecification<Shipper>
         ApplyFilterList(query.Filters);
         ApplyIncludeList(query.Includes);
         ApplyOrderList(query.Sorts);
+        ApplyPagination(query.Page, query.PageSize);
     }
 }

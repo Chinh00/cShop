@@ -1,10 +1,5 @@
 ﻿using System.Security.Claims;
 using IdentityModel;
-using Identity.Api.Data;
-using Identity.Api.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Serilog;
 
 namespace Identity.Api;
 

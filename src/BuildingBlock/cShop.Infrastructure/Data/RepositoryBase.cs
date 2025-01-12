@@ -32,7 +32,7 @@ public class RepositoryBase<TDbContext, TEntity> : IRepository<TEntity>, IListRe
         specification.IncludeStrings.ForEach(e => source = source.Include(e));
         specification.OrderBys.ForEach(e => source = source.OrderBy(e));
         specification.OrderDescBys.ForEach(e => source = source.OrderByDescending(e));
-        source = source.Skip(specification.Skip).Take(specification.Take);
+        source = source.Skip(specification.Skip - 1).Take(specification.Take);
         return source;
     }
 

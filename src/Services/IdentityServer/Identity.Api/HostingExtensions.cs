@@ -1,18 +1,4 @@
-using Confluent.SchemaRegistry;
-using cShop.Core.Repository;
-using cShop.Infrastructure.Cdc;
-using cShop.Infrastructure.Data;
-using cShop.Infrastructure.SchemaRegistry;
-using Duende.IdentityServer;
 using Duende.IdentityServer.Configuration;
-using Identity.Api.Cdc;
-using Identity.Api.Data;
-using Identity.Api.Models;
-using Identity.Api.Services;
-using IntegrationEvents;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Serilog;
 
 namespace Identity.Api;
 
@@ -22,7 +8,7 @@ internal static class HostingExtensions
     {
         
         builder.Services.AddSchemaRegistry(builder.Configuration);
-        builder.Services.AddKafkaConsumer<UserConsumerConfig>((config) =>
+        builder.Services.AddKafkaConsumer<CustomerConsumerConfig>((config) =>
         {
             config.Topic = "customer_cdc_events";
             config.GroupId = "customer_cdc_events_identity_group";

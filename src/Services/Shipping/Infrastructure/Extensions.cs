@@ -85,7 +85,7 @@ public static class Extensions
         services.AddKafkaConsumer<ShipperConsumerConfig>((config) =>
         {
             config.Topic = "shipper_cdc_events";
-            config.GroupId = "shipper_cdc_events_group";
+            config.GroupId = "shipper_cdc_events_shipping_group";
             config.HandlePayload = async (ISchemaRegistryClient schemaRegistry,string eventName, byte[] payload) =>
             {
                 return eventName switch

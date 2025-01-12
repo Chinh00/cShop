@@ -12,6 +12,7 @@ public sealed class GetCustomersSpec : ListSpecification<Customer>
         ApplyFilterList(query.Filters);
         ApplyIncludeList(query.Includes);
         ApplyOrderList(query.Sorts);
+        ApplyPagination(query.Page, query.PageSize);
         
     }
 }

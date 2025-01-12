@@ -10,6 +10,14 @@
     {
       "name": "Name",
       "type": "string"
+    },
+    {
+      "name": "Phone",
+      "type": "string"
+    },
+    {
+      "name": "Email",
+      "type": "string"
     }
   ],
 }

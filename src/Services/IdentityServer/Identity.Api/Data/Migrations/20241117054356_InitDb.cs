@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Migration = Microsoft.EntityFrameworkCore.Migrations.Migration;
 
 #nullable disable
 

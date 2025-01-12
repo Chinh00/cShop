@@ -1,5 +1,3 @@
-using Identity.Api.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
 namespace Identity.Api.Services;

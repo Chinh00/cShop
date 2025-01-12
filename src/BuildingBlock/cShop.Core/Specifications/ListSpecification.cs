@@ -41,7 +41,7 @@ public class ListSpecification<TEntity> : IListSpecification<TEntity> where TEnt
 
     public void ApplyPagination(int page, int pageSize)
     {
-        Skip = (page - 1) * pageSize;
+        Skip = page;
         Take = pageSize;
     }
     

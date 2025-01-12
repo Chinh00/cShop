@@ -181,7 +181,7 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Domain.OrderDetail", b =>
                 {
-                    b.HasOne("Domain.Order", null)
+                    b.HasOne("Domain.Order", "Order")
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -190,6 +190,8 @@ namespace Infrastructure.Data.Migrations
                     b.HasOne("Domain.ProductInfo", "ProductInfo")
                         .WithMany()
                         .HasForeignKey("ProductInfoId");
+
+                    b.Navigation("Order");
 
                     b.Navigation("ProductInfo");
                 });

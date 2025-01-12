@@ -1,21 +1,4 @@
-﻿using Confluent.SchemaRegistry;
-using cShop.Core.Repository;
-using cShop.Infrastructure.Cdc;
-using cShop.Infrastructure.Data;
-using cShop.Infrastructure.SchemaRegistry;
-using Duende.IdentityServer;
-using Identity.Api;
-using Identity.Api.Cdc;
-using Identity.Api.Data;
-using Identity.Api.Models;
-using Identity.Api.Services;
-using IntegrationEvents;
-using MassTransit;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Serilog;
-
-Log.Logger = new LoggerConfiguration()
+﻿Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .CreateBootstrapLogger();
 
@@ -34,7 +17,7 @@ try
         .WriteTo.Console());
     builder.Services.AddMediatR(e => e.RegisterServicesFromAssembly(typeof(Program).Assembly));
     builder.Services.AddSchemaRegistry(builder.Configuration);
-    builder.Services.AddKafkaConsumer<UserConsumerConfig>((config) =>
+    builder.Services.AddKafkaConsumer<CustomerConsumerConfig>((config) =>
     {
         config.Topic = "customer_cdc_events";
         config.GroupId = "customer_cdc_events_identity_group";
@@ -48,6 +31,21 @@ try
             };
         };
     }); 
+    builder.Services.AddKafkaConsumer<ShipperConsumerConfig>((config) =>
+    {
+        config.Topic = "shipper_cdc_events";
+        config.GroupId = "shipper_cdc_events_identity_group";
+        config.HandlePayload = async (ISchemaRegistryClient schemaRegistry,string eventName, byte[] payload) =>
+        {
+            return eventName switch
+            {
+                nameof(ShipperCreatedIntegrationEvent) => await payload.AsRecord<ShipperCreatedIntegrationEvent>(
+                    schemaRegistry),
+                _ => null
+            };
+        };
+    }); 
+
     builder.Services.AddRazorPages();
 
     builder.Services.AddDbContext<ApplicationDbContext>(options =>

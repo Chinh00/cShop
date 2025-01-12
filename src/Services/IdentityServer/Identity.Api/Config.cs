@@ -18,6 +18,14 @@ public static class Config
 
     public static IEnumerable<Client> Clients(IConfiguration config) =>
     [
+        new Client()
+        {
+            ClientId = "postman",
+            ClientSecrets = { new Secret("secret".Sha256()) },
+            AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+            AllowedScopes = { "openid", "profile", "api" },
+            AccessTokenLifetime = int.MaxValue
+        },
         new Client
             {
                 ClientId = "nextjs",

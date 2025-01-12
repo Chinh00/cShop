@@ -1,6 +1,3 @@
-using Identity.Api.Models;
-using Identity.Api.Services;
-using IntegrationEvents;
 using MediatR;
 
 namespace Identity.Api.Consumers;

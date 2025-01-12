@@ -10,7 +10,7 @@ public static class ShipperApi
 
     public static IVersionedEndpointRouteBuilder MapShipperApi(this IVersionedEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup(BaseUrl).HasApiVersion(1);
+        var group = endpoints.MapGroup(BaseUrl).HasApiVersion(1).RequireAuthorization();
 
         group.MapPost("/pick", async (ISender sender, PickShipment command) => await sender.Send(command));
         group.MapPost("/delivery", async (ISender sender, DeliveryShipment command) => await sender.Send(command));

@@ -11,7 +11,7 @@ using MediatR;
 namespace Application.UseCases.Commands;
 
 public record CreateShipperCommand(
-    string Name, string Phone) : ICommand<IResult>
+    string Name, string PhoneNumber, string Email) : ICommand<IResult>
 {
     public class Validator : AbstractValidator<CreateShipperCommand>
     {
@@ -27,12 +27,13 @@ public record CreateShipperCommand(
             var shipper = new Shipper()
             {
                 Name = request.Name,
-                Phone = request.Phone
+                PhoneNumber = request.PhoneNumber,
+                Email = request.Email
             };
             await repository.AddAsync(shipper, cancellationToken);
             await SendToOutboxAsync(shipper, () => (
                 new ShipperOutbox(),
-                new ShipperCreatedIntegrationEvent() { Id = shipper.Id.ToString(), Name = shipper.Name },
+                new ShipperCreatedIntegrationEvent() { Id = shipper.Id.ToString(), Name = shipper.Name, Phone = request.PhoneNumber, Email = request.Email },
                 "shipper_cdc_events"), cancellationToken);
             return Results.Ok(ResultModel<Shipper>.Create(shipper));
         }

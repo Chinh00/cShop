@@ -17,7 +17,9 @@ public sealed class OrderStockValidateIntegrationEventHandler(
     public async Task Handle(MakeOrderStockValidateIntegrationEvent notification, CancellationToken cancellationToken)
     {
         var catalogsSpec = new GetCatalogByIdsSpec(notification.OrderItems.Select(c => c.ProductId).ToList());
+        
         var catalogs = await repository.FindAsync(catalogsSpec, cancellationToken);
+        
         decimal totalAmount = 0;
         foreach (var notificationOrderItem in notification.OrderItems)
         {

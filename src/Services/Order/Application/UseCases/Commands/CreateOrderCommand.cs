@@ -47,8 +47,10 @@ public record CreateOrderCommand(
          {
             order.AddOrderDetail(new OrderDetail()
             {
+               Order = order,
                OrderId = order.Id,
                ProductInfo = e,
+               ProductId = e.Id,
                Quantity = request.Items.FirstOrDefault(c => c.ProductId == e.Id)?.Quantity ?? 1,
             });
          });

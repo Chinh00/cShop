@@ -1,6 +1,8 @@
 // Copyright (c) Duende Software. All rights reserved.
 // See LICENSE in the project root for license information.
 
+using ILogger = Microsoft.Extensions.Logging.ILogger;
+
 namespace Identity.Api.Pages;
 
 internal static class Log

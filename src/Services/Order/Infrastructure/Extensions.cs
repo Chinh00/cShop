@@ -36,6 +36,7 @@ public static class Extensions
                 r.AddProducer<OrderPaidIntegrationEvent>(nameof(OrderPaidIntegrationEvent));
                 
                 r.AddProducer<OrderUnPaidIntegrationEvent>(nameof(OrderUnPaidIntegrationEvent));
+                r.AddProducer<PaymentPrepareIntegrationEvent>(nameof(PaymentPrepareIntegrationEvent));
                 
                 r.AddProducer<OrderConfirmed>(nameof(OrderConfirmed));
                 

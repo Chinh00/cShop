@@ -8,7 +8,7 @@ public sealed class EventDispatcher(IMediator mediator) : IConsumer<IIntegration
 {
     public async Task Consume(ConsumeContext<IIntegrationEvent> context)
     {
-        await mediator.Send(context.Message);        
+        await mediator.Publish(context.Message);        
         await Task.CompletedTask;
     }
 }

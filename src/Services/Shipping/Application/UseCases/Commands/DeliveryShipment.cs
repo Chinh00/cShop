@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Application.UseCases.Commands;
 
-public record DeliveryShipment(Guid OrderId, Guid ShipperId) : ICommand<IResult>
+public record DeliveryShipment(Guid OrderId) : ICommand<IResult>
 {
     public class Validator : AbstractValidator<DeliveryShipment>
     {

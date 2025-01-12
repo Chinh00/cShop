@@ -17,10 +17,12 @@ namespace IntegrationEvents
 	public partial class ShipperCreatedIntegrationEvent : global::Avro.Specific.ISpecificRecord
 	{
 		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"ShipperCreatedIntegrationEvent\",\"namespace\":\"Integration" +
-				"Events\",\"fields\":[{\"name\":\"Id\",\"type\":\"string\"},{\"name\":\"Name\",\"type\":\"string\"}]" +
-				"}");
+				"Events\",\"fields\":[{\"name\":\"Id\",\"type\":\"string\"},{\"name\":\"Name\",\"type\":\"string\"}," +
+				"{\"name\":\"Phone\",\"type\":\"string\"},{\"name\":\"Email\",\"type\":\"string\"}]}");
 		private string _Id;
 		private string _Name;
+		private string _Phone;
+		private string _Email;
 		public virtual global::Avro.Schema Schema
 		{
 			get
@@ -50,12 +52,36 @@ namespace IntegrationEvents
 				this._Name = value;
 			}
 		}
+		public string Phone
+		{
+			get
+			{
+				return this._Phone;
+			}
+			set
+			{
+				this._Phone = value;
+			}
+		}
+		public string Email
+		{
+			get
+			{
+				return this._Email;
+			}
+			set
+			{
+				this._Email = value;
+			}
+		}
 		public virtual object Get(int fieldPos)
 		{
 			switch (fieldPos)
 			{
 			case 0: return this.Id;
 			case 1: return this.Name;
+			case 2: return this.Phone;
+			case 3: return this.Email;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Get()");
 			};
 		}
@@ -65,6 +91,8 @@ namespace IntegrationEvents
 			{
 			case 0: this.Id = (System.String)fieldValue; break;
 			case 1: this.Name = (System.String)fieldValue; break;
+			case 2: this.Phone = (System.String)fieldValue; break;
+			case 3: this.Email = (System.String)fieldValue; break;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Put()");
 			};
 		}
