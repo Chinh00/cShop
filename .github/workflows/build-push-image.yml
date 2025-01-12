@@ -87,6 +87,12 @@ jobs:
           file: src/Services/Shipping/WebApi/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_SHIPPING_SERVICE_NAME}}:latest
+      - uses: yanzay/notify-telegram@v0.1.0
+        if: always()
+        with:
+          chat: ${{ secrets.chat }} 
+          token: ${{ secrets.token }} 
+          status: ${{ job.status }}
   
   
   build:
