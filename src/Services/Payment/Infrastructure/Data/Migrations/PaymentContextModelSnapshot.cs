@@ -52,6 +52,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("TransactionId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int?>("TxnRef")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
@@ -65,6 +68,8 @@ namespace Infrastructure.Data.Migrations
                     b.HasIndex("OrderId");
 
                     b.HasIndex("TransactionId");
+
+                    b.HasIndex("TxnRef");
 
                     b.HasIndex("UserId");
 

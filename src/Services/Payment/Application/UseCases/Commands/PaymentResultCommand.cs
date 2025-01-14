@@ -3,6 +3,7 @@ using Application.UseCases.Specs;
 using cShop.Core.Domain;
 using cShop.Core.Repository;
 using cShop.Infrastructure.IdentityServer;
+using cShop.Infrastructure.Models;
 using Domain;
 using FluentValidation;
 using IntegrationEvents;
@@ -31,24 +32,17 @@ public record PaymentResultCommand(IQueryCollection QueryString) : ICommand<IRes
     {
         public async Task<IResult> Handle(PaymentResultCommand request, CancellationToken cancellationToken)
         {
-            foreach (var keyValuePair in request.QueryString)
+            request.QueryString.TryGetValue(nameof(PaymentResult.vnp_TxnRef), out var txnRef);
+            var spec = new GetOrderInfoByTxnRefSpec(int.Parse(txnRef));
+            var orderInfo = await repository.FindOneAsync(spec, cancellationToken);
+            orderInfo.Status = PaymentStatus.Success;
+            
+            await repository.UpdateAsync(orderInfo, cancellationToken);
+            await topicProducerSuccessIntegrationEvent.Produce(new
             {
-                var key = keyValuePair.Key;
-                var value = keyValuePair.Value;
-                Console.WriteLine(key);
-            }
-
-            // var spec = new GetOrderInfoByIdSpec(request.OrderId, claimContextAccessor.GetUserId());
-            // var orderInfo = await repository.FindOneAsync(spec, cancellationToken);
-            //
-            //
-            // orderInfo.TransactionId = request.TransactionId;
-            // await repository.UpdateAsync(orderInfo, cancellationToken);
-            // await topicProducerSuccessIntegrationEvent.Produce(new
-            // {
-            //     request.OrderId,
-            //     TransactionId = orderInfo.TransactionId,
-            // }, cancellationToken);
+                orderInfo.OrderId,
+                TransactionId = orderInfo.Id,
+            }, cancellationToken);
             return Results.Ok();
         }
     }

@@ -26,7 +26,7 @@ public record CreatePaymentUrlCommand(Guid OrderId) : ICommand<IResult>
         
         public async Task<IResult> Handle(CreatePaymentUrlCommand request, CancellationToken cancellationToken)
         {
-            var spec = new GetOrderInfoByIdSpec(request.OrderId, contextAccessor.GetUserId());
+            var spec = new GetOrderInfoByOrderIdSpec(request.OrderId, contextAccessor.GetUserId());
             var orderInfo = await orderRepository.FindOneAsync(spec, cancellationToken);
             orderInfo.Status = PaymentStatus.Pending;
 
@@ -47,7 +47,7 @@ public record CreatePaymentUrlCommand(Guid OrderId) : ICommand<IResult>
             var vnp_OrderInfo = $"Thanh toan don hang: {orderInfo.Id}";
             var vnp_OrderType = "other";
             var vnp_TxnRef = new Random().Next().ToString();
-
+            
             paymentService.AddRequestData(nameof(vnp_Amount), vnp_Amount);
             paymentService.AddRequestData(nameof(vnp_Command), vnp_Command);
             paymentService.AddRequestData(nameof(vnp_CreateDate), vnp_CreateDate);
@@ -60,7 +60,7 @@ public record CreatePaymentUrlCommand(Guid OrderId) : ICommand<IResult>
             paymentService.AddRequestData(nameof(vnp_TmnCode), vnp_TmnCode);
             paymentService.AddRequestData(nameof(vnp_TxnRef), vnp_TxnRef);
             paymentService.AddRequestData(nameof(vnp_Version), vnp_Version);
-            
+            orderInfo.TxnRef = int.Parse(vnp_TxnRef);
             await orderRepository.UpdateAsync(orderInfo, cancellationToken);
 
             return Results.Ok(ResultModel<string>.Create(paymentService.CreateRequestUrl(vnpay_url, vnp_HashSecret)));

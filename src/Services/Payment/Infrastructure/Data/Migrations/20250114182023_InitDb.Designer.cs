@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(PaymentContext))]
-    [Migration("20250114175016_InitDb")]
+    [Migration("20250114182023_InitDb")]
     partial class InitDb
     {
         /// <inheritdoc />
@@ -55,6 +55,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("TransactionId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int?>("TxnRef")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
@@ -68,6 +71,8 @@ namespace Infrastructure.Data.Migrations
                     b.HasIndex("OrderId");
 
                     b.HasIndex("TransactionId");
+
+                    b.HasIndex("TxnRef");
 
                     b.HasIndex("UserId");
 

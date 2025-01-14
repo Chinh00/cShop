@@ -21,6 +21,7 @@ namespace Infrastructure.Data.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TransactionId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    TxnRef = table.Column<int>(type: "int", nullable: true),
                     PaymentMethod = table.Column<int>(type: "int", nullable: false),
                     PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
@@ -46,6 +47,11 @@ namespace Infrastructure.Data.Migrations
                 name: "IX_OrderInfos_TransactionId",
                 table: "OrderInfos",
                 column: "TransactionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderInfos_TxnRef",
+                table: "OrderInfos",
+                column: "TxnRef");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderInfos_UserId",

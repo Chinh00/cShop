@@ -5,6 +5,8 @@ namespace Domain;
 [Index(nameof(UserId))]
 [Index(nameof(OrderId))]
 [Index(nameof(TransactionId))]
+[Index(nameof(TxnRef))]
+
 public class OrderInfo : EntityBase
 {
     public Guid OrderId { get; set; }
@@ -12,6 +14,7 @@ public class OrderInfo : EntityBase
     public string Description { get; set; }
     public Guid UserId { get; set; }
     public string? TransactionId { get; set; }
+    public int? TxnRef { get; set; }
     public PaymentMethod PaymentMethod { get; set; }
     public DateTime? PaymentDate { get; set; }
     public PaymentStatus Status { get; set; } = PaymentStatus.Idle;
