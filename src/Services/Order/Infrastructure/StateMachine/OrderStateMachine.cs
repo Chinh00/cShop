@@ -33,17 +33,19 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
         Event(() => OrderStatusRequested, x =>
         {
             x.CorrelateById(m => m.Message.OrderId);
-            x.OnMissingInstance(m => m.ExecuteAsync(async context =>
-            {
-                if (context.RequestId.HasValue)
-                {
-                    await context.RespondAsync<OrderNotFound>(new { context.Message.OrderId });
-                }
-            }));
+            x.OnMissingInstance(m => m.ExecuteAsync(context => context.RespondAsync(new OrderNotFound() {OrderId = context.Message.OrderId})));
         });
 
         
         InstanceState(e => e.CurrentState);
+        DuringAny(
+            When(OrderStatusRequested)
+                .RespondAsync(async context => new OrderStatus()
+            {
+                OrderId = context.Saga.CorrelationId,
+                State = "Pending"
+            })
+        );
 
 
         Initially(
@@ -142,17 +144,10 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
                     _logger.LogInformation($"Order cancelled {context.Saga.CorrelationId}");
                     await SendAuditLog();
                 }).Finalize());
-        DuringAny(
-            When(OrderStatusRequested)
-                .RespondAsync(context => context.Init<OrderStatus>(new
-                {
-                    OrderId = context.Saga.CorrelationId,
-                    State = context.Saga.CurrentState
-                }))
-        );
+        
 
 
-        SetCompletedWhenFinalized();
+        // SetCompletedWhenFinalized();
     }
 
 

@@ -1,6 +1,5 @@
 using cShop.Infrastructure.Validation;
 using MediatR;
-using Microsoft.AspNetCore.Http.Features;
 
 namespace cShop.Infrastructure.Mediator;
 

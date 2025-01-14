@@ -1,8 +1,5 @@
-using Application.UseCases.Dtos;
-using cShop.Core.Domain;
 using cShop.Core.Specifications;
 using Domain.Aggregate;
-using MediatR;
 
 namespace Application.UseCases.Queries.Specs;
 

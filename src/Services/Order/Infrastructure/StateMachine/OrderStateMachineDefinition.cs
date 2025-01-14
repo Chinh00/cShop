@@ -6,15 +6,16 @@ public class OrderStateMachineDefinition : SagaDefinition<OrderState>
 {
     public OrderStateMachineDefinition()
     {
-        ConcurrentMessageLimit = 12;
+        ConcurrentMessageLimit = 50;
     }
 
-    protected override void ConfigureSaga(IReceiveEndpointConfigurator endpointConfigurator, ISagaConfigurator<OrderState> sagaConfigurator,
+    protected override void ConfigureSaga(IReceiveEndpointConfigurator endpointConfigurator,
+        ISagaConfigurator<OrderState> sagaConfigurator,
         IRegistrationContext context)
     {
-        endpointConfigurator.UseMessageRetry(r => r.Intervals(500, 5000, 10000));
+        endpointConfigurator.UseMessageRetry(r => r.Intervals(100, 200, 300));
         endpointConfigurator.UseInMemoryOutbox();
     }
 
-    
+     
 }

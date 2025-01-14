@@ -17,7 +17,7 @@ public class OrderCdcHandler(
     {
         await shipperOrderRepository.AddAsync(new ShipperOrder()
         {
-            Id = Guid.Parse(notification.OrderId)
+            Id = Guid.Parse(notification.OrderId),
         }, cancellationToken);
         await shipmentCreatedProducer.Produce(new { notification.OrderId }, cancellationToken);
     }

@@ -14,42 +14,19 @@ const BasketPage = () => {
     const {mutate} = useCreateBasket()
     
     useEffect(() => {
-        if (isSuccess && data?.data == undefined) {
+        if (isSuccess && data?.data == null) {
             mutate()
         }
-    }, []);
+    }, [data]);
     
     const PayAction = () => {
         const axios_instance = axios.create({
             baseURL: ""
         })
         
-        fetch("https://sandbox.vnpayment.vn/paymentv2/vpcpay.html", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                vnp_TmnCode: "48FVW9FU",
-                vnp_HashSecret: "LFIQ8YSXU6XQO92AGALYDQ2ATK9Q4W34",
-                vnp_Version: "2.1.0",
-                vnp_Command: "pay",
-                vnp_Amount: 1000000 * 100,
-                vnp_CreateDate: 20220101103111,
-                vnp_CurrCode: "VND",
-                vnp_Locale: "vn",
-                vnp_OrderInfo: "Thanh toan don hang",
-                vnp_OrderType: "other",
-                vnp_ReturnUrl: "http://localhost:3000",
-                vnp_ExpireDate: 20220101103111,
-                vnp_IpAddr: "192.168.1.1",
-                vnp_TxnRef: "123431243"
-            }),
-        },).then(res => {
-            console.log("res", res)
-        });
         
         
+         
     }
     
     return <div className={"w-full"}>

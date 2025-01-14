@@ -7,6 +7,6 @@ public class GetProductInfoByListIdSpec : ListSpecification<ProductInfo>
 {
     public GetProductInfoByListIdSpec(List<Guid> ids)
     {
-        ids.ForEach(e => ApplyFilter(c => c.Id == e));
+        ApplyFilter(c => ids.Contains(c.Id));
     }
 }

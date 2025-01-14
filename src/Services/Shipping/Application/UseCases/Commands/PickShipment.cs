@@ -1,3 +1,4 @@
+using Application.UseCases.Specs;
 using cShop.Core.Domain;
 using cShop.Core.Repository;
 using cShop.Infrastructure.IdentityServer;
@@ -26,7 +27,7 @@ public record PickShipment(Guid OrderId) : ICommand<IResult>
         
         public async Task<IResult> Handle(PickShipment request, CancellationToken cancellationToken)
         {
-            var shipment = await repository.FindByIdAsync(request.OrderId, cancellationToken);
+            var shipment = await repository.FindOneAsync(new GetShipmentByIdSpec(request.OrderId), cancellationToken);
             shipment.ShipperId = contextAccessor.GetUserId();
             await repository.UpdateAsync(shipment, cancellationToken);
             await shipmentPicked.Produce(new { request.OrderId }, cancellationToken);

@@ -1,6 +1,9 @@
+using Application.Abstraction;
 using Confluent.Kafka;
 using cShop.Infrastructure.Data;
+using cShop.Infrastructure.Models;
 using Infrastructure.Data;
+using Infrastructure.Services;
 using IntegrationEvents;
 using MassTransit;
 
@@ -8,6 +11,15 @@ namespace Infrastructure;
 
 public static class Extensions
 {
+    public static IServiceCollection AddPaymentService(this IServiceCollection services, IConfiguration configuration,
+        Action<IServiceCollection>? action = null)
+    {
+        services.AddOptions<PaymentParam>().Bind(configuration.GetSection(PaymentParam.Name));
+        services.AddTransient<IVnpayService, VnpayService>();
+
+        action?.Invoke(services);
+        return services;
+    }
     public static IServiceCollection AddMasstransitCustom(this IServiceCollection services, IConfiguration configuration,
         Action<IServiceCollection>? action = null)
     {

@@ -7,6 +7,6 @@ public sealed class GetOrderInfoByIdSpec : SpecificationBase<OrderInfo>
 {
     public GetOrderInfoByIdSpec(Guid orderId, Guid userId)
     {
-        ApplyFilter(e => e.OrderId == orderId && e.UserId == userId);
+        ApplyFilter(e => e.OrderId == orderId && e.UserId == userId && e.Status == PaymentStatus.Idle);
     }
 }

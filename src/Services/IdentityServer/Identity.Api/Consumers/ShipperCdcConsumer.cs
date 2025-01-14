@@ -9,9 +9,9 @@ public sealed class ShipperCdcConsumer(UserManager userManager) : INotificationH
         await userManager.CreateAsync(new ApplicationUser()
         {
             Id = Guid.Parse(notification.Id).ToString(),
-            UserName = notification.Name,
+            UserName = notification.Email,
             PhoneNumber = notification.Phone,
             Email = notification.Email,
-        }, notification.Email);
+        }, "Pass123$");
     }
 }

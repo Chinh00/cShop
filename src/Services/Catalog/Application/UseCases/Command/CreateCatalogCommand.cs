@@ -4,7 +4,6 @@ using Application.UseCases.Queries.Specs;
 using Confluent.SchemaRegistry;
 using cShop.Core.Domain;
 using cShop.Core.Repository;
-using cShop.Core.Specifications;
 using cShop.Infrastructure.SchemaRegistry;
 using Domain.Aggregate;
 using Domain.Entities;

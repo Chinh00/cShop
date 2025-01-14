@@ -16,14 +16,14 @@ public static class Extensions
         Action<IServiceCollection>? action = null)
     {
 
+        services.AddOptions<MongoDbbOption>().Bind(configuration.GetSection(MongoDbbOption.Mongodb));
         var mOption = new MongoDbbOption();
         configuration.GetSection(MongoDbbOption.Mongodb).Bind(mOption);
         services.AddMassTransit(t =>
         {
             t.SetKebabCaseEndpointNameFormatter();
 
-            t.UsingInMemory();
-            t.AddRequestClient<CheckOrder>();
+            
             
             t.AddRider(r =>
             {
@@ -56,8 +56,6 @@ public static class Extensions
                 r.UsingKafka((context, configurator) =>
                 {
                     configurator.Host(configuration.GetValue<string>("Kafka:BootstrapServers"));
-                    
-                    
                     configurator.TopicEndpoint<OrderConfirmed>(nameof(OrderConfirmed), "order-group",
                         endpointConfigurator =>
                         {
@@ -152,10 +150,21 @@ public static class Extensions
                             c.CreateIfMissing(e => e.NumPartitions = 1);
                             c.ConfigureSaga<OrderState>(context);
                         });
-                                        
+                    configurator.TopicEndpoint<CheckOrder>(nameof(CheckOrder), "check-order-group", c =>
+                    {
+                        c.ConfigureSaga<OrderState>(context);
+                        c.CreateIfMissing(e => e.NumPartitions = 1);
+                        c.AutoOffsetReset = AutoOffsetReset.Earliest;
+                    });
                 });
                 
             });
+            t.UsingInMemory((context, configurator) =>
+            {
+                configurator.ConfigureEndpoints(context);
+            });
+            t.AddRequestClient<CheckOrder>(TimeSpan.FromSeconds(30));
+            t.AddHostedService<MassTransitHostedService>();
 
         });
         

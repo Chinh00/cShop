@@ -14,7 +14,7 @@ export const BasketDetail = (props: BasketDetailProps) => {
     return <Card>
         <div className={"flex flex-row gap-5 justify-between"}>
             <div className={"flex flex-row gap-5"}>
-                <Image src={data?.data?.imageUrl} alt={data?.data?.name} width={100}/>
+                <Image src={data?.data?.pictures[0]?.pictureUrl} alt={data?.data?.name} width={100}/>
                 <div>
                     {data?.data.name}
                 </div>

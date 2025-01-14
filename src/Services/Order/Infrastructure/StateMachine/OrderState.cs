@@ -1,10 +1,12 @@
 using IntegrationEvents;
 using MassTransit;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Infrastructure.StateMachine;
 
 public class OrderState : SagaStateMachineInstance, ISagaVersion
 {
+    [BsonId]
     public Guid CorrelationId { get; set; }
     public Guid UserId { get; set; }
     

@@ -1,7 +1,6 @@
 using cShop.Core.Domain;
 using FluentValidation;
 using MediatR;
-using MongoDB.Driver.Linq;
 using OfficeOpenXml;
 
 namespace Application.UseCases.Command;

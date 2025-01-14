@@ -72,10 +72,18 @@ public static class Extensions
             "<=" => BuildBinary(ExpressionType.LessThanOrEqual, left, value),
             ">" => BuildBinary(ExpressionType.GreaterThan, left, value),
             "<" => BuildBinary(ExpressionType.LessThan, left, value),
+            "in" => MakeExpressionContains(left, value.Split(',')),
             _ => throw new Exception($"Invalid comparision: {comparision}")
         };
     }
 
+    static Expression MakeExpressionContains(Expression left, string[] listValue)
+    {
+        var baseType = left.GetType().BaseType;
+        var methodInfo = baseType?.GetMethod("Contains", [typeof(string)]);
+        return Expression.Call(left, methodInfo, new Expression[] {Expression.Constant(listValue) });
+    }
+    
     static Expression BuildBinary(ExpressionType type, Expression left, string value)
     {
         object leftType = value;

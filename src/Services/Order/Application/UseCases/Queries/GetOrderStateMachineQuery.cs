@@ -1,7 +1,9 @@
-using cShop.Contracts.Services.Order;
+using cShop.Infrastructure.Mongodb;
 using FluentValidation;
-using MassTransit;
+using Infrastructure.StateMachine;
 using MediatR;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 
 namespace Application.UseCases.Queries;
 
@@ -15,21 +17,21 @@ public record GetOrderStateMachineQuery(Guid OrderId) : IRequest<IResult>
     internal class Handler : IRequestHandler<GetOrderStateMachineQuery, IResult>
     {
         private readonly ILogger<GetOrderStateMachineQuery> _logger;
-        private readonly IRequestClient<CheckOrder> _client;
-        public Handler(ILogger<GetOrderStateMachineQuery> logger, IRequestClient<CheckOrder> client)
+        private readonly IMongoCollection<OrderState> _orderStateCollection;
+        
+        public Handler(ILogger<GetOrderStateMachineQuery> logger, IOptions<MongoDbbOption> options)
         {
             _logger = logger;
-            _client = client;
+            _orderStateCollection = new MongoClient(options.Value.ToString()).GetDatabase(options.Value.DatabaseName)
+                .GetCollection<OrderState>("OrderSaga");
         }
 
         public async Task<IResult> Handle(GetOrderStateMachineQuery request, CancellationToken cancellationToken)
         {
             
-            var orderStatus = await _client.GetResponse<OrderStatus, OrderNotFound>(new { OrderId = request.OrderId },
-                cancellationToken
-            );
+            var orderInfo = await _orderStateCollection.Find(c => c.CorrelationId == request.OrderId).ToListAsync(cancellationToken: cancellationToken);
 
-            return Results.Ok(orderStatus);
+            return Results.Ok(orderInfo.FirstOrDefault());
         }
     }
 }

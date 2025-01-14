@@ -20,8 +20,8 @@ builder.Services.AddLoggingCustom(builder.Configuration, "Payment service")
     .AddMessageBus(builder.Configuration)
     .AddMasstransitCustom(builder.Configuration)
     .AddDbContextService(builder.Configuration)
-    .AddSchemaRegistry(builder.Configuration);
-    
+    .AddSchemaRegistry(builder.Configuration)
+    .AddPaymentService(builder.Configuration);
 
 
 var app = builder.Build();

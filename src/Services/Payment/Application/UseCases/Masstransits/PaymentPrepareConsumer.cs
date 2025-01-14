@@ -16,7 +16,7 @@ public sealed class PaymentPrepareConsumer(IRepository<OrderInfo> orderRepositor
             OrderId = notification.OrderId,
             UserId = notification.UserId,
             Amount = notification.Amount,
-            Status = PaymentStatus.Pending
+            Status = PaymentStatus.Idle
         }, cancellationToken);
     }
 }

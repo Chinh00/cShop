@@ -1,7 +1,6 @@
 using cShop.Infrastructure.Data;
 using Domain;
 using Microsoft.EntityFrameworkCore;
-using StackExchange.Redis;
 
 namespace Infrastructure.Data;
 

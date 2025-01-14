@@ -1,5 +1,3 @@
-using Duende.IdentityServer.Configuration;
-
 namespace Identity.Api;
 
 internal static class HostingExtensions
