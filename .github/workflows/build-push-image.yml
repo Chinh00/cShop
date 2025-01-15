@@ -43,7 +43,7 @@ jobs:
           file: src/Services/Catalog/WebApi/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_CATALOG_SERVICE_NAME}}:latest
-      - name: Build and push Docker image Catalog Service - Query Service
+      - name: Build and push Docker image Basket service
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -87,6 +87,13 @@ jobs:
           file: src/Services/Shipping/WebApi/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_SHIPPING_SERVICE_NAME}}:latest
+      - name: Build and push Docker image Payment Service
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: src/Services/Payment/WebApi/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_PAYMENT_SERVICE_NAME}}:latest
   
   build:
     name: Build and analyze
