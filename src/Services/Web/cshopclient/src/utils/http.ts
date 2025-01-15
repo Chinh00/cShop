@@ -7,7 +7,7 @@ export class Http {
     instance: AxiosInstance
     constructor() {
         this.instance = axios.create({
-            baseURL: "https://7bf0-113-190-242-151.ngrok-free.app",
+            baseURL: "http://6b23-113-190-242-151.ngrok-free.app",
             headers: {
                 "Content-Type": "application/json",
             }
