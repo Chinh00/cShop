@@ -4,6 +4,8 @@ import { useGetProducts } from "./hooks/useGetProducts";
 import {useEffect} from "react";
 import {Card, Image, Spin} from "antd";
 import { useRouter } from "next/navigation";
+import PriceFormat from "@/utils/price-format";
+import Meta from "antd/es/card/Meta";
 
 export default function Home() {
     const {data, isLoading} = useGetProducts({
@@ -18,12 +20,18 @@ export default function Home() {
           <div className={"p-10 col-span-4 grid grid-cols-4 gap-10 w-full"}>
               {isLoading && <div className={"w-full flex justify-content-center"}><Spin size="large"/></div>}
               {!!data?.data && data?.data?.items.map((item, id) =>
-                  (<Card onClick={() => {
+                  (<Card
+                      hoverable
+                      style={{ width: 240 }}
+                      cover={<Image style={{height: 250}} src={item?.pictures[0]?.pictureUrl} alt=""/>}
+                      onClick={() => {
                       router.push(`/${item.id}`);
-                  }} key={id} className={"w-[200px] text-center cursor-pointer"}>
-                      <Image src={item?.pictures[0]?.pictureUrl} alt=""/>
-                      {item.name}
-                      <div className={"font-bold text-red"}>{item?.price}đ</div>
+                  }} key={id} className={"w-[200px] text-center cursor-pointer flex flex-col items-center h-full"}>
+                      
+                      
+                      <Meta title={<div className={"text-wrap"}>{item.name}</div>}  description={<div className={"font-bold text-red-500"}>
+                          {PriceFormat.ConvertVND(item?.price ?? 0)}
+                      </div>} />
                   </Card>))}
               
           </div>    

@@ -1,16 +1,14 @@
 'use client'
 
-import { useEffect } from "react";
+import {useEffect, useState} from "react";
 import BasketDetail from "../components/basket-detail";
 import useGetBasketDetail from "../hooks/useGetBasketDetail";
 import useCreateBasket from "../hooks/useCreateBasket";
-import { Button } from "antd";
-import { useRouter } from "next/router";
 import Link from "next/link";
-import axios from "axios";
-
+import PriceFormat from "@/utils/price-format";
 const BasketPage = () => {
     const {data, isLoading, isSuccess, refetch} = useGetBasketDetail();
+    const [amount, setAmount] = useState(0)
     const {mutate} = useCreateBasket()
     
     useEffect(() => {
@@ -19,23 +17,18 @@ const BasketPage = () => {
         }
     }, [data]);
     
-    const PayAction = () => {
-        const axios_instance = axios.create({
-            baseURL: ""
-        })
-        
-        
-        
-         
-    }
+    
     
     return <div className={"w-full"}>
         
         <div className={"flex flex-col justify-center w-2/3 mx-auto p-10 gap-5"}>
-            {/*<Link href={"/order"} className={"w-max border-2 p-2 rounded-lg"} color={"danger"} >Đặt hàng</Link>*/}
-            <Button onClick={PayAction}>Pay </Button>
+            <div className={"flex justify-between justify-items-center flex-row w-full"}>
+                <Link href={"/order"} className={"max-w-max p-2 rounded-lg hover:scale-105 hover:backdrop-blur hover:bg-blue-200 transition border-2"}>Thanh toán</Link>
+                <div>Amount: {PriceFormat.ConvertVND(amount)}</div>
+            </div>
+            
             {!!data && data?.data?.basketItems?.map(e => {
-                return <BasketDetail key={e.id} basketItem={e} refetch={refetch}/>
+                return <BasketDetail key={e.id} basketItem={e} refetch={refetch} setAmount={setAmount} />
             })}
         </div>
         
