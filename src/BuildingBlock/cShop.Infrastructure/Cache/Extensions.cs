@@ -8,7 +8,7 @@ public static class Extensions
         Action<IServiceCollection>? action = null)
     {
 
-        configuration.GetValue<RedisOptions>("Redis");
+        services.AddOptions<RedisOptions>().Bind(configuration.GetSection(RedisOptions.Name));
         services.AddSingleton<IRedisService, RedisService>();
         
         action?.Invoke(services);
