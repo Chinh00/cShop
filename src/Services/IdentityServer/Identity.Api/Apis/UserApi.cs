@@ -1,4 +1,5 @@
 using Asp.Versioning.Builder;
+using MediatR;
 
 namespace Identity.Api.Apis;
 
@@ -11,7 +12,7 @@ public static class UserApi
     {
         var group = endpoints.MapGroup(BaseUrl).HasApiVersion(1);
         
-        //group.MapPost(string.Empty, async (ISender sender, CreateUserCommand command) => await sender.Send(command));
+        // group.MapPost(string.Empty, async (ISender sender, HttpContext context) => );
         
         return endpoints;
     }

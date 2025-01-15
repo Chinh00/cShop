@@ -1,4 +1,7 @@
-﻿Log.Logger = new LoggerConfiguration()
+﻿using Duende.IdentityServer.Configuration;
+using Identity.Api.Middlewares;
+
+Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .CreateBootstrapLogger();
 
@@ -7,7 +10,6 @@ Log.Information("Starting up");
 try
 {
     var builder = WebApplication.CreateBuilder(args);
-    
     builder.Services.AddCors(corsOptions =>
     {
         corsOptions.AddPolicy("Cors",
@@ -63,6 +65,9 @@ try
         .AddIdentityServer(options =>
         {
             options.IssuerUri = builder.Configuration.GetValue<string>("Identity:IssuerUri");
+            
+            
+            
             options.Events.RaiseErrorEvents = true;
             options.Events.RaiseInformationEvents = true;
             options.Events.RaiseFailureEvents = true;
@@ -111,6 +116,7 @@ try
         app.UseDeveloperExceptionPage();
     }
 
+    app.UseMiddleware<CustomMiddleware>();
     app.UseStaticFiles();
     app.UseRouting();
     app.UseIdentityServer();
