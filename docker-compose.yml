@@ -1,6 +1,9 @@
 version: "3.9"
 
-services:  
+services:
+  #####################################
+  #           Catalog service         #
+  #####################################
   catalogservice:
     image: chinhval/cshopcatalogservice
     container_name: catalogservice
@@ -28,7 +31,9 @@ services:
       - sqlserver
     networks:
       cshop-network:
-      
+  #####################################
+  #           Basket service         #
+  #####################################
   basketservice:
     container_name: basketservice
     ports:
@@ -52,10 +57,10 @@ services:
       - ./certs/https.pfx:/https.pfx
     networks:
       cshop-network:
-    
-    
-    
-    
+  
+  #####################################
+  #           Order service           #
+  ##################################### 
   orderservice:
     ports:
       - "7003:80" 
@@ -77,6 +82,9 @@ services:
       - schema-registry
     networks:
       cshop-network:
+  #####################################
+  #           User service            #
+  #####################################
   userservice:
     container_name: userservice
     ports:
@@ -95,6 +103,9 @@ services:
       - schema-registry
     networks:
       cshop-network:
+  #####################################
+  #         Notification service      #
+  #####################################
   notificationservice:
     container_name: notificationservice
     ports:
@@ -113,6 +124,9 @@ services:
       - schema-registry
     networks:
       cshop-network:
+  #####################################
+  #           Shipping service        #
+  #####################################
   shippingservice:
     container_name: shippingservice
     ports:
@@ -130,7 +144,9 @@ services:
       - schema-registry
     networks:
       cshop-network: 
-    
+  #####################################
+  #           Identity service        #
+  #####################################
   identityservice:
     container_name: identityservice
     ports:
@@ -151,6 +167,12 @@ services:
       - schema-registry
     networks:
       cshop-network:
+        
+        
+  #####################################
+  #           Payment service         #
+  #####################################
+  
   paymentservice:
       container_name: paymentservice
       ports:
@@ -161,11 +183,11 @@ services:
         Kafka__SchemaRegistryServer: ${SchemaRegistry__Url:-http://schema-registry:8085}
         ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver,1434;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
         SchemaRegistry__Url: ${SchemaRegistry__Url:-http://schema-registry:8085}
-        Vnpay__vnp_Version: ""
-        Vnpay__vnp_TmnCode: ""
-        Vnpay__vnp_HashSecret: ""
-        Vnpay__vnpay_url: ""
-        Vnpay__vnp_ReturnUrl: ""
+        Vnpay__vnp_Version: "2.1.0"
+        Vnpay__vnp_TmnCode: "48FVW9FU"
+        Vnpay__vnp_HashSecret: "89TAQZ7WFK1BTART5KR5XVFXNGUJTC2M"
+        Vnpay__vnpay_url: "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"
+        Vnpay__vnp_ReturnUrl: "https://localhost:9999/paymentservice/api/v1/payments/callback-payment"
         
       depends_on:
         - mongodb
@@ -176,68 +198,88 @@ services:
       networks:
         cshop-network:
         
-        
+  #####################################
+  #           Gateway service         #
+  #####################################
   gatewayservice:
     ports:
-      - "11111:80"
+      - "9999:80"
     image: chinhval/cshopgatewayservice
     environment:
-      ReverseProxy__Routes__identityserver__ClusterId: identityserver
-      ReverseProxy__Routes__identityserver__Match__Path: /identityserver/{**catch-all}
-      ReverseProxy__Routes__identityserver__Transforms_0__PathRemovePrefix: /identityserver
-      ReverseProxy__Routes__identityserver__Transforms_1__PathPrefix: /
-        
-      ReverseProxy__Routes__orderservice__ClusterId: orderservice
-      ReverseProxy__Routes__orderservice__Match__Path: /orderservice/{**catch-all}
-      ReverseProxy__Routes__orderservice__Transforms_0__PathRemovePrefix: /orderservice
-      ReverseProxy__Routes__orderservice__Transforms_1__PathPrefix: /
-        
-      ReverseProxy__Routes__catalogservice__ClusterId: catalogservice
-      ReverseProxy__Routes__catalogservice__Match__Path: /catalogservice/{**catch-all}
-      ReverseProxy__Routes__catalogservice__Transforms_0__PathRemovePrefix: /catalogservice
-      ReverseProxy__Routes__catalogservice__Transforms_1__PathPrefix: /
-        
+#      Basket service
       ReverseProxy__Routes__basketservice__ClusterId: basketservice
       ReverseProxy__Routes__basketservice__Match__Path: /basketservice/{**catch-all}
       ReverseProxy__Routes__basketservice__Transforms_0__PathRemovePrefix: /catalogservice
       ReverseProxy__Routes__basketservice__Transforms_1__PathPrefix: /
       
-      ReverseProxy__Routes__shippingservice__ClusterId: shippingservice
-      ReverseProxy__Routes__shippingservice__Match__Path: /shippingservice/{**catch-all}
-      ReverseProxy__Routes__shippingservice__Transforms_0__PathRemovePrefix: /shippingservice
-      ReverseProxy__Routes__shippingservice__Transforms_1__PathPrefix: /
-      
-      ReverseProxy__Routes__userservice__ClusterId: userservice
-      ReverseProxy__Routes__userservice__Match__Path: /userservice/{**catch-all}
-      ReverseProxy__Routes__userservice__Transforms_0__PathRemovePrefix: /userservice
-      ReverseProxy__Routes__userservice__Transforms_1__PathPrefix: /
-      
+#      Catalog service
+      ReverseProxy__Routes__catalogservice__ClusterId: catalogservice
+      ReverseProxy__Routes__catalogservice__Match__Path: /catalogservice/{**catch-all}
+      ReverseProxy__Routes__catalogservice__Transforms_0__PathRemovePrefix: /catalogservice
+      ReverseProxy__Routes__catalogservice__Transforms_1__PathPrefix: /
+
+#      Identity service
+      ReverseProxy__Routes__identityservice__ClusterId: identityservice
+      ReverseProxy__Routes__identityservice__Match__Path: /identityservice/{**catch-all}
+      ReverseProxy__Routes__identityservice__Transforms_0__PathRemovePrefix: /identityservice
+      ReverseProxy__Routes__identityservice__Transforms_1__PathPrefix: /
+        
+#      Notification service
       ReverseProxy__Routes__notificationservice__ClusterId: notificationservice
       ReverseProxy__Routes__notificationservice__Match__Path: /notificationservice/{**catch-all}
       ReverseProxy__Routes__notificationservice__Transforms_0__PathRemovePrefix: /notificationservice
       ReverseProxy__Routes__notificationservice__Transforms_1__PathPrefix: /
         
-      
-      ReverseProxy__Clusters__userservice__ClusterId: userservice
-      ReverseProxy__Clusters__userservice__Destinations__destination1__Address: http://userservice
-      
-      ReverseProxy__Clusters__notificationservice__ClusterId: notificationservice
-      ReverseProxy__Clusters__notificationservice__Destinations__destination1__Address: http://notificationservice
+#      Order service  
+      ReverseProxy__Routes__orderservice__ClusterId: orderservice
+      ReverseProxy__Routes__orderservice__Match__Path: /orderservice/{**catch-all}
+      ReverseProxy__Routes__orderservice__Transforms_0__PathRemovePrefix: /orderservice
+      ReverseProxy__Routes__orderservice__Transforms_1__PathPrefix: /
         
-      ReverseProxy__Clusters__orderservice__ClusterId: orderservice
-      ReverseProxy__Clusters__orderservice__Destinations__destination1__Address: http://orderservice
+#      Payment service
+      ReverseProxy__Routes__paymentservice__ClusterId: paymentservice
+      ReverseProxy__Routes__paymentservice__Match__Path: /paymentservice/{**catch-all}
+      ReverseProxy__Routes__paymentservice__Transforms_0__PathRemovePrefix: /paymentservice
+      ReverseProxy__Routes__paymentservice__Transforms_1__PathPrefix: /
+        
+#      Shipping service
+      ReverseProxy__Routes__shippingservice__ClusterId: shippingservice
+      ReverseProxy__Routes__shippingservice__Match__Path: /shippingservice/{**catch-all}
+      ReverseProxy__Routes__shippingservice__Transforms_0__PathRemovePrefix: /shippingservice
+      ReverseProxy__Routes__shippingservice__Transforms_1__PathPrefix: /
       
-      ReverseProxy__Clusters__identityserver__ClusterId: identityserver
-      ReverseProxy__Clusters__identityserver__Destinations__destination1__Address: http://identityserver
+#      User service
+      ReverseProxy__Routes__userservice__ClusterId: userservice
+      ReverseProxy__Routes__userservice__Match__Path: /userservice/{**catch-all}
+      ReverseProxy__Routes__userservice__Transforms_0__PathRemovePrefix: /userservice
+      ReverseProxy__Routes__userservice__Transforms_1__PathPrefix: /
+      
+      
+        
+#      Cluster ip
+      ReverseProxy__Clusters__basketservice__ClusterId: basketservice
+      ReverseProxy__Clusters__basketservice__Destinations__destination1__Address: http://basketservice
       
       ReverseProxy__Clusters__catalogservice__ClusterId: catalogservice
       ReverseProxy__Clusters__catalogservice__Destinations__destination1__Address: http://catalogservice
       
-      ReverseProxy__Clusters__basketservice__ClusterId: basketservice
-      ReverseProxy__Clusters__basketservice__Destinations__destination1__Address: http://basketservice
+      ReverseProxy__Clusters__identityservice__ClusterId: identityservice
+      ReverseProxy__Clusters__identityservice__Destinations__destination1__Address: http://identityservice
+      
+      ReverseProxy__Clusters__notificationservice__ClusterId: notificationservice
+      ReverseProxy__Clusters__notificationservice__Destinations__destination1__Address: http://notificationservice
+      
+      ReverseProxy__Clusters__orderservice__ClusterId: orderservice
+      ReverseProxy__Clusters__orderservice__Destinations__destination1__Address: http://orderservice
+      
+      ReverseProxy__Clusters__paymentservice__ClusterId: paymentservice
+      ReverseProxy__Clusters__paymentservice__Destinations__destination1__Address: http://paymentservice
       
       ReverseProxy__Clusters__shippingservice__ClusterId: shippingservice
       ReverseProxy__Clusters__shippingservice__Destinations__destination1__Address: http://shippingservice
+      
+      ReverseProxy__Clusters__userservice__ClusterId: userservice
+      ReverseProxy__Clusters__userservice__Destinations__destination1__Address: http://userservice
 
     depends_on:
       - orderservice
@@ -246,8 +288,15 @@ services:
       - notificationservice
       - userservice
       - shippingservice
+      - paymentservice
+      - identityservice
     networks:
       cshop-network:
+  
+  #####################################
+  #           Sqlserver service       #
+  #####################################
+  
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
     hostname: sqlserver
@@ -263,7 +312,9 @@ services:
       cshop-network:
     volumes:
       - ./__data:/var/opt/mssql
-    
+  #####################################
+  #           Redis service           #
+  #####################################
   redis:
     image: redis/redis-stack
     container_name: redis
@@ -272,6 +323,9 @@ services:
       - "8001:8001"
     networks:
       cshop-network:
+  #####################################
+  #           Debezium service         #
+  #####################################
   debezium:
     image: quay.io/debezium/connect
     ports:
@@ -286,16 +340,15 @@ services:
       VALUE_CONVERTER: io.debezium.converters.BinaryDataConverter
       INTERNAL_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
       INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-#      KAFKA_CONNECT_PLUGIN_PATH: /kafka/connect
-#    volumes:
-#      - ./deployments/connectors/confluentinc-kafka-connect-avro-converter-7.7.1/:/kafka/connect/lib/
-#      - ./deployments/connectors/confluentinc-kafka-connect-jdbc-10.8.0/:/kafka/connect/lib-db/
     depends_on:
       - broker1
       - broker2
       - broker3
     networks:
       cshop-network:
+  #####################################
+  #           Mongodb service         #
+  #####################################
   mongodb:
     image: mongo
     container_name: mongodb
@@ -306,6 +359,9 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=@P@ssw0rd02
     networks:
       cshop-network:
+  #####################################
+  #           Smtp service         #
+  #####################################
   smtp4dev:
     image: rnwood/smtp4dev:v3
     restart: always
@@ -320,6 +376,9 @@ services:
       ServerOptions__HostName: smtp4dev
     networks:
       cshop-network:
+  #####################################
+  #    Schema registry ui service     #
+  #####################################
   schema-registry-ui:
     image: landoop/schema-registry-ui
     ports:
@@ -332,7 +391,9 @@ services:
     networks:
       cshop-network:
     
-    
+  #####################################
+  #   Schema registry service         #
+  #####################################
   schema-registry:
     image: confluentinc/cp-schema-registry
     container_name: schema-registry
@@ -347,6 +408,9 @@ services:
       - "8085:8085"
     networks:
       cshop-network:
+  #####################################
+  #   Zookeeper registry service      #
+  #####################################
   zookeeper:
     image: confluentinc/cp-zookeeper
     hostname: zookeeper
@@ -406,6 +470,9 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
     networks:
       cshop-network:
+  #####################################
+  #      Kafka ui service             #
+  #####################################
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
     container_name: kafka-ui
