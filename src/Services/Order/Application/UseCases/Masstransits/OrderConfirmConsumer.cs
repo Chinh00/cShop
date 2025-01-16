@@ -19,15 +19,16 @@ public class OrderConfirmConsumer(
   
     public async Task Handle(OrderConfirmed notification, CancellationToken cancellationToken)
     {
-        var order = await orderRepository.FindByIdAsync(notification.OrderId, default);
+        var order = await orderRepository.FindByIdAsync(notification.OrderId, cancellationToken);
 
         order.OrderStatus = OrderStatus.Paid;
         
+        await orderRepository.UpdateAsync(order, cancellationToken);
         var orderCreatedIntegrationEvent = new OrderConfirmIntegrationEvent()
         {
             OrderId = notification.OrderId.ToString()
         };
         await SendToOutboxAsync(order, () => (new OrderOutbox(), orderCreatedIntegrationEvent, "order_cdc_events"),
-            default);
+            cancellationToken);
     }
 }

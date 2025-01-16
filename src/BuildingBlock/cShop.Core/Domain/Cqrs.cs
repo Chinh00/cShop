@@ -31,8 +31,8 @@ public record ResultModel<TData>(TData Data, bool IsError, string Message)
     public static ResultModel<TData> Create(TData data, bool isError = false, string message = default) =>
         new(data, isError, message);
 }
-public record ListResultModel<TData>(List<TData> Items, int Total, int Page, int PageSize)
+public record ListResultModel<TData>(List<TData> Items, long Total, int Page, int PageSize)
 {
-    public static ListResultModel<TData> Create(List<TData> items, int total, int page, int pageSize) =>
+    public static ListResultModel<TData> Create(List<TData> items, long total, int page, int pageSize) =>
         new(items, total, page, pageSize);
 }

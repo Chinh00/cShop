@@ -39,6 +39,8 @@ public interface IListSpecification<TEntity> : ISpecificationRoot<TEntity> where
     int Skip { get;  }
 
     int Take { get;  }
+    
+    bool IsPagingEnabled { get; set; }
 }
 
 

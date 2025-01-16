@@ -19,6 +19,7 @@ public interface IListRepository<TEntity>
     where TEntity : EntityBase
 {
     Task<List<TEntity>> FindAsync(IListSpecification<TEntity> specification, CancellationToken cancellationToken);
+    ValueTask<long> CountAsync(IListSpecification<TEntity> specification, CancellationToken cancellationToken);
     
 
 } 

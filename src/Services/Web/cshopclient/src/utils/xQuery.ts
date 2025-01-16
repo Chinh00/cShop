@@ -1,3 +1,5 @@
 export type XQuery = {
-    includes?: string[]
+    includes?: string[],
+    page?: number,
+    pageSize?: number
 }

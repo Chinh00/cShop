@@ -34,8 +34,9 @@ public record GetCatalogsQuery : IQuery<ListResultModel<CatalogItemDto>>
             var specs = new GetCatalogsSpec(request);
             
             var catalogItems = await catalogItemRepository.FindAsync(specs, cancellationToken);
+            var catalogCount = await catalogItemRepository.CountAsync(specs, cancellationToken);
             var listResult = ListResultModel<CatalogItemDto>.Create(mapper.Map<List<CatalogItemDto>>(catalogItems),
-                catalogItems.Count, 1, 10);
+                catalogCount, request.Page, request.PageSize);
             return ResultModel<ListResultModel<CatalogItemDto>>.Create(listResult);
         }
     }

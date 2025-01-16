@@ -32,7 +32,7 @@ public class RepositoryBase<TDbContext, TEntity> : IRepository<TEntity>, IListRe
         specification.IncludeStrings.ForEach(e => source = source.Include(e));
         specification.OrderBys.ForEach(e => source = source.OrderBy(e));
         specification.OrderDescBys.ForEach(e => source = source.OrderByDescending(e));
-        source = source.Skip(specification.Skip - 1).Take(specification.Take);
+        if (specification.IsPagingEnabled) source = source.Skip(specification.Skip - 1).Take(specification.Take);
         return source;
     }
 
@@ -76,5 +76,12 @@ public class RepositoryBase<TDbContext, TEntity> : IRepository<TEntity>, IListRe
     {
         var query = GetQuery(_dbSet, specification);
         return await query.ToListAsync(cancellationToken);
+    }
+
+    public async ValueTask<long> CountAsync(IListSpecification<TEntity> specification, CancellationToken cancellationToken)
+    {
+        specification.IsPagingEnabled = false;
+        var query = GetQuery(_dbSet, specification);
+        return await query.LongCountAsync(cancellationToken: cancellationToken);
     }
 }

@@ -13,6 +13,8 @@ public class ListSpecification<TEntity> : IListSpecification<TEntity> where TEnt
     public Expression<Func<TEntity, object>> GroupBy { get; set; }
     public int Skip { get; set; } = 1;
     public int Take { get; set; } = 15;
+    
+    public bool IsPagingEnabled { get; set; }
 
 
 
@@ -41,6 +43,7 @@ public class ListSpecification<TEntity> : IListSpecification<TEntity> where TEnt
 
     public void ApplyPagination(int page, int pageSize)
     {
+        IsPagingEnabled = true;
         Skip = page;
         Take = pageSize;
     }

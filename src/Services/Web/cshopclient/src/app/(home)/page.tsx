@@ -1,16 +1,20 @@
 'use client';
 import { ProductCard } from "@/components/card/product-card";
 import { useGetProducts } from "./hooks/useGetProducts";
-import {useEffect} from "react";
-import {Card, Image, Spin} from "antd";
+import {useEffect, useState} from "react";
+import {Card, Image, Pagination, Spin} from "antd";
 import { useRouter } from "next/navigation";
 import PriceFormat from "@/utils/price-format";
 import Meta from "antd/es/card/Meta";
+import {XQuery} from "@/utils/xQuery";
 
 export default function Home() {
-    const {data, isLoading} = useGetProducts({
+
+    const [query, setQuery] = useState<XQuery>({
         includes: ["Pictures"]
-    });
+    })
+    
+    const {data, isLoading} = useGetProducts(query);
     const router = useRouter();
   return (
       <div className={"grid grid-cols-5 gap-5 p-5"}>
@@ -34,7 +38,8 @@ export default function Home() {
                       </div>} />
                   </Card>))}
               
-          </div>    
+          </div>
+          <Pagination defaultCurrent={1} total={50} />
       </div>
   );
 }

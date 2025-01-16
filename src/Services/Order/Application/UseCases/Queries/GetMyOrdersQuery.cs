@@ -33,7 +33,7 @@ public record GetMyOrdersQuery : IQuery<ListResultModel<OrderDto>>
             var spec = new GetOrdersByUserIdSpec<OrderDto>(request, contextAccessor.GetUserId());
             var orders = await repository.FindAsync(spec, cancellationToken);
             var result = mapper.Map<List<OrderDto>>(orders);
-            var listResultModel = ListResultModel<OrderDto>.Create(result, orders.Count, request.Page, request.PageSize);
+            var listResultModel = ListResultModel<OrderDto>.Create(result, await repository.CountAsync(spec, cancellationToken), request.Page, request.PageSize);
             return ResultModel<ListResultModel<OrderDto>>.Create(listResultModel);
         }
     }
