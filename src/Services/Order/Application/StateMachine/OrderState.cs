@@ -2,7 +2,7 @@ using IntegrationEvents;
 using MassTransit;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Infrastructure.StateMachine;
+namespace Application.StateMachine;
 
 public class OrderState : SagaStateMachineInstance, ISagaVersion
 {

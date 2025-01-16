@@ -1,10 +1,10 @@
+using Application.StateMachine;
 using Confluent.Kafka;
 using Confluent.SchemaRegistry;
 using cShop.Contracts.Services.Order;
 using cShop.Infrastructure.Cdc;
 using cShop.Infrastructure.Mongodb;
 using Infrastructure.Cdc;
-using Infrastructure.StateMachine;
 using IntegrationEvents;
 using MassTransit;
 
@@ -16,6 +16,7 @@ public static class Extensions
         Action<IServiceCollection>? action = null)
     {
 
+        services.AddAutoMapper(typeof(ConfigMapper.ConfigMapper));
         services.AddOptions<MongoDbbOption>().Bind(configuration.GetSection(MongoDbbOption.Mongodb));
         var mOption = new MongoDbbOption();
         configuration.GetSection(MongoDbbOption.Mongodb).Bind(mOption);

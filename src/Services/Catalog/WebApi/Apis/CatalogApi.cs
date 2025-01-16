@@ -25,7 +25,7 @@ public static class CatalogApi
             async (ISender sender, Guid id) => await sender.Send(new RemoveCatalogItemCommand()));
         
         
-        group.MapGet(string.Empty, async (ISender sender, HttpContext context,[FromHeader(Name = "x-query")] string stringQuery) =>
+        group.MapGet(string.Empty, async (ISender sender, HttpContext context, [FromHeader(Name = "x-query")] string stringQuery) =>
         {
             var query = context.GetQuery<GetCatalogsQuery>(stringQuery);
             return await sender.Send(query);

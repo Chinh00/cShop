@@ -1,6 +1,6 @@
 using MassTransit;
 
-namespace Infrastructure.StateMachine;
+namespace Application.StateMachine;
 
 public class OrderStateMachineDefinition : SagaDefinition<OrderState>
 {

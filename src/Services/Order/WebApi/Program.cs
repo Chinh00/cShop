@@ -22,8 +22,8 @@ builder.Services.AddLoggingCustom(builder.Configuration, "Order")
     .AddMasstransitCustom(builder.Configuration)
     .AddDbContextService(builder.Configuration)
     .AddSchemaRegistry(builder.Configuration)
-    .AddCdcConsumer();
-
+    .AddCdcConsumer()
+    ;
 var app = builder.Build();
 
 app.NewVersionedApi("Order").MapOrderV1Api();

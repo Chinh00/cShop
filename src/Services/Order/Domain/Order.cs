@@ -1,4 +1,5 @@
 using cShop.Core.Domain;
+using Domain.Enums;
 
 namespace Domain;
 
@@ -15,6 +16,8 @@ public class Order : EntityBase
     public string Description { get; set; }
     
     public List<OrderDetail> OrderDetails { get; init; } = [];
+    
+    public OrderStatus OrderStatus { get; set; }
 
     public void AddOrderDetail(OrderDetail orderDetail)
     {

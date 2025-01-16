@@ -3,6 +3,7 @@ using cShop.Core.Domain;
 using cShop.Core.Repository;
 using cShop.Infrastructure.IdentityServer;
 using Domain;
+using Domain.Enums;
 using FluentValidation;
 using IntegrationEvents;
 using MassTransit;
@@ -41,7 +42,8 @@ public record CreateOrderCommand(
          {
             CustomerId = contextAccessor.GetUserId(),
             OrderDate = request.OrderDate,
-            TotalPrice = 0
+            TotalPrice = 0,
+            OrderStatus = OrderStatus.Unpaid
          };
          listProductInfo.ForEach(e =>
          {

@@ -1,6 +1,6 @@
+using Application.StateMachine;
 using cShop.Infrastructure.Mongodb;
 using FluentValidation;
-using Infrastructure.StateMachine;
 using MediatR;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;

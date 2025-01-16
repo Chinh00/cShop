@@ -6,6 +6,7 @@ using Domain;
 using Domain.Outbox;
 using IntegrationEvents;
 using MediatR;
+using OrderStatus = Domain.Enums.OrderStatus;
 
 namespace Application.UseCases.Masstransits;
 
@@ -19,6 +20,9 @@ public class OrderConfirmConsumer(
     public async Task Handle(OrderConfirmed notification, CancellationToken cancellationToken)
     {
         var order = await orderRepository.FindByIdAsync(notification.OrderId, default);
+
+        order.OrderStatus = OrderStatus.Paid;
+        
         var orderCreatedIntegrationEvent = new OrderConfirmIntegrationEvent()
         {
             OrderId = notification.OrderId.ToString()

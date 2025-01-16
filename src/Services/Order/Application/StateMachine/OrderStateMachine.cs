@@ -2,7 +2,7 @@ using cShop.Contracts.Services.Order;
 using IntegrationEvents;
 using MassTransit;
 
-namespace Infrastructure.StateMachine;
+namespace Application.StateMachine;
 
 public class OrderStateMachine : MassTransitStateMachine<OrderState>
 {
