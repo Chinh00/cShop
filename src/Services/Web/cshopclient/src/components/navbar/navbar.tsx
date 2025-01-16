@@ -23,8 +23,15 @@ const items: MenuProps['items'] = [
                 My order
             </Link>
         ),
-        icon: <SmileOutlined />,
-    }
+        icon: <SmileOutlined size={25} />,
+    },
+    {
+        key: '3',
+        label: (
+            <Link href={"/basket"}>Basket</Link>
+        ),
+        icon: <RiShoppingBasketLine size={25} />
+    },
 ];
 export const Navbar = () =>  {
     const [appState, setAppState] = useAtom(AppState)
@@ -39,7 +46,7 @@ export const Navbar = () =>  {
             <Link href={"/"}>Home</Link>
         </div>    
         <div className={"w-max flex flex-row gap-5 justify-center justify-items-center"}>
-            <Link href={"/basket"}><RiShoppingBasketLine size={25} /></Link>
+            
             {!appState.isAuthenticated ? <SignInPage /> : 
                 <>
                     <Dropdown menu={{ items }}>

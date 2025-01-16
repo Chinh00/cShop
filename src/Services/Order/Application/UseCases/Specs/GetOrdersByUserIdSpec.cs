@@ -8,6 +8,7 @@ public sealed class GetOrdersByUserIdSpec<T> : ListSpecification<Order>
 {
     public GetOrdersByUserIdSpec(IQuery<ListResultModel<T>> query, Guid userId)
     {
+        ApplyFilter(e => e.CustomerId == userId);
         ApplyFilterList(query.Filters);
         ApplyIncludeList(query.Includes);
         ApplyOrderList(query.Sorts);

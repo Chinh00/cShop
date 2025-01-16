@@ -30,7 +30,7 @@ export default function Home() {
                   (<Card
                       hoverable
                       style={{ width: 240 }}
-                      cover={<Image style={{height: 250}} src={item?.pictures[0]?.pictureUrl} alt=""/>}
+                      cover={<Image style={{height: 250, objectFit: "contain"}}  src={item?.pictures[0]?.pictureUrl} alt=""/>}
                       onClick={() => {
                       router.push(`/${item.id}`);
                   }} key={id} className={"w-[200px] text-center cursor-pointer flex flex-col items-center h-full"}>

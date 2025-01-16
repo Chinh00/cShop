@@ -12,6 +12,6 @@ export const OrderPreview = (props: OrderPreviewProps) => {
         <div>Order code: {props.order.id}</div>
         <div>Total amount: {PriceFormat.ConvertVND(props.order.totalPrice)}</div>
         
-        <div>Thời gian đặt hàng: {moment(props?.order?.orderDate).tz("Asia/Ho_Chi_Minh").format("dddd, DD/MM/YYYY HH:mm:ss")}</div>
+        <div>Order date: {moment(props?.order?.orderDate).tz("Asia/Ho_Chi_Minh").format("dddd, DD/MM/YYYY HH:mm:ss")}</div>
     </Card>
 }

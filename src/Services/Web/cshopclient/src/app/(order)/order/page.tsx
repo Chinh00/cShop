@@ -15,10 +15,9 @@ const OrderPage = () => {
     const {mutate} = useCreateOrder()
     const [orderState, setOrderState] = useState<OrderCreate | undefined>(undefined)
     const [amount, setAmount] = useState(0)
-    const {mutate: paymentMutate} = useGetPaymentUrl()
+    const {mutate: paymentMutate, isPending: paymentLoading} = useGetPaymentUrl()
     useEffect(() => {
         if (!!data?.data) {
-            
             setOrderState({
                 items: !!data?.data ? data?.data?.basketItems?.map((c) => {
                     return {
@@ -29,8 +28,13 @@ const OrderPage = () => {
                 orderDate: new Date(),
             })
         }
-    }, [data?.data]) 
-    
+    }, [])
+
+    useEffect(() => {
+        return () => {
+            setAmount(0)
+        }
+    }, []);
     return <div className={"p-10 flex justify-center items-center"}>
         {isLoading ? <Spin size={"large"} /> : <div className={"w-full flex flex-row"}>
             <div className={"flex flex-col gap-5 w-2/3"}>
@@ -57,7 +61,7 @@ const OrderPage = () => {
                             })
                         }
                     })
-                }} type={"dashed"} className={"w-full"} size={"large"} color={"danger"}>Confirm order</Button>
+                }} type={"dashed"} className={"w-full"} size={"large"} color={"danger"}>Confirm order {paymentLoading && <Spin size={"default"} />}</Button>
                 
             </div>
         </div>}

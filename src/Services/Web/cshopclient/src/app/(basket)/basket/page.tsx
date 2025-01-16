@@ -11,14 +11,17 @@ const BasketPage = () => {
     const [amount, setAmount] = useState(0)
     const {mutate} = useCreateBasket()
     
+    
+    
     useEffect(() => {
         if (isSuccess && data?.data == null) {
             mutate()
         }
-    }, [data]);
-    useEffect(() => {
-        return () => setAmount(0)
     }, []);
+    useEffect(() => {
+        return () => {setAmount(0)}
+    }, []);
+   
     
     
     

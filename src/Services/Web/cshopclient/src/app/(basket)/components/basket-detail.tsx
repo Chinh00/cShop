@@ -3,7 +3,7 @@ import {Button, Card, Image, Spin } from "antd";
 import { MdDeleteForever } from "react-icons/md";
 import useRemoveBasketItem from "../hooks/useRemoveBasketItem";
 import { BasketItem } from "@/models/basket-item";
-import {useEffect} from "react";
+import {memo, useEffect} from "react";
 import PriceFormat from "@/utils/price-format";
 import Link from "next/link";
 export type BasketDetailProps = {
@@ -13,15 +13,17 @@ export type BasketDetailProps = {
 }
 
 export const BasketDetail = (props: BasketDetailProps) => {
-    const {data, isLoading} = useGetProductDetail(props.basketItem?.productId);
+    const {data, isLoading, isSuccess} = useGetProductDetail(props.basketItem?.productId);
     const {mutate, isPending} = useRemoveBasketItem()
-    
+
     useEffect(() => {
-        if (!!data?.data) {
-            props?.setAmount((pre: any) => pre + data?.data?.price)
+        if (isSuccess && data?.data !== null) {
+            props?.setAmount((pre: number) => pre + data?.data?.price * props?.basketItem?.quantity)
         }
-    }, [data?.data])
-    return <Card>
+    }, [isSuccess]);
+    
+    
+    return <Card> 
         <div className={"flex flex-row gap-5 justify-between"}>
             <div className={"flex flex-row gap-5"}>
                 <Image src={data?.data?.pictures[0]?.pictureUrl} alt={data?.data?.name} width={100}/>
@@ -32,10 +34,11 @@ export const BasketDetail = (props: BasketDetailProps) => {
                 <div>x {props?.basketItem?.quantity}</div>
 
             </div>
-            <Button className={"mr-0"} onClick={() => {
-                props?.setAmount((pre: any) => pre - (data?.data?.price ?? 0) * props?.basketItem?.quantity)
+            <Button disabled={isPending} className={"mr-0"} onClick={() => {
+                
                 mutate(data?.data?.id!, {
                     onSuccess: () => {
+                        props?.setAmount((pre: number) => pre + (data?.data?.price ?? 0) * props?.basketItem?.quantity * -1)
                         props.refetch()
                     }
                 });
