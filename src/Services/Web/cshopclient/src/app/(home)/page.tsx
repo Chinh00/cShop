@@ -11,11 +11,14 @@ import {XQuery} from "@/utils/xQuery";
 export default function Home() {
 
     const [query, setQuery] = useState<XQuery>({
-        includes: ["Pictures"]
+        includes: ["Pictures"],
+        page: 1,
+        pageSize: 10,
     })
-    
     const {data, isLoading} = useGetProducts(query);
     const router = useRouter();
+    
+    
   return (
       <div className={"grid grid-cols-5 gap-5 p-5"}>
           <div className={"col-span-1"}>
@@ -39,7 +42,13 @@ export default function Home() {
                   </Card>))}
               
           </div>
-          <Pagination defaultCurrent={1} total={50} />
+          {!!data?.data && <Pagination defaultCurrent={1} current={Math.floor((data?.data?.page ?? 1) / (data?.data?.pageSize ?? 1))} total={Math.floor(data?.data?.total ?? 1 / (data?.data?.pageSize ?? 1))} onChange={(e) => {
+              setQuery( prev => ( {
+                  ...prev,
+                  page: e * (prev.pageSize ?? 1),
+              }))
+              console.log(Math.floor(data?.data?.total / data?.data?.pageSize))
+          }} />}
       </div>
   );
 }

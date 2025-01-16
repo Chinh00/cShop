@@ -7,7 +7,25 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { RiShoppingBasketLine } from "react-icons/ri";
 import { LogoutButton } from "../button/logout-button";
-
+import {Dropdown, MenuProps, Space} from "antd";
+import {DownOutlined, SmileOutlined} from "@ant-design/icons";
+const items: MenuProps['items'] = [
+    {
+        key: '1',
+        label: (
+            <LogoutButton />
+        ),
+    },
+    {
+        key: '2',
+        label: (
+            <Link href={"/myorders"}>
+                My order
+            </Link>
+        ),
+        icon: <SmileOutlined />,
+    }
+];
 export const Navbar = () =>  {
     const [appState, setAppState] = useAtom(AppState)
     const session = useSession();
@@ -22,7 +40,18 @@ export const Navbar = () =>  {
         </div>    
         <div className={"w-max flex flex-row gap-5 justify-center justify-items-center"}>
             <Link href={"/basket"}><RiShoppingBasketLine size={25} /></Link>
-            {!appState.isAuthenticated ? <SignInPage /> : <div className={"flex flex-row justify-center justify-items-center gap-4"}>{session.data?.user.name} <LogoutButton /></div>}
+            {!appState.isAuthenticated ? <SignInPage /> : 
+                <>
+                    <Dropdown menu={{ items }}>
+                        <a onClick={(e) => e.preventDefault()}>
+                            <Space>
+                                {session.data?.user.name}
+                                <DownOutlined />
+                            </Space>
+                        </a>
+                    </Dropdown>
+                </>
+            }
         </div>
     </div>
 }
