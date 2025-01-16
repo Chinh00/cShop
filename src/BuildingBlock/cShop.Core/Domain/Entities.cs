@@ -6,7 +6,8 @@ namespace cShop.Core.Domain;
 public class EntityBase
 {
     public Guid Id { get; set; } = Guid.NewGuid();
-    public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
+    public DateTime CreatedDate { get; set; } = TimeZoneInfo
+        .ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"));
     public DateTime? UpdatedDate { get; set; } 
 }
 

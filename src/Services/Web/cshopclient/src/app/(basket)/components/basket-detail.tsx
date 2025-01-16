@@ -20,7 +20,7 @@ export const BasketDetail = (props: BasketDetailProps) => {
         if (!!data?.data) {
             props?.setAmount((pre: any) => pre + data?.data?.price)
         }
-    }, [isLoading])
+    }, [data?.data])
     return <Card>
         <div className={"flex flex-row gap-5 justify-between"}>
             <div className={"flex flex-row gap-5"}>

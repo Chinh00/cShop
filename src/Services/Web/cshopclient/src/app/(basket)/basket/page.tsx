@@ -16,6 +16,9 @@ const BasketPage = () => {
             mutate()
         }
     }, [data]);
+    useEffect(() => {
+        return () => setAmount(0)
+    }, []);
     
     
     

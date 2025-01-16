@@ -29,7 +29,7 @@ const OrderPage = () => {
                 orderDate: new Date(),
             })
         }
-    }, [isLoading]) 
+    }, [data?.data]) 
     
     return <div className={"p-10 flex justify-center items-center"}>
         {isLoading ? <Spin size={"large"} /> : <div className={"w-full flex flex-row"}>
