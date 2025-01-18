@@ -2,7 +2,7 @@ import { CatalogBrand } from "./catalogBrand";
 import { CatalogType } from "./catalogType";
 import {CatalogPicture} from "@/models/catalogPicture";
 
-type Product =  {
+export type Product =  {
     id: string;
     name: string,
     price: number,
@@ -16,4 +16,3 @@ type Product =  {
     pictures: CatalogPicture[],
 }   
 
-export default Product;

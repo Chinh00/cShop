@@ -14,13 +14,10 @@ const eslintConfig = [
   {
     rules: {
       "@typescript-eslint/no-unused-vars": [
-        "warn", 
-        {
-          vars: "all", 
-          args: "none", 
-          ignoreRestSiblings: true, 
-        },
+        "warn", // Thay đổi từ lỗi ('error') thành cảnh báo
+        { vars: "all", args: "none", ignoreRestSiblings: true },
       ],
+      "react-hooks/exhaustive-deps": "warn", // Hoặc 'off' nếu muốn tắt
     },
   },
 ];
