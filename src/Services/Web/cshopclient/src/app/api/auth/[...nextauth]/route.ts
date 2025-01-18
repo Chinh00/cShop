@@ -12,7 +12,7 @@ const handler = NextAuth({
             id: 'oidc',
             clientId: 'nextjs',
             clientSecret: 'secret',
-            issuer: "https://b53b-113-190-242-151.ngrok-free.app/identityservice",
+            issuer: `${process.env.NEXT_PUBLIC_APIURL}/identityservice`,
             authorization: {
                 params: {scope: 'openid profile api'}
             },
