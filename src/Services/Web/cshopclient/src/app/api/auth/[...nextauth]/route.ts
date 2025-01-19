@@ -1,11 +1,13 @@
 
 import NextAuth from "next-auth"
 import DuendeIdentityServer6 from "next-auth/providers/duende-identity-server6";
+import type {AuthOptions} from "next-auth";
 
-const handler = NextAuth({
+
+export const authOptions: AuthOptions = {
     session: {
         strategy: 'jwt',
-        maxAge: 30 * 24 * 60 * 60, 
+        maxAge: 30 * 24 * 60 * 60,
     },
     providers: [
         DuendeIdentityServer6({
@@ -17,7 +19,7 @@ const handler = NextAuth({
                 params: {scope: 'openid profile api'}
             },
             idToken: true,
-            
+
         })
     ],
     callbacks: {
@@ -32,12 +34,13 @@ const handler = NextAuth({
         },
         async session({session, token}) {
             if (token) {
-                console.log(token)
                 session.user.username = token.username;
                 session.user.access_token = token.access_token;
             }
             return session;
         },
     }
-});
+}
+
+const handler = NextAuth(authOptions);
 export {handler as GET, handler as POST}
