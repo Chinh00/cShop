@@ -187,11 +187,13 @@ services:
       ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver,1434;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
       SchemaRegistry__Url: ${SchemaRegistry__Url:-http://schema-registry:8085}
       Nextjs__Domain: http://localhost:3000
-      Identity__IssuerUri: http://localhost:5001
+      Identity__IssuerUri: localhost:5001
       Jaeger__Protocol: http
       Jaeger__Host: jaeger
       Jaeger__Port: 4317
       Oltp__Endpoint: http://otel-collector:4321
+      Google__ClientId: 
+      Google__ClientSecret: 
     depends_on:
       - sqlserver
       - broker1

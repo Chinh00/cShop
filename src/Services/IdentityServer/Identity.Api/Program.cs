@@ -67,7 +67,7 @@ try
     builder.Services
         .AddIdentityServer(options =>
         {
-            options.IssuerUri = "https://" + builder.Configuration.GetValue<string>("Identity:IssuerUri");
+            options.IssuerUri = "http://" + builder.Configuration.GetValue<string>("Identity:IssuerUri");
             
             
             

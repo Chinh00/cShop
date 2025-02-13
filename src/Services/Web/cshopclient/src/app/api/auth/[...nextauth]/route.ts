@@ -22,7 +22,7 @@ export const authOptions: AuthOptions = {
             return true;
         },
         async jwt({token }) {
-            console.log("token", token)
+            
             const res = await http.post<{access_token: string}>("/identityservice/connect/token", {
                 client_id: "google",
                 client_secret: "secret",
@@ -40,6 +40,7 @@ export const authOptions: AuthOptions = {
         },
         async session({session, token } ) {
              if (token) {
+                 console.log("token", token)
                 session.user.access_token = token?.access_token
             }
             return session;
