@@ -27,6 +27,7 @@ public static class Extensions
             options.RequireHttpsMetadata = false;
             options.TokenValidationParameters.ValidateIssuer = false;
             options.TokenValidationParameters.ValidateAudience = false;
+            options.TokenValidationParameters.ValidateIssuerSigningKey = false;
         });
         services.AddAuthorization();
         
