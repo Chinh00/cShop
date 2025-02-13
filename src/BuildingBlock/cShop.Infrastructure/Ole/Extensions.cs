@@ -26,7 +26,7 @@ public static class Extensions
                         // options.Endpoint = new Uri("http://localhost:4321");
                         options.Protocol = OtlpExportProtocol.Grpc;
                     })
-                    .AddConsoleExporter()
+                    // .AddConsoleExporter()
                     ;
 
             })

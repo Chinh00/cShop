@@ -1,5 +1,4 @@
 'use client'
-import SignInPage from "@/app/api/auth/singin/page";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect } from "react";
@@ -8,6 +7,7 @@ import { LogoutButton } from "../button/logout-button";
 import {Dropdown, MenuProps, Space} from "antd";
 import {DownOutlined, SmileOutlined} from "@ant-design/icons";
 import useCreateBasket from "@/app/(basket)/hooks/useCreateBasket";
+import LoginButton from "@/components/button/login-button";
 const items: MenuProps['items'] = [
     {
         key: '1',
@@ -42,7 +42,7 @@ export const Navbar = () =>  {
         </div>    
         <div className={"w-max flex flex-row gap-5 justify-center justify-items-center"}>
             
-            {session.status == "unauthenticated" ? <SignInPage /> : 
+            {session.status == "unauthenticated" ? <LoginButton /> : 
                 <>
                     <Dropdown menu={{ items }}>
                         <a onClick={(e) => e.preventDefault()}>

@@ -1,8 +1,8 @@
 
 import NextAuth from "next-auth"
-import DuendeIdentityServer6 from "next-auth/providers/duende-identity-server6";
+import GoogleProvider from "next-auth/providers/google";
 import type {AuthOptions} from "next-auth";
-
+import http from "@/utils/http"
 
 export const authOptions: AuthOptions = {
     session: {
@@ -10,32 +10,37 @@ export const authOptions: AuthOptions = {
         maxAge: 5 * 60,
     },
     providers: [
-        DuendeIdentityServer6({
-            id: 'oidc',
-            clientId: 'nextjs',
-            clientSecret: 'secret',
-            issuer: `${process.env.NEXT_PUBLIC_APIURL}/identityservice`,
-            authorization: {
-                params: {scope: 'openid profile api'}
-            },
-            idToken: true,
-
-        })
+        GoogleProvider({
+            clientId: process.env.NEXT_GOOGLE_CLIENTID!,
+            clientSecret: process.env.NEXT_GOOGLE_SECRET!,
+        }),
     ],
     callbacks: {
-        async jwt({token, profile, account, user}) {
-            if (profile) {
-                token.username = profile.username;
-            }
-            if (account) {
-                token.access_token = account.access_token;
-            }
+        async signIn({ account, profile, user }) {
+            console.log("account", user)
+            user.id = account?.id_token!
+            return true;
+        },
+        async jwt({token }) {
+            console.log("token", token)
+            const res = await http.post<{access_token: string}>("/identityservice/connect/token", {
+                client_id: "google",
+                client_secret: "secret",
+                grant_type: 'external',
+                token: token.sub,
+                scope: "openid profile api",
+                provider: "google",
+            }, { 
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                }
+            })
+            token.access_token = res?.data?.access_token
             return token;
         },
-        async session({session, token}) {
-            if (token) {
-                session.user.username = token.username;
-                session.user.access_token = token.access_token;
+        async session({session, token } ) {
+             if (token) {
+                session.user.access_token = token?.access_token
             }
             return session;
         },

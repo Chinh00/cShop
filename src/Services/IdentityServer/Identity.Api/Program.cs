@@ -85,6 +85,7 @@ try
         .AddInMemoryClients(Config.Clients(builder.Configuration))
         .AddTestUsers(Config.TestUsers)
         .AddAspNetIdentity<ApplicationUser>()
+        .AddExtensionGrantValidator<ExternalGrantValidator>()
         .AddDeveloperSigningCredential();
     builder.Services.ConfigureApplicationCookie(options => { options.Cookie.SameSite = SameSiteMode.Lax;
         options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
@@ -94,11 +95,9 @@ try
         {
             options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
 
-            // register your IdentityServer with Google at https://console.developers.google.com
-            // enable the Google+ API
-            // set the redirect URI to https://localhost:5001/signin-google
-            options.ClientId = "test";
-            options.ClientSecret = "test";
+            
+            options.ClientId = builder.Configuration.GetValue<string>("Google:ClientId")!;
+            options.ClientSecret = builder.Configuration.GetValue<string>("Google:ClientSecret")!;
         });
 
     builder.Services.AddHostedService<DbMigrationService>();

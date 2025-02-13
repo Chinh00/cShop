@@ -1,6 +1,4 @@
-import { AppState } from "@/stores/app.store"
 import axios, {AxiosInstance, Axios} from "axios"
-import { useAtom } from "jotai"
 import { getSession } from 'next-auth/react';
 
 export class Http {

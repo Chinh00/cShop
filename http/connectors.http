@@ -1,5 +1,5 @@
 ###
-@host = http://localhost:9999/connector
+@host = http://localhost:11111/connector
 
 ### 
 GET {{host}}/connector-plugins

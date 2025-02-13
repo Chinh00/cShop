@@ -30,6 +30,13 @@ public static class Config
             AccessTokenLifetime = int.MaxValue,
         },
         new Client
+        {
+            ClientId = "google",
+            AllowedGrantTypes = new List<string> { "external" },
+            ClientSecrets = { new Secret("secret".Sha256()) },
+            AllowedScopes =  { "openid", "profile", "api" }
+        },
+        new Client
             {
                 ClientId = "nextjs",
                 ClientSecrets = { new Secret("secret".Sha256()) },

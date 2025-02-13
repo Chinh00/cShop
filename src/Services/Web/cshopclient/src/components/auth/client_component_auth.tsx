@@ -12,7 +12,7 @@ const ClientComponentAuth =  ({children}: {children: ReactNode}) => {
 
     useEffect(() => {
         if (status === "unauthenticated") {
-            router.push("/api/auth/signin"); 
+            router.push("/auth"); 
         }
     }, [status, router]);
     return status == "loading" ? <Spin size={"large"} /> : <>{children}</> 

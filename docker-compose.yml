@@ -7,6 +7,7 @@ services:
   catalogservice:
     image: chinhval/cshopcatalogservice
     container_name: catalogservice
+    restart: always
     environment:
       ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
       Kafka__BootstrapServers: broker1:9092,broker2:9093,broker3:9094
@@ -17,8 +18,12 @@ services:
       ASPNETCORE_Kestrel__Endpoints__Http__Protocols: Http1
       ASPNETCORE_Kestrel__Certificates__Default__Path: /https.pfx
       ASPNETCORE_Kestrel__Certificates__Default__Password: "P@ssw0rd02"
+      Jaeger__Protocol: http
+      Jaeger__Host: jaeger
+      Jaeger__Port: 4317
+      Oltp__Endpoint: http://otel-collector:4321
     ports:
-      - "7000:80"
+      - "7009:80"
       - "7001:443"
     volumes:
       - ./certs/https.pfx:/https.pfx
@@ -36,6 +41,7 @@ services:
   #####################################
   basketservice:
     container_name: basketservice
+    restart: always
     ports:
       - "7002:80"
     depends_on:
@@ -53,6 +59,10 @@ services:
       Redis__Port: 6379
       Cert__Path: /https.pfx
       Cert__Password: "P@ssw0rd02"
+      Jaeger__Protocol: http
+      Jaeger__Host: jaeger
+      Jaeger__Port: 4317
+      Oltp__Endpoint: http://otel-collector:4321
     volumes:
       - ./certs/https.pfx:/https.pfx
     networks:
@@ -62,6 +72,7 @@ services:
   #           Order service           #
   ##################################### 
   orderservice:
+    restart: always
     ports:
       - "7003:80" 
     image: chinhval/cshoporderservice
@@ -74,6 +85,10 @@ services:
       MongoDb__DatabaseName: orderdb
       MongoDb__CollectionName: ordercollection
       MongoDb__ServerName: mongodb
+      Jaeger__Protocol: http
+      Jaeger__Host: jaeger
+      Jaeger__Port: 4317
+      Oltp__Endpoint: http://otel-collector:4321
     depends_on:
       - mongodb
       - broker1
@@ -86,15 +101,19 @@ services:
   #           User service            #
   #####################################
   userservice:
+    restart: always
     container_name: userservice
     ports:
       - "7004:80"
-
     image: chinhval/cshopuserservice
     environment:
       Kafka__BootstrapServers: broker1:9092,broker2:9093,broker3:9094
       Kafka__SchemaRegistryServer: ${SchemaRegistry__Url:-http://schema-registry:8085}
       ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver,1434;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
+      Jaeger__Protocol: http
+      Jaeger__Host: jaeger
+      Jaeger__Port: 4317
+      Oltp__Endpoint: http://otel-collector:4321
     depends_on:
       - mongodb
       - broker1
@@ -108,14 +127,18 @@ services:
   #####################################
   notificationservice:
     container_name: notificationservice
+    restart: always
     ports:
       - "7005:80"
-
     image: chinhval/cshopnotificationservice
     environment:
       Kafka__BootstrapServers: broker1:9092,broker2:9093,broker3:9094
       Kafka__SchemaRegistryServer: ${SchemaRegistry__Url:-http://schema-registry:8085}
       ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver,1434;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
+      Jaeger__Protocol: http
+      Jaeger__Host: jaeger
+      Jaeger__Port: 4317
+      Oltp__Endpoint: http://otel-collector:4321
     depends_on:
       - mongodb
       - broker1
@@ -128,6 +151,7 @@ services:
   #           Shipping service        #
   #####################################
   shippingservice:
+    restart: always
     container_name: shippingservice
     ports:
       - "7006:80"
@@ -136,6 +160,10 @@ services:
       Kafka__BootstrapServers: broker1:9092,broker2:9093,broker3:9094
       Kafka__SchemaRegistryServer: ${SchemaRegistry__Url:-http://schema-registry:8085}
       ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver,1434;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
+      Jaeger__Protocol: http
+      Jaeger__Host: jaeger
+      Jaeger__Port: 4317
+      Oltp__Endpoint: http://otel-collector:4321
     depends_on:
       - mongodb
       - broker1
@@ -148,6 +176,7 @@ services:
   #           Identity service        #
   #####################################
   identityservice:
+    restart: always
     container_name: identityservice
     ports:
       - "7007:80"
@@ -159,6 +188,10 @@ services:
       SchemaRegistry__Url: ${SchemaRegistry__Url:-http://schema-registry:8085}
       Nextjs__Domain: http://localhost:3000
       Identity__IssuerUri: http://localhost:5001
+      Jaeger__Protocol: http
+      Jaeger__Host: jaeger
+      Jaeger__Port: 4317
+      Oltp__Endpoint: http://otel-collector:4321
     depends_on:
       - sqlserver
       - broker1
@@ -174,36 +207,41 @@ services:
   #####################################
   
   paymentservice:
-      container_name: paymentservice
-      ports:
-        - "7008:80"
-      image: chinhval/cshoppaymentservice
-      environment:
-        Kafka__BootstrapServers: broker1:9092,broker2:9093,broker3:9094
-        Kafka__SchemaRegistryServer: ${SchemaRegistry__Url:-http://schema-registry:8085}
-        ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver,1434;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
-        SchemaRegistry__Url: ${SchemaRegistry__Url:-http://schema-registry:8085}
-        Vnpay__vnp_Version: "2.1.0"
-        Vnpay__vnp_TmnCode: "48FVW9FU"
-        Vnpay__vnp_HashSecret: "89TAQZ7WFK1BTART5KR5XVFXNGUJTC2M"
-        Vnpay__vnpay_url: "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"
-        Vnpay__vnp_ReturnUrl: "https://localhost:9999/paymentservice/api/v1/payments/callback-payment"
-        
-      depends_on:
-        - mongodb
-        - broker1
-        - broker2
-        - broker3
-        - schema-registry
-      networks:
-        cshop-network:
+    container_name: paymentservice
+    restart: always
+    ports:
+      - "7008:80"
+    image: chinhval/cshoppaymentservice
+    environment:
+      Kafka__BootstrapServers: broker1:9092,broker2:9093,broker3:9094
+      Kafka__SchemaRegistryServer: ${SchemaRegistry__Url:-http://schema-registry:8085}
+      ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver,1434;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
+      SchemaRegistry__Url: ${SchemaRegistry__Url:-http://schema-registry:8085}
+      Vnpay__vnp_Version: "2.1.0"
+      Vnpay__vnp_TmnCode: "48FVW9FU"
+      Vnpay__vnp_HashSecret: "89TAQZ7WFK1BTART5KR5XVFXNGUJTC2M"
+      Vnpay__vnpay_url: "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"
+      Vnpay__vnp_ReturnUrl: "https://localhost:9999/paymentservice/api/v1/payments/callback-payment"
+      Jaeger__Protocol: http
+      Jaeger__Host: jaeger
+      Jaeger__Port: 4317
+      Oltp__Endpoint: http://otel-collector:4321
+    depends_on:
+      - mongodb
+      - broker1
+      - broker2
+      - broker3
+      - schema-registry
+    networks:
+      cshop-network:
         
   #####################################
   #           Gateway service         #
   #####################################
   gatewayservice:
+    restart: always
     ports:
-      - "9999:80"
+      - "11111:80"
     image: chinhval/cshopgatewayservice
     environment:
 #      Basket service
@@ -253,10 +291,16 @@ services:
       ReverseProxy__Routes__userservice__Match__Path: /userservice/{**catch-all}
       ReverseProxy__Routes__userservice__Transforms_0__PathRemovePrefix: /userservice
       ReverseProxy__Routes__userservice__Transforms_1__PathPrefix: /
-      
-      
         
-#      Cluster ip
+      #      Connector
+      ReverseProxy__Routes__connector__ClusterId: connector
+      ReverseProxy__Routes__connector__Match__Path: /connector/{**catch-all}
+      ReverseProxy__Routes__connector__Transforms_0__PathRemovePrefix: /connector
+      ReverseProxy__Routes__connector__Transforms_1__PathPrefix: /
+      
+      
+      
+      #      Cluster ip
       ReverseProxy__Clusters__basketservice__ClusterId: basketservice
       ReverseProxy__Clusters__basketservice__Destinations__destination1__Address: http://basketservice
       
@@ -280,7 +324,9 @@ services:
       
       ReverseProxy__Clusters__userservice__ClusterId: userservice
       ReverseProxy__Clusters__userservice__Destinations__destination1__Address: http://userservice
-
+      
+      ReverseProxy__Clusters__connector__ClusterId: connector
+      ReverseProxy__Clusters__connector__Destinations__destination1__Address: http://debezium:8083
     depends_on:
       - orderservice
       - basketservice
@@ -290,6 +336,7 @@ services:
       - shippingservice
       - paymentservice
       - identityservice
+      - debezium
     networks:
       cshop-network:
   
@@ -298,6 +345,7 @@ services:
   #####################################
   
   sqlserver:
+    restart: always
     image: mcr.microsoft.com/mssql/server:2022-latest
     hostname: sqlserver
     container_name: sqlserver
@@ -311,11 +359,12 @@ services:
     networks:
       cshop-network:
     volumes:
-      - ./__data:/var/opt/mssql
+      - sqlserver-data:/var/opt/mssql
   #####################################
   #           Redis service           #
   #####################################
   redis:
+    restart: always
     image: redis/redis-stack
     container_name: redis
     ports:
@@ -327,6 +376,7 @@ services:
   #           Debezium service         #
   #####################################
   debezium:
+    restart: always
     image: quay.io/debezium/connect
     ports:
       - "8083:8083"
@@ -350,6 +400,7 @@ services:
   #           Mongodb service         #
   #####################################
   mongodb:
+    restart: always
     image: mongo
     container_name: mongodb
     ports:
@@ -370,7 +421,7 @@ services:
       - '2525:25'
       - '143:143'
     volumes:
-      - ./__data/smtp4dev-data:/smtp4dev
+      - smtp4dev-data:/smtp4dev
     environment:
       ServerOptions__Urls: http://0.0.0.0:80
       ServerOptions__HostName: smtp4dev
@@ -380,6 +431,7 @@ services:
   #    Schema registry ui service     #
   #####################################
   schema-registry-ui:
+    restart: always
     image: landoop/schema-registry-ui
     ports:
       - "8000:8000"
@@ -395,6 +447,7 @@ services:
   #   Schema registry service         #
   #####################################
   schema-registry:
+    restart: always
     image: confluentinc/cp-schema-registry
     container_name: schema-registry
     depends_on:
@@ -412,6 +465,7 @@ services:
   #   Zookeeper registry service      #
   #####################################
   zookeeper:
+    restart: always
     image: confluentinc/cp-zookeeper
     hostname: zookeeper
     container_name: zookeeper
@@ -423,6 +477,7 @@ services:
     networks:
       cshop-network:
   broker1:
+    restart: always
     image: confluentinc/cp-kafka
     hostname: broker1
     container_name: broker1
@@ -439,6 +494,7 @@ services:
     networks:
       cshop-network:
   broker2:
+    restart: always
     image: confluentinc/cp-kafka
     hostname: broker2
     container_name: broker2
@@ -455,6 +511,7 @@ services:
     networks:
       cshop-network:
   broker3:
+    restart: always
     image: confluentinc/cp-kafka
     hostname: broker3
     container_name: broker3
@@ -474,6 +531,7 @@ services:
   #      Kafka ui service             #
   #####################################
   kafka-ui:
+    restart: always
     image: provectuslabs/kafka-ui:latest
     container_name: kafka-ui
     ports:
@@ -487,6 +545,68 @@ services:
       - broker3
     networks:
       cshop-network:
+  #####################################
+  #      Otel collector service       #
+  #####################################
+  otel-collector:
+    restart: always
+    container_name: otel-collector
+    image: otel/opentelemetry-collector
+    command: [ "--config=/etc/otel-collector-config.yml" ]
+    volumes:
+      - ./deployments/otel-collector-config.yml:/etc/otel-collector-config.yml
+    ports:
+      - "9464:9464"
+      - "4321:4321"
+    networks:
+      cshop-network:
+  #####################################
+  #      Jaeger service               #
+  #####################################
+  jaeger:
+    restart: always
+    image: jaegertracing/all-in-one
+    ports:
+      - "4317:4317"
+      - "16686:16686"
+      - "4318:4318"
+      - "14250:14250"
+      - "14268:14268"
+    environment:
+      COLLECTOR_ZIPKIN_HTTP_PORT: 9411
+    networks:
+      cshop-network:
+  #####################################
+  #      Prometheus service           #
+  #####################################
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./deployments/prometheus.yml:/etc/prometheus/prometheus.yml
+    restart: always
+    networks:
+      cshop-network:
+  #####################################
+  #      Grafana service           #
+  #####################################
+  grafana:
+    restart: always
+    image: grafana/grafana
+    ports:
+      - "3001:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      cshop-network:
 
 networks:
   cshop-network:
+volumes:
+  grafana-data:
+  smtp4dev-data:
+  sqlserver-data:
