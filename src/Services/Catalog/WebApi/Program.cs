@@ -14,8 +14,8 @@ using WebApi.Apis;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddLoggingCustom(builder.Configuration, "Catalog")
+    .AddOpenTelemetryCustom(builder.Configuration,"catalog-service")
     .AddValidation(typeof(Anchor))
-    .AddOpenTelemetryCustom("CatalogService")
     .AddAuthenticationDefault(builder.Configuration)
     .AddSwaggerCustom()
     .AddMediatorDefault([typeof(Program), typeof(Anchor)])
@@ -33,8 +33,6 @@ builder.Services.AddLoggingCustom(builder.Configuration, "Catalog")
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();
-
-
 app.NewVersionedApi("Catalog").MapCatalogApiV1();
 app.UseAuthenticationDefault(builder.Configuration)
     .ConfigureSwagger(builder.Configuration)

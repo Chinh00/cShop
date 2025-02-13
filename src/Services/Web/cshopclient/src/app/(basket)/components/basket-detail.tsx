@@ -1,27 +1,26 @@
+'use client'
 import useGetProductDetail from "@/app/(home)/hooks/useGetProductDetail";
 import {Button, Card, Image, Spin } from "antd";
 import { MdDeleteForever } from "react-icons/md";
 import useRemoveBasketItem from "../hooks/useRemoveBasketItem";
 import { BasketItem } from "@/models/basket-item";
-import {memo, useEffect} from "react";
+import {Dispatch, memo, SetStateAction, useEffect} from "react";
 import PriceFormat from "@/utils/price-format";
 import Link from "next/link";
+import {useSetRecoilState} from "recoil";
+import {cartState} from "@/app/(basket)/interface";
 export type BasketDetailProps = {
     basketItem: BasketItem,
     refetch: any,
-    setAmount: any
+    setAmount: Dispatch<SetStateAction<number>>, 
 }
 
 export const BasketDetail = (props: BasketDetailProps) => {
-    const {data, isLoading, isSuccess} = useGetProductDetail(props.basketItem?.productId);
+    const {data, isSuccess, status} = useGetProductDetail(props.basketItem?.productId);
     const {mutate, isPending} = useRemoveBasketItem()
-
-    useEffect(() => {
-        if (isSuccess && data?.data !== null) {
-            props?.setAmount((pre: number) => pre + data?.data?.price * props?.basketItem?.quantity)
-        }
-    }, [isSuccess]);
     
+    
+
     
     return <Card> 
         <div className={"flex flex-row gap-5 justify-between"}>
@@ -38,8 +37,10 @@ export const BasketDetail = (props: BasketDetailProps) => {
                 
                 mutate(data?.data?.id!, {
                     onSuccess: () => {
-                        props?.setAmount((pre: number) => pre + (data?.data?.price ?? 0) * props?.basketItem?.quantity * -1)
-                        props.refetch()
+                        if (data) {
+                            props?.setAmount((pre: number) => pre - (data?.data?.price) * props?.basketItem?.quantity)
+                            props.refetch()
+                        }
                     }
                 });
             }}>

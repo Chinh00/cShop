@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddLoggingCustom(builder.Configuration, "Basket")
-    .AddOpenTelemetryCustom("BasketService")
+    .AddOpenTelemetryCustom(builder.Configuration, "basket-service")
     .AddValidation(typeof(Anchor))
     .AddAuthenticationDefault(builder.Configuration)
     .AddSwaggerCustom()

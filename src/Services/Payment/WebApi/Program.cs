@@ -3,6 +3,7 @@ using cShop.Infrastructure.Auth;
 using cShop.Infrastructure.Bus;
 using cShop.Infrastructure.Logging;
 using cShop.Infrastructure.Mediator;
+using cShop.Infrastructure.Ole;
 using cShop.Infrastructure.SchemaRegistry;
 using cShop.Infrastructure.Swagger;
 using cShop.Infrastructure.Validation;
@@ -13,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddLoggingCustom(builder.Configuration, "Payment service")
+    .AddOpenTelemetryCustom(builder.Configuration, "payment-service")
     .AddAuthenticationDefault(builder.Configuration)
     .AddValidation(typeof(Anchor))
     .AddSwaggerCustom()

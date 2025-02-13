@@ -5,6 +5,6 @@ export interface Basket {
     userId: string,
     basketItems: BasketItem[],
     totalPrice: number,
-    createdDate: Date,
+    createdDate?: Date,
     updatedDate?: Date
 }

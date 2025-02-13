@@ -15,6 +15,9 @@ public static class Config
     [
         new ApiScope("api"),
     ];
+    public static IEnumerable<ApiResource> ApiResources =>
+    [
+    ];
 
     public static IEnumerable<Client> Clients(IConfiguration config) =>
     [
@@ -24,7 +27,7 @@ public static class Config
             ClientSecrets = { new Secret("secret".Sha256()) },
             AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
             AllowedScopes = { "openid", "profile", "api" },
-            AccessTokenLifetime = int.MaxValue
+            AccessTokenLifetime = int.MaxValue,
         },
         new Client
             {

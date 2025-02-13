@@ -13,6 +13,7 @@ import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import Link from "next/link";
+import {useSession} from "next-auth/react";
 
 interface ProductDetailProps {
     _id: string;
@@ -22,6 +23,8 @@ const ProductDetail = () => {
     const params = useParams();
     const {data, isLoading} = useGetProductDetail(params._id as string);
     const {mutate, isPending} = useAddBasketItem({productId: ""})
+    const {status} = useSession()
+    
     return <div className={"p-10 grid grid-cols-5 gap-10"}>
         {isLoading ? <div className={"flex justify-content-center col-span-5 p-5"}><Spin size={"large"}/></div> :
             <>
@@ -41,15 +44,23 @@ const ProductDetail = () => {
                         <div>Hãng sản xuất: <span className={"font-bold"}>{data?.data?.catalogBrand?.brandName}</span>
                         </div>
                         <Button type={"dashed"} className={"w-min"} onClick={() => {
-                            mutate({
-                                productId: data?.data?.id!
-                            }, {
-                                onSuccess: () => {
-                                    toast(<div>Add basket success <FaLongArrowAltRight size={20} /> <Link href={"/basket"} >Go to my basket</Link></div>, {
-                                        autoClose: 1500
-                                    })
-                                }
-                            })
+                            if (status === "authenticated") {
+                                mutate({
+                                    productId: data?.data?.id!
+                                }, {
+                                    onSuccess: () => {
+                                        toast(<div>Add to my cart</div>,{
+                                            autoClose: 1500
+                                        })
+                                    }
+                                })
+                            } else {
+                                window.location.href = "/api/auth/signin"
+                            }
+                            
+                            
+                            
+                            
                         }}>Thêm vào giỏ hàng {isPending && <Spin/>}</Button>
                     </div>
                     <div

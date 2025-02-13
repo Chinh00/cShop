@@ -1,5 +1,5 @@
 ###
-@host = https://b53b-113-190-242-151.ngrok-free.app/connector
+@host = http://localhost:9999/connector
 
 ### 
 GET {{host}}/connector-plugins
@@ -27,7 +27,7 @@ Content-Type: application/json
     "database.hostname": "sqlserver",
     "database.port": "1433",
     "database.user": "sa",
-    "database.password": "2hlMU12wjMe5",
+    "database.password": "@P@ssw0rd02",
     "database.names": "Db",
     "topic.prefix": "catalog",
     "table.include.list": "dbo.CatalogOutboxes",
@@ -74,7 +74,7 @@ Content-Type: application/json
     "database.hostname": "sqlserver",
     "database.port": "1433",
     "database.user": "sa",
-    "database.password": "2hlMU12wjMe5",
+    "database.password": "@P@ssw0rd02",
     "database.names": "Db",
     "topic.prefix": "order",
     "table.include.list": "dbo.OrderOutboxes",
@@ -125,7 +125,7 @@ Content-Type: application/json
     "database.hostname": "sqlserver",
     "database.port": "1433",
     "database.user": "sa",
-    "database.password": "2hlMU12wjMe5",
+    "database.password": "@P@ssw0rd02",
     "database.names": "Db",
     "topic.prefix": "shipper",
     "table.include.list": "dbo.ShipperOutboxes",
@@ -176,7 +176,7 @@ Content-Type: application/json
     "database.hostname": "sqlserver",
     "database.port": "1433",
     "database.user": "sa",
-    "database.password": "2hlMU12wjMe5",
+    "database.password": "@P@ssw0rd02",
     "database.names": "Db",
     "topic.prefix": "customer",
     "table.include.list": "dbo.CustomerOutboxes",

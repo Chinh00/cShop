@@ -1,18 +1,34 @@
-// middleware.js  
-import { NextResponse } from 'next/server';
-import { NextRequest } from 'next/server';
-import {useSession} from "next-auth/react";
-import {getServerSession} from "next-auth";
-import {authOptions} from "@/app/api/auth/[...nextauth]/route";
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
 
-export async function middleware(request: NextRequest) {
-    const session = await getServerSession(authOptions);
+const privatePaths: string[] = [
+    '/basket/:path*', "/myorders/:path*",
+]
+const authPaths: string[] = ["/api/auth/signin"]
+const noAuthPath = []
+
+export function middleware(request: NextRequest) {
+    const { pathname } = request.nextUrl;
+    const token =
+        request.cookies.get("next-auth.session-token")?.value 
+    
+    
+    if (!token) {
+        console.log("Pathname", pathname)
+        if (privatePaths.filter(c => c.match(pathname))) {
+            // return NextResponse.redirect(new URL("/api/auth/signin", request.url))
+        }
+    }
 
     
+    if (token && authPaths.filter(c => c.match(pathname))) {
+        // return NextResponse.redirect(new URL("/", request.url));
+    }
 
-    // Trả về Response gốc nếu không có gì thay đổi  
-    return NextResponse.next();
+
+    // return NextResponse.next();
 }
+
 export const config = {
-    matcher: ['/basket/:path*', '/profile/:path*'], 
-};  
+    matcher: [...privatePaths, ...authPaths],
+}

@@ -4,6 +4,7 @@ import {XQuery} from "@/utils/xQuery";
 import { Tabs, TabsProps } from "antd";
 import { useState } from "react";
 import {OrderPreview} from "@/app/(order)/components/order-preview";
+import ClientComponentAuth from "@/components/auth/client_component_auth";
 
 const MyOrders = () => {
     const [query, setQuery] = useState<XQuery>({
@@ -49,15 +50,17 @@ const MyOrders = () => {
     ];
     
     
-    return <div className={"p-10 flex justify-center items-center"}>
-        <Tabs
-            onChange={onChange}
-            type="card"
-            className={"w-4/5"}
-            items={items}
-        />
-    
-    </div>
+    return <ClientComponentAuth>
+        <div className={"p-10 flex justify-center items-center"}>
+            <Tabs
+                onChange={onChange}
+                type="card"
+                className={"w-4/5"}
+                items={items}
+            />
+
+        </div>
+    </ClientComponentAuth>
 }
 
 export default MyOrders;

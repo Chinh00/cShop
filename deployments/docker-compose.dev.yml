@@ -1,9 +1,14 @@
 version: "3.8"
 
 services:
+  
+  consul:
+    image: consul:1.15.4
+    ports:
+      - "8500:8500"
   redis:
     image: redis/redis-stack:latest
-    
+    restart: always
     ports:
       - "6379:6379"
       - "8001:8001"
@@ -16,10 +21,12 @@ services:
       ACCEPT_EULA: "Y"
       MSSQL_PID: "Standard"
       MSSQL_AGENT_ENABLED: true
+    restart: always
     volumes:
       - data_sqlserver:/var/opt/mssql
 
   debezium:
+    restart: always
     image: quay.io/debezium/connect
     ports:
       - "8083:8083"
@@ -40,6 +47,7 @@ services:
   
   
   mongodb:
+    restart: always
     image: mongo
     ports:
       - "27017:27017"
@@ -60,13 +68,15 @@ services:
       ServerOptions__HostName: smtp4dev
 
   schema-registry-ui:
+    restart: always
     image: landoop/schema-registry-ui
     ports:
-      - 8000:8000
+      - "8000:8000"
     environment:
       - SCHEMAREGISTRY_URL=http://schema-registry:8085
       - PROXY=true
   schema-registry:
+    restart: always
     image: confluentinc/cp-schema-registry
     hostname: schema-registry
     environment:
@@ -82,6 +92,7 @@ services:
       - broker3
 
   zookeeper:
+    restart: always
     image: confluentinc/cp-zookeeper
     hostname: zookeeper
     container_name: zookeeper
@@ -92,6 +103,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
 
   broker1:
+    restart: always
     image: confluentinc/cp-kafka
     hostname: broker1
     container_name: broker1
@@ -106,6 +118,7 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker1:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
   broker2:
+    restart: always
     image: confluentinc/cp-kafka
     hostname: broker2
     container_name: broker2
@@ -120,6 +133,7 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker2:29092,PLAINTEXT_HOST://localhost:9093
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
   broker3:
+    restart: always
     image: confluentinc/cp-kafka
     hostname: broker3
     container_name: broker3
@@ -174,7 +188,7 @@ services:
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200    
     ports:
-      - 5601:5601
+      - "5601:5601"
     depends_on:
       - elasticsearch
 volumes:

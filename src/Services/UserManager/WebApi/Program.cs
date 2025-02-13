@@ -1,6 +1,9 @@
+using cShop.Infrastructure.Ole;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddLoggingCustom(builder.Configuration, "UserService")
+    .AddOpenTelemetryCustom(builder.Configuration, "user-service")
     .AddAuthenticationDefault(builder.Configuration)
     .AddSwaggerCustom()
     .AddValidation(typeof(Anchor))

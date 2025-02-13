@@ -3,6 +3,7 @@ using cShop.Infrastructure.Auth;
 using cShop.Infrastructure.Logging;
 using cShop.Infrastructure.Mediator;
 using cShop.Infrastructure.Mongodb;
+using cShop.Infrastructure.Ole;
 using cShop.Infrastructure.SchemaRegistry;
 using cShop.Infrastructure.Swagger;
 using cShop.Infrastructure.Validation;
@@ -13,6 +14,7 @@ using WebApi.Apis;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddLoggingCustom(builder.Configuration, "ShipperService")
+    .AddOpenTelemetryCustom(builder.Configuration, "shipping-service")
     .AddValidation(typeof(Anchor))
     .AddAuthenticationDefault(builder.Configuration)
     .AddSwaggerCustom()

@@ -40,15 +40,17 @@ export default function Home() {
                           {PriceFormat.ConvertVND(item?.price ?? 0)}
                       </div>} />
                   </Card>))}
-              
+              <div className={"col-span-4 flex justify-center content-center w-full"}>
+                  {!!data?.data && <Pagination defaultCurrent={1} current={Math.floor((data?.data?.page ?? 1) / (data?.data?.pageSize ?? 1))} total={Math.floor(data?.data?.total ?? 1 / (data?.data?.pageSize ?? 1))} onChange={(e) => {
+                      setQuery( prev => ( {
+                          ...prev,
+                          page: e * (prev.pageSize ?? 1),
+                      }))
+                      console.log(Math.floor(data?.data?.total / data?.data?.pageSize))
+                  }} />}
+              </div>
           </div>
-          {!!data?.data && <Pagination defaultCurrent={1} current={Math.floor((data?.data?.page ?? 1) / (data?.data?.pageSize ?? 1))} total={Math.floor(data?.data?.total ?? 1 / (data?.data?.pageSize ?? 1))} onChange={(e) => {
-              setQuery( prev => ( {
-                  ...prev,
-                  page: e * (prev.pageSize ?? 1),
-              }))
-              console.log(Math.floor(data?.data?.total / data?.data?.pageSize))
-          }} />}
+          
       </div>
   );
 }

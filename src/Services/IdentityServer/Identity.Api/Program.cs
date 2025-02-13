@@ -1,4 +1,5 @@
-﻿using Duende.IdentityServer.Configuration;
+﻿using cShop.Infrastructure.Ole;
+using Duende.IdentityServer.Configuration;
 using Identity.Api.Middlewares;
 
 Log.Logger = new LoggerConfiguration()
@@ -17,6 +18,8 @@ try
     });
     builder.Host.UseSerilog((ctx, lc) => lc
         .WriteTo.Console());
+    builder.Services.AddOpenTelemetryCustom(builder.Configuration, "identity-service");
+    
     builder.Services.AddMediatR(e => e.RegisterServicesFromAssembly(typeof(Program).Assembly));
     builder.Services.AddSchemaRegistry(builder.Configuration);
     builder.Services.AddKafkaConsumer<CustomerConsumerConfig>((config) =>
@@ -83,7 +86,9 @@ try
         .AddTestUsers(Config.TestUsers)
         .AddAspNetIdentity<ApplicationUser>()
         .AddDeveloperSigningCredential();
-    builder.Services.ConfigureApplicationCookie(options => { options.Cookie.SameSite = SameSiteMode.Lax; });
+    builder.Services.ConfigureApplicationCookie(options => { options.Cookie.SameSite = SameSiteMode.Lax;
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+    });
     builder.Services.AddAuthentication()
         .AddGoogle(options =>
         {
