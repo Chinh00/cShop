@@ -14,12 +14,12 @@ export class Http {
         
         
         this.instance.interceptors.request.use(async (req) => {
-            if (localStorage.getItem("access_token") === undefined) {
-                const session = await getSession();
-                localStorage.setItem("access_token", session?.user?.access_token);
+            if (typeof window !== "undefined") {
+                const token = localStorage.getItem("access_token");
+                if (token) {
+                    req.headers.Authorization = `Bearer ${token}`;
+                }
             }
-            
-            req.headers.Authorization = `Bearer ${localStorage.getItem("access_token")}`;
             return req;
         }, error => {
             return Promise.reject(error);

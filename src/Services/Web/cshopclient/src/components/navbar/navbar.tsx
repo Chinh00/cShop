@@ -1,5 +1,5 @@
 'use client'
-import { useSession } from "next-auth/react";
+import {getSession, useSession} from "next-auth/react";
 import Link from "next/link";
 import { useEffect } from "react";
 import { RiShoppingBasketLine } from "react-icons/ri";
@@ -37,6 +37,15 @@ export const Navbar = () =>  {
     const session = useSession();
     useEffect(() => {
         if (session.status === "authenticated") mutate()
+    }, []);
+    useEffect(() => {
+        const storeToken = async () => {
+            const session = await getSession();
+            if (session?.user?.access_token) {
+                localStorage.setItem("access_token", session.user.access_token);
+            }
+        };
+        storeToken();
     }, []);
    
     return <div className={"p-5 flex justify-between align-items-center w-full pl-10 pr-10"}>
