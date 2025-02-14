@@ -37,7 +37,7 @@ export const Navbar = () =>  {
     const session = useSession();
     useEffect(() => {
         if (session.status === "authenticated") mutate()
-    }, [session]);
+    }, []);
    
     return <div className={"p-5 flex justify-between align-items-center w-full pl-10 pr-10"}>
         <div>
