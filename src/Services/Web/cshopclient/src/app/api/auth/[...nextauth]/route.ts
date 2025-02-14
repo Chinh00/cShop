@@ -14,6 +14,7 @@ const authOptions: AuthOptions = {
             clientSecret: process.env.NEXT_GOOGLE_SECRET!,
         }),
     ],
+    secret: process.env.NEXTAUTH_SECRET,
     callbacks: {
         async signIn({ account, profile, user }) {
             console.log("account", user)
