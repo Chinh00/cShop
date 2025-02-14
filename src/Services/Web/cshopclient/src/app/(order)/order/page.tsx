@@ -18,8 +18,9 @@ const OrderPage = () => {
     const [amount, setAmount] = useState(0)
     const {mutate: paymentMutate, isPending: paymentLoading} = useGetPaymentUrl()
     useEffect(() => {
-        if (!!data?.data) {
-            setOrderState({
+        if (data) {
+            setOrderState(pre => ({
+                ...pre,
                 items: !!data?.data ? data?.data?.basketItems?.map((c) => {
                     return {
                         productId: c.productId,
@@ -27,7 +28,7 @@ const OrderPage = () => {
                     } as OrderItemCreate;
                 }): [],
                 orderDate: new Date(),
-            })
+            }))
         }
     }, [])
 
