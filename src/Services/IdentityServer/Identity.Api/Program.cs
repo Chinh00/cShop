@@ -68,9 +68,6 @@ try
         .AddIdentityServer(options =>
         {
             options.IssuerUri = "http://" + builder.Configuration.GetValue<string>("Identity:IssuerUri");
-            
-            
-            
             options.Events.RaiseErrorEvents = true;
             options.Events.RaiseInformationEvents = true;
             options.Events.RaiseFailureEvents = true;

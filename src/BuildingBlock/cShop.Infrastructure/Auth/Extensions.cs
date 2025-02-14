@@ -1,5 +1,6 @@
 using cShop.Infrastructure.IdentityServer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace cShop.Infrastructure.Auth;
 
@@ -27,7 +28,7 @@ public static class Extensions
             options.RequireHttpsMetadata = false;
             options.TokenValidationParameters.ValidateIssuer = false;
             options.TokenValidationParameters.ValidateAudience = false;
-            options.TokenValidationParameters.ValidateIssuerSigningKey = false;
+            options.TokenValidationParameters.SignatureValidator = (token, parameters) => new JsonWebToken(token);
         });
         services.AddAuthorization();
         
