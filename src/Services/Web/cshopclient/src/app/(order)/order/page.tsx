@@ -50,8 +50,7 @@ const OrderPage = () => {
                 </div>
                 <div className={"w-1/3 pl-10 pr-10 h-full"}>
                     <Button onClick={() => {
-                        orderState &&
-                        mutate(orderState, {
+                        mutate(orderState!, {
                             onSuccess: (data) => {
                                 toast("Tạo đơn hàng thành công")
                                 console.log(data)
