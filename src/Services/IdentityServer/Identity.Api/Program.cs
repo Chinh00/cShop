@@ -1,6 +1,9 @@
-﻿using cShop.Infrastructure.Ole;
+﻿using Confluent.Kafka;
+using cShop.Infrastructure.Ole;
 using Duende.IdentityServer.Configuration;
 using Identity.Api.Middlewares;
+using MassTransit;
+using Config = Identity.Api.Config;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -19,6 +22,21 @@ try
     builder.Host.UseSerilog((ctx, lc) => lc
         .WriteTo.Console());
     builder.Services.AddOpenTelemetryCustom(builder.Configuration, "identity-service");
+
+    builder.Services.AddMassTransit(c =>
+    {
+        c.SetKebabCaseEndpointNameFormatter();
+        c.UsingInMemory();
+        c.AddRider(t =>
+        {
+            t.AddProducer<UserCreatedIntegrationEvent>(nameof(UserCreatedIntegrationEvent));
+            t.UsingKafka((context, configurator) =>
+            {
+                configurator.Host(builder.Configuration.GetValue<string>("Kafka:BootstrapServers"));
+                
+            });
+        });
+    });
     
     builder.Services.AddMediatR(e => e.RegisterServicesFromAssembly(typeof(Program).Assembly));
     builder.Services.AddSchemaRegistry(builder.Configuration);

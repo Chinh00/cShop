@@ -1,5 +1,5 @@
 ###
-@host = http://localhost:11111/connector
+@host = http://32c7-113-190-242-151.ngrok-free.app/connector
 
 ### 
 GET {{host}}/connector-plugins

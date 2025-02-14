@@ -1,5 +1,5 @@
 'use client'
-import { useParams } from "next/navigation";
+import {useParams, useRouter} from "next/navigation";
 import {  toast } from 'react-toastify';
 import useGetProductDetail from "../hooks/useGetProductDetail";
 import { FaLongArrowAltRight } from "react-icons/fa";
@@ -23,6 +23,7 @@ const ProductDetail = () => {
     const params = useParams();
     const {data, isLoading} = useGetProductDetail(params._id as string);
     const {mutate, isPending} = useAddBasketItem({productId: ""})
+    const route = useRouter()
     const {status} = useSession()
     
     return <div className={"p-10 grid grid-cols-5 gap-10"}>
@@ -49,19 +50,17 @@ const ProductDetail = () => {
                                     productId: data?.data?.id!
                                 }, {
                                     onSuccess: () => {
-                                        toast(<div>Add to my cart</div>,{
+                                        toast(<div>Add to my cart success</div>,{
                                             autoClose: 1500
                                         })
                                     }
                                 })
                             } else {
-                                window.location.href = "/api/auth/signin"
+                                route.push("/auth")
                             }
                             
                             
-                            
-                            
-                        }}>Thêm vào giỏ hàng {isPending && <Spin/>}</Button>
+                        }}>Add to cart {isPending && <Spin/>}</Button>
                     </div>
                     <div
                         className={"flex flex-col gap-3 border-2 bg-red-200 backdrop-blur bg-opacity-70 p-5 rounded-lg"}>{data?.data?.description.split("|").map((item, id) => {

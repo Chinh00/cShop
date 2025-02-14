@@ -32,7 +32,6 @@ public static class Extensions
                 
                 r.AddProducer<MakeOrderStockValidateIntegrationEvent>(nameof(MakeOrderStockValidateIntegrationEvent));
                 
-                
               
                 r.AddProducer<OrderPaidIntegrationEvent>(nameof(OrderPaidIntegrationEvent));
                 
@@ -57,6 +56,13 @@ public static class Extensions
                 r.UsingKafka((context, configurator) =>
                 {
                     configurator.Host(configuration.GetValue<string>("Kafka:BootstrapServers"));
+                    configurator.TopicEndpoint<UserCreatedIntegrationEvent>(nameof(UserCreatedIntegrationEvent), "user-order-group",
+                        endpointConfigurator =>
+                        {
+                            endpointConfigurator.CreateIfMissing(e => e.NumPartitions = 1);
+                            endpointConfigurator.AutoOffsetReset = AutoOffsetReset.Earliest;
+                            endpointConfigurator.ConfigureConsumer<EventDispatcher>(context);
+                        });
                     configurator.TopicEndpoint<OrderConfirmed>(nameof(OrderConfirmed), "order-group",
                         endpointConfigurator =>
                         {

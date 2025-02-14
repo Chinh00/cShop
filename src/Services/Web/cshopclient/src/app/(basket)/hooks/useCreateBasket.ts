@@ -4,7 +4,7 @@ import basket from "../services/basket.service"
 const useCreateBasket = () => {
     return useMutation({
         mutationKey: ["useCreateBasket"],
-        mutationFn: basket.createBasket
+        mutationFn: basket.createBasket,
     })
 }
 

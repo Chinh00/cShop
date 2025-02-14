@@ -8,6 +8,7 @@ export class Http {
             baseURL: process.env.NEXT_PUBLIC_APIURL,
             headers: {
                 "Content-Type": "application/json",
+                "ngrok-skip-browser-warning": "undefine"
             }
         })
         

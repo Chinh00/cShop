@@ -2,17 +2,15 @@ using System.Security.Claims;
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Validation;
 using Google.Apis.Auth;
+using MassTransit;
 
 namespace Identity.Api;
 
-public class ExternalGrantValidator : IExtensionGrantValidator
+public class ExternalGrantValidator(
+    UserManager<ApplicationUser> userManager,
+    ITopicProducer<UserCreatedIntegrationEvent> userCreatedIntegrationEventProducer)
+    : IExtensionGrantValidator
 {
-    private readonly UserManager<ApplicationUser> _userManager;
-
-    public ExternalGrantValidator(UserManager<ApplicationUser> userManager)
-    {
-        _userManager = userManager;
-    }
 
     public async Task ValidateAsync(ExtensionGrantValidationContext context)
     {
@@ -32,16 +30,18 @@ public class ExternalGrantValidator : IExtensionGrantValidator
             return;
         }
         // User already 
-        var user = await _userManager.FindByEmailAsync(payload.Email);
+        var user = await userManager.FindByEmailAsync(payload.Email);
         if (user == null)
         {
             user = new ApplicationUser() { UserName = payload.Email, Email = payload.Email };
-            var result = await _userManager.CreateAsync(user);
+            var result = await userManager.CreateAsync(user);
             if (!result.Succeeded)
             {
                 context.Result = new GrantValidationResult(TokenRequestErrors.InvalidGrant, "User creation failed");
                 return;
             }
+
+            await userCreatedIntegrationEventProducer.Produce(new { UserId = user.Id });
         }
 
         var claims = new List<Claim>
