@@ -12,31 +12,25 @@ import useGetPaymentUrl from "@/app/(order)/hooks/useGetPaymentUrl";
 import ClientComponentAuth from "@/components/auth/client_component_auth";
 
 const OrderPage = () => {
-    const {data, isLoading, isSuccess, refetch} = useGetBasketDetail();
     const {mutate} = useCreateOrder()
-    const [orderState, setOrderState] = useState<OrderCreate | undefined>(undefined)
+    const [orderState, setOrderState] = useState<OrderCreate>()
+    const {data, isLoading, isSuccess, refetch} = useGetBasketDetail();
     const [amount, setAmount] = useState(0)
     const {mutate: paymentMutate, isPending: paymentLoading} = useGetPaymentUrl()
     useEffect(() => {
-        if (data) {
-            setOrderState(pre => ({
-                ...pre,
-                items: !!data?.data ? data?.data?.basketItems?.map((c) => {
-                    return {
-                        productId: c.productId,
-                        quantity: c.quantity,
-                    } as OrderItemCreate;
-                }): [],
+        if (data?.data) {
+            setOrderState(prevState => ({
+                ...prevState,
+                items: data.data.basketItems.map((c) => ({
+                    productId: c.productId,
+                    quantity: c.quantity,
+                })) || [],
                 orderDate: new Date(),
-            }))
+            }));
         }
-    }, [])
+    }, [data]);
 
-    useEffect(() => {
-        return () => {
-            setAmount(0)
-        }
-    }, []);
+
     return <ClientComponentAuth>
         <div className={"p-10 flex justify-center items-center"}>
             {isLoading ? <Spin size={"large"} /> : <div className={"w-full flex flex-row"}>
@@ -51,6 +45,8 @@ const OrderPage = () => {
                 </div>
                 <div className={"w-1/3 pl-10 pr-10 h-full"}>
                     <Button onClick={() => {
+                        console.log("Order submit")
+                        console.log(orderState)
                         orderState &&
                         mutate(orderState, {
                             onSuccess: (data) => {
