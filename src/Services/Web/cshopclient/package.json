@@ -13,8 +13,10 @@
     "@ant-design/v5-patch-for-react-19": "^1.0.3",
     "@tanstack/react-query": "^5.66.0",
     "@tanstack/react-query-devtools": "^5.62.15",
+    "@types/lodash": "^4.17.15",
     "antd": "^5.22.7",
     "axios": "^1.7.9",
+    "lodash": "^4.17.21",
     "moment": "^2.30.1",
     "moment-timezone": "^0.5.46",
     "next": "^15.1.6",
@@ -28,6 +30,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@types/lodash.debounce": "^4.0.9",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

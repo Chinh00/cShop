@@ -30,6 +30,18 @@ public static class CatalogApi
             var query = context.GetQuery<GetCatalogsQuery>(stringQuery);
             return await sender.Send(query);
         });
+        group.MapGet("/types", async (ISender sender, HttpContext context, [FromHeader(Name = "x-query")] string stringQuery) =>
+        {
+            var query = context.GetQuery<GetCatalogTypesQuery>(stringQuery);
+            return await sender.Send(query);
+        });
+        group.MapGet("/brands", async (ISender sender, HttpContext context, [FromHeader(Name = "x-query")] string stringQuery) =>
+        {
+            var query = context.GetQuery<GetCatalogBrandsQuery>(stringQuery);
+            return await sender.Send(query);
+        });
+        
+        
         group.MapGet("/{id:guid}", async (ISender sender, Guid id) => await sender.Send(new GetCatalogByIdQuery(id)));
         group
             .MapPost("/file",

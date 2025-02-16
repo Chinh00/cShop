@@ -61,7 +61,10 @@ public static class Extensions
         
         return Expression.Lambda<Func<TEntity, bool>>(Expression.And(left.Body, subExpressionVisitor.Visit(right)), param);
     }
-    
+    private static Expression MakeString(Expression source)
+    {
+        return source.Type == typeof(string) ? source : Expression.Call(source, "ToString", Type.EmptyTypes);
+    }
     static Expression BuildComparison(Expression left ,string comparision, string value)
     {
         return comparision switch
@@ -72,12 +75,13 @@ public static class Extensions
             "<=" => BuildBinary(ExpressionType.LessThanOrEqual, left, value),
             ">" => BuildBinary(ExpressionType.GreaterThan, left, value),
             "<" => BuildBinary(ExpressionType.LessThan, left, value),
-            "in" => MakeExpressionContains(left, value.Split(',')),
+            "Contains" or "StartsWith" or "EndsWith" => Expression.Call(MakeString(left), comparision,
+                Type.EmptyTypes, Expression.Constant(value, typeof(string))),
             _ => throw new Exception($"Invalid comparision: {comparision}")
         };
     }
 
-    static Expression MakeExpressionContains(Expression left, string[] listValue)
+    static Expression MakeExpressionContains(Expression left, string listValue)
     {
         var baseType = left.GetType().BaseType;
         var methodInfo = baseType?.GetMethod("Contains", [typeof(string)]);

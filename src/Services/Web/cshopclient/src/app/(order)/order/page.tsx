@@ -24,7 +24,7 @@ const OrderPage = () => {
                 items: data.data.basketItems.map((c) => ({
                     productId: c.productId,
                     quantity: c.quantity,
-                })) || [],
+                })),
                 orderDate: new Date(),
             }));
         }
