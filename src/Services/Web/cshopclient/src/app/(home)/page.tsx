@@ -71,7 +71,7 @@ export default function Home() {
               <Search title={"Tìm kiếm sản phẩm"} onSearch={value => {
                   setQuery(prevState => ({
                       ...prevState,
-                      filters: prevState.filters ? [...prevState.filters, {
+                      filters: prevState.filters ? [...prevState.filters.filter(c => c.field !== "name"), {
                           field: "name",
                           operator: "Contains",
                           value: value
