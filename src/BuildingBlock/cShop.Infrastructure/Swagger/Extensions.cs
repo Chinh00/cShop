@@ -45,7 +45,6 @@ public static class Extensions
                 option.SwaggerEndpoint(url, name);
             }
         });
-        
         app.MapFallback("/", () => Results.Redirect("/swagger"));
         
         

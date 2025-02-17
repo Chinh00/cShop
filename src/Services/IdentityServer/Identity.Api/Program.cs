@@ -1,5 +1,6 @@
 ﻿using Confluent.Kafka;
 using cShop.Infrastructure.Ole;
+using cShop.Infrastructure.ServiceDiscovery;
 using Duende.IdentityServer.Configuration;
 using Identity.Api.Middlewares;
 using MassTransit;
@@ -21,6 +22,7 @@ try
     });
     builder.Host.UseSerilog((ctx, lc) => lc
         .WriteTo.Console());
+    builder.Services.AddConsulService(builder.Configuration);
     builder.Services.AddOpenTelemetryCustom(builder.Configuration, "identity-service");
 
     builder.Services.AddMassTransit(c =>
@@ -149,13 +151,14 @@ try
             "default-src 'self'; connect-src *;";
         await next();
     });
+    app.MapGet("/health", context => context.Response.WriteAsync("OK"));
     SeedData.EnsureSeedData(app);
     app.Run();
 }
 catch (Exception ex)
 {
     Log.Fatal(ex, "Host terminated unexpectedly");
-}
+} 
 
 finally
 {

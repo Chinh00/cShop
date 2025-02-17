@@ -5,15 +5,18 @@ using cShop.Infrastructure.Logging;
 using cShop.Infrastructure.Mediator;
 using cShop.Infrastructure.Ole;
 using cShop.Infrastructure.SchemaRegistry;
+using cShop.Infrastructure.ServiceDiscovery;
 using cShop.Infrastructure.Swagger;
 using cShop.Infrastructure.Validation;
 using GrpcService.Implements;
 using Infrastructure;
 using Infrastructure.Data;
+using Microsoft.AspNetCore.Http.HttpResults;
 using WebApi.Apis;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddLoggingCustom(builder.Configuration, "Catalog")
+    .AddConsulService(builder.Configuration)
     .AddOpenTelemetryCustom(builder.Configuration,"catalog-service")
     .AddValidation(typeof(Anchor))
     .AddAuthenticationDefault(builder.Configuration)
@@ -34,6 +37,7 @@ var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();
 app.NewVersionedApi("Catalog").MapCatalogApiV1();
+app.MapGet("/health", context => context.Response.WriteAsync("OK"));
 app.UseAuthenticationDefault(builder.Configuration)
     .ConfigureSwagger(builder.Configuration)
     .MapGrpcService<CatalogGrpcService>();
