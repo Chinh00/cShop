@@ -81,6 +81,7 @@ export default function Home() {
                           value: value
                       } as FilterModel],
                   }))
+                  refetch()
               }} />
               <Card>
                   <div>Catalog brands</div>
