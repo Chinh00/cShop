@@ -27,6 +27,7 @@ export default function Home() {
     const router = useRouter();
     const [brandSelected, setBrandSelected] = useState<string>()
     const [typeSelected, setTypeSelected] = useState<string>()
+    const [inputSearch, setInputSearch] = useState<string>()
     useEffect(() => {
         if (brandSelected) {
             setQuery(prevState => {
@@ -64,24 +65,32 @@ export default function Home() {
             })
         }
     }, [typeSelected]);
-    
+    useEffect(() => {
+        if (inputSearch) {
+            setQuery(prevState => ({
+                ...prevState,
+                filters: prevState.filters ? [...prevState.filters.filter(c => c.field !== "name"), {
+                    field: "name",
+                    operator: "Contains",
+                    value: inputSearch
+                } as FilterModel] : [{
+                    field: "name",
+                    operator: "Contains",
+                    value: inputSearch
+                } as FilterModel],
+            }))
+        } else {
+            setQuery(prevState => ({
+                ...prevState,
+                filters: prevState.filters ? [...prevState.filters.filter(c => c.field !== "name")] : [],
+            }))
+        }
+    }, [inputSearch]);
   return (
       <div className={"grid grid-cols-5 gap-5 p-5"}>
           <div className={"col-span-1 flex flex-col gap-5"}>
               <Search title={"Tìm kiếm sản phẩm"} onSearch={value => {
-                  setQuery(prevState => ({
-                      ...prevState,
-                      filters: prevState.filters ? [...prevState.filters.filter(c => c.field !== "name"), {
-                          field: "name",
-                          operator: "Contains",
-                          value: value
-                      } as FilterModel] : [{
-                          field: "name",
-                          operator: "Contains",
-                          value: value
-                      } as FilterModel],
-                  }))
-                  refetch()
+                  setInputSearch(value)
               }} />
               <Card>
                   <div>Catalog brands</div>
