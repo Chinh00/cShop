@@ -191,7 +191,7 @@ public static class Extensions
 
                 return eventName switch
                 {
-                    nameof(ProductCreated) => await payload.AsRecord<ProductCreated>(schemaRegistryClient),
+                    nameof(ProductCreatedIntegrationEvent) => await payload.AsRecord<ProductCreatedIntegrationEvent>(schemaRegistryClient),
                     _ => throw new ArgumentOutOfRangeException(nameof(eventName), eventName, null)
                 };
 

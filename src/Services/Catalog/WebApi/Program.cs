@@ -38,7 +38,7 @@ var app = builder.Build();
 app.UseMiddleware<ExceptionMiddleware>();
 app.NewVersionedApi("Catalog").MapCatalogApiV1();
 app.MapGet("/health", context => context.Response.WriteAsync("OK"));
-app.UseAuthenticationDefault(builder.Configuration)
+app.UseAuthenticationDefault()
     .ConfigureSwagger(builder.Configuration)
     .MapGrpcService<CatalogGrpcService>();
 app.UseAntiforgery();

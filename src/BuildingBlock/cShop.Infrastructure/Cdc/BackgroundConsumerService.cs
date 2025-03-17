@@ -20,7 +20,6 @@ public class BackgroundConsumerService<TConfig> : BackgroundService
         _logger = logger;
         _scopeFactory = scopeFactory;
         _config = config.Value;
-        Console.WriteLine(config.Value.Topic);
     }
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -51,7 +50,8 @@ public class BackgroundConsumerService<TConfig> : BackgroundService
                     var result = consumerBuilder.Consume();
                     if (result is null) continue;
                     var eventName = result.Message.Value.Schema?.Name;
-                    
+                    Console.WriteLine(eventName);
+
                     var bytes = await (new AvroSerializer<GenericRecord>(schemaRegistryClient, new AvroSerializerConfig()
                     {
                         SubjectNameStrategy = SubjectNameStrategy.Topic
@@ -59,10 +59,8 @@ public class BackgroundConsumerService<TConfig> : BackgroundService
                     var res = await _config.HandlePayload(schemaRegistryClient, eventName, bytes);
 
                     
-                    _logger.LogInformation($"Handler message {result}");
                     if (res is INotification)
                     {
-                        _logger.LogInformation("Kafka message received");
                         await mediator.Publish(res, stoppingToken);
                     }
 

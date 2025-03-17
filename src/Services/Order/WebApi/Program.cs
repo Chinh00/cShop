@@ -30,7 +30,7 @@ var app = builder.Build();
 
 app.NewVersionedApi("Order").MapOrderV1Api();
 
-app.UseAuthenticationDefault(builder.Configuration)
+app.UseAuthenticationDefault()
     .ConfigureSwagger(builder.Configuration);
 
 app.Run();

@@ -1,4 +1,4 @@
-@host = https://22db-117-6-133-148.ngrok-free.app
+@host = http://localhost:9998
 ### Get Catalogs
 
 GET {{host}}/catalogservice/api/v1/catalogs/
@@ -19,21 +19,22 @@ POST {{host}}/catalogservice/api/v1/catalogs
 Content-Type: application/json
 
 {
-  "name": "Samsung Galaxy M55",
-  "availableStock": 10,
-  "price": 10190000,
-  "imageSrc": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-samsung-galaxy-m55.png",
+  "name": "string",
+  "availableStock": 23,
+  "price": 100000,
+  "description": "string",
+  "pictures": [
+    "ascas"
+  ],
   "catalogType": {
-    "id": null,
-    "name": "Điện thoại, Tablet"
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "name": "ascsacsa"
   },
   "catalogBrand": {
-    "id": null,
-    "name": "Samsung"
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "name": "ascas"
   }
 }
-
-
 
 
 

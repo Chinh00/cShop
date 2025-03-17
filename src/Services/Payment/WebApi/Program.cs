@@ -32,7 +32,7 @@ var app = builder.Build();
 
 app.NewVersionedApi("Payment").MapPaymentApiV1();
 
-app.UseAuthenticationDefault(builder.Configuration)
+app.UseAuthenticationDefault()
     .ConfigureSwagger(builder.Configuration);
 
 

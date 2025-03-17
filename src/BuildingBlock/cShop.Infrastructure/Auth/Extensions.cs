@@ -37,7 +37,7 @@ public static class Extensions
     }
 
 
-    public static WebApplication UseAuthenticationDefault(this WebApplication app, IConfiguration configuration, Action<WebApplication>? action = null)
+    public static WebApplication UseAuthenticationDefault(this WebApplication app, Action<WebApplication>? action = null)
     {
 
         app.UseCors(Cors);

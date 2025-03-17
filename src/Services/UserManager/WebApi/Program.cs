@@ -19,7 +19,7 @@ builder.Services.AddLoggingCustom(builder.Configuration, "UserService")
 var app = builder.Build();
 
 
-app.UseAuthenticationDefault(builder.Configuration)
+app.UseAuthenticationDefault()
     .NewVersionedApi("User").MapUserApi();
 app.ConfigureSwagger(builder.Configuration);
 

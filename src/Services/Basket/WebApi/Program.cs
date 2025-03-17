@@ -25,7 +25,7 @@ var app = builder.Build();
 
 
 app.NewVersionedApi("Basket").MapBasketApiV1();
-app.UseAuthenticationDefault(builder.Configuration)
+app.UseAuthenticationDefault()
     .ConfigureSwagger(builder.Configuration);
 
 app.Run();

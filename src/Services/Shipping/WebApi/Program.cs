@@ -31,7 +31,7 @@ builder.Services.AddLoggingCustom(builder.Configuration, "ShipperService")
 var app = builder.Build();
 
 
-app.UseAuthenticationDefault(app.Configuration);
+app.UseAuthenticationDefault();
 app.NewVersionedApi("Shipper").MapShipperApi();
 app.ConfigureSwagger(app.Configuration);
 

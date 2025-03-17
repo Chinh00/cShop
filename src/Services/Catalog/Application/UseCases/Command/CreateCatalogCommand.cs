@@ -86,11 +86,16 @@ public record CreateCatalogCommand(
                 catalogItem,
                 () => (
                     new CatalogOutbox(),
-                    new ProductCreated()
+                    new ProductCreatedIntegrationEvent()
                         {
                             Id = catalogItem.Id.ToString(),
                             Name = catalogItem.Name,
-                            Price = (float)catalogItem.Price
+                            Price = (float)catalogItem.Price,
+                            CatalogBrandId = catalogItem.CatalogBrandId.ToString(),
+                            CatalogTypeId = catalogItem.CatalogTypeId.ToString(),
+                            CatalogBrandName = catalogItem.CatalogBrand.BrandName,
+                            CatalogTypeName = catalogItem.CatalogType.Name,
+                            Description = catalogItem.Description
                         }, 
                     "catalog_cdc_events"), cancellationToken);
             
