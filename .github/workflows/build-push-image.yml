@@ -1,4 +1,4 @@
-﻿name: Build and Push Docker Image
+﻿name: 🚀 Build and Push Docker Image
 
 on:
   workflow_dispatch:
@@ -8,26 +8,26 @@ on:
 
 jobs:
   main:
-    name: Build and push services
-
+    name: 📦 Build and Push Services
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Checkout Context
+      - name: 📥 Checkout Context
         uses: actions/checkout@v4
 
-      - name: Set up QEMU
+      - name: 🛠️ Set up QEMU
         uses: docker/setup-qemu-action@v3
 
-      - name: Set up Docker Buildx
+      - name: 🔧 Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Login to Docker Hub
+      - name: 🔑 Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push Docker image Identity Service
+
+      - name: 🏗️ Build and push Docker image Identity Service
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -35,116 +35,127 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_IDENTITY_SERVICE_NAME}}:latest
 
-
-      - name: Build and push Docker image Catalog Service
+      - name: 📦 Build and push Docker image Catalog Service
         uses: docker/build-push-action@v5
         with:
           context: .
           file: src/Services/Catalog/WebApi/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_CATALOG_SERVICE_NAME}}:latest
-      - name: Build and push Docker image Basket service
+
+      - name: 🛒 Build and push Docker image Basket Service
         uses: docker/build-push-action@v5
         with:
           context: .
           file: src/Services/Basket/WebApi/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_BASKET_SERVICE_NAME}}:latest
-      
-      - name: Build and push Docker image Gateway Service
+
+      - name: 🚪 Build and push Docker image Gateway Service
         uses: docker/build-push-action@v5
         with:
           context: .
           file: src/Services/Proxy/AppGateway/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_GATEWAY_SERVICE_NAME}}:latest
-      
-      - name: Build and push Docker image Order Service
+
+      - name: 📑 Build and push Docker image Order Service
         uses: docker/build-push-action@v5
         with:
           context: .
           file: src/Services/Order/WebApi/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_ORDER_SERVICE_NAME}}:latest
-      - name: Build and push Docker image User Service
+
+      - name: 👤 Build and push Docker image User Service
         uses: docker/build-push-action@v5
         with:
           context: .
           file: src/Services/UserManager/WebApi/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_USER_SERVICE_NAME}}:latest
-      - name: Build and push Docker image Notification Service
+
+      - name: 🔔 Build and push Docker image Notification Service
         uses: docker/build-push-action@v5
         with:
           context: .
           file: src/Services/Notification/WebApi/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_NOTIFICATION_SERVICE_NAME}}:latest
-      - name: Build and push Docker image Shipping Service
+
+      - name: 🚚 Build and push Docker image Shipping Service
         uses: docker/build-push-action@v5
         with:
           context: .
           file: src/Services/Shipping/WebApi/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_SHIPPING_SERVICE_NAME}}:latest
-      - name: Build and push Docker image Payment Service
+
+      - name: 💳 Build and push Docker image Payment Service
         uses: docker/build-push-action@v5
         with:
           context: .
           file: src/Services/Payment/WebApi/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_PAYMENT_SERVICE_NAME}}:latest
-      - name: Build and push Docker image Search Service
+
+      - name: 🔍 Build and push Docker image Search Service
         uses: docker/build-push-action@v5
         with:
           context: .
           file: src/Services/Search/WebApi/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_SEARCH_SERVICE_NAME}}:latest
-      - name: Build and push Docker image Comment Service
+
+      - name: 💬 Build and push Docker image Comment Service
         uses: docker/build-push-action@v5
         with:
           context: .
           file: src/Services/Comment/WebApi/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_COMMENT_SERVICE_NAME}}:latest
-  
+
   build:
-    name: Build and analyze
+    name: 🔍 Build and Analyze
     runs-on: windows-latest
-    
+
     steps:
-      - uses: actions/checkout@v4
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: Set up JDK 17
+          fetch-depth: 0
+
+      - name: ☕ Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: 17
-          distribution: 'zulu' # Alternative distribution options are available.
-      - name: Cache SonarQube packages
+          distribution: 'zulu'
+
+      - name: 📦 Cache SonarQube packages
         uses: actions/cache@v4
         with:
           path: ~\.sonar\cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
-      - name: Cache SonarQube scanner
+
+      - name: 📦 Cache SonarQube scanner
         id: cache-sonar-scanner
         uses: actions/cache@v4
         with:
           path: .\.sonar\scanner
           key: ${{ runner.os }}-sonar-scanner
           restore-keys: ${{ runner.os }}-sonar-scanner
-      - name: Install SonarQube scanner
+
+      - name: 🔍 Install SonarQube Scanner
         if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
         shell: powershell
         run: |
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
-      - name: Build and analyze
+
+      - name: 🔎 Build and Analyze Code
         shell: powershell
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"Chinh00_cShop_27de570d-f814-4c0a-b9bb-dbd9c84cd2b2" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}"
           dotnet build
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
-  
