@@ -11,12 +11,11 @@ import {debounce} from "lodash";
 import Search from "antd/es/input/Search";
 import {useGetTypes} from "@/app/(home)/hooks/useGetTypes";
 import {useGetBrands} from "@/app/(home)/hooks/useGetBrands";
+import {CatalogQuery} from "@/app/(home)/services/home.service";
 export default function Home() {
 
-    const [query, setQuery] = useState<XQuery>({
-        includes: ["Pictures"],
-        page: 1,
-        pageSize: 10,
+    const [query, setQuery] = useState<CatalogQuery>({
+        
     })
     
     const {data, isLoading, refetch} = useGetProducts(query);
@@ -33,15 +32,7 @@ export default function Home() {
             setQuery(prevState => {
                 return {
                     ...prevState,
-                    filters: prevState.filters ? [...prevState.filters.filter(c => c.field !== "CatalogBrandId"), {
-                        field: "CatalogBrandId",
-                        operator: "==",
-                        value: brandSelected
-                    } as FilterModel] : [{
-                        field: "CatalogBrandId",
-                        operator: "==",
-                        value: brandSelected
-                    } as FilterModel]
+                    catalogBrandId: brandSelected
                 }
             })
         }
@@ -52,15 +43,7 @@ export default function Home() {
             setQuery(prevState => {
                 return {
                     ...prevState,
-                    filters: prevState.filters ? [...prevState.filters.filter(c => c.field !== "CatalogTypeId"), {
-                        field: "CatalogTypeId",
-                        operator: "==",
-                        value: typeSelected
-                    } as FilterModel] : [{
-                        field: "CatalogTypeId",
-                        operator: "==",
-                        value: typeSelected
-                    } as FilterModel]
+                   catalogTypeId: typeSelected
                 }
             })
         }
@@ -69,22 +52,9 @@ export default function Home() {
         if (inputSearch) {
             setQuery(prevState => ({
                 ...prevState,
-                filters: prevState.filters ? [...prevState.filters.filter(c => c.field !== "name"), {
-                    field: "name",
-                    operator: "Contains",
-                    value: inputSearch
-                } as FilterModel] : [{
-                    field: "name",
-                    operator: "Contains",
-                    value: inputSearch
-                } as FilterModel],
+                q: inputSearch
             }))
-        } else {
-            setQuery(prevState => ({
-                ...prevState,
-                filters: prevState.filters ? [...prevState.filters.filter(c => c.field !== "name")] : [],
-            }))
-        }
+        } 
     }, [inputSearch]);
   return (
       <div className={"grid grid-cols-5 gap-5 p-5"}>
@@ -123,23 +93,23 @@ export default function Home() {
                   (<Card
                       hoverable
                       style={{ width: 240 }}
-                      cover={<Image style={{height: 250, objectFit: "contain"}}  src={item?.pictures[0]?.pictureUrl} alt=""/>}
+                      cover={<Image style={{height: 250, objectFit: "contain"}}  src={item?.pictures[0]} alt=""/>}
                       onClick={() => {
                       router.push(`/${item.id}`);
                   }} key={id} className={"w-[200px] text-center cursor-pointer flex flex-col items-center h-full"}>
                       
                       
-                      <Meta title={<div className={"text-wrap"}>{item.name}</div>}  description={<div className={"font-bold text-red-500"}>
+                      <Meta title={<div className={"text-wrap"}>{item.catalogName}</div>} description={<div className={"font-bold text-red-500"}>
                           {PriceFormat.ConvertVND(item?.price ?? 0)}
                       </div>} />
                   </Card>))}
               <div className={"col-span-4 flex justify-center content-center w-full"}>
-                  {!!data?.data && <Pagination defaultCurrent={1} current={Math.floor((data?.data?.page ?? 1) / (data?.data?.pageSize ?? 1))} total={Math.floor(data?.data?.total ?? 1 / (data?.data?.pageSize ?? 1))} onChange={(e) => {
+                  {!!data?.data && <Pagination defaultCurrent={1} current={data?.data?.page} total={Math.floor(data?.data?.total ?? 1 / (data?.data?.pageSize ?? 1))} onChange={(e) => {
                       setQuery( prev => ( {
                           ...prev,
-                          page: e * (prev.pageSize ?? 1),
+                          page: e,
+                          pageSize: 10
                       }))
-                      console.log(Math.floor(data?.data?.total / data?.data?.pageSize))
                   }} />}
               </div>
           </div>

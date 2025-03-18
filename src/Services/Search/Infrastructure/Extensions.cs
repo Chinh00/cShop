@@ -1,4 +1,3 @@
-using Confluent.SchemaRegistry;
 using Core;
 using cShop.Infrastructure.Cdc;
 using Infrastructure.Catalog;

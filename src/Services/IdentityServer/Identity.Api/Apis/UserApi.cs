@@ -1,5 +1,4 @@
 using Asp.Versioning.Builder;
-using MediatR;
 
 namespace Identity.Api.Apis;
 

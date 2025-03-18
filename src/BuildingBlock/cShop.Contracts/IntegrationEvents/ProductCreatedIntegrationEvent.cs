@@ -16,7 +16,7 @@ namespace IntegrationEvents
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.12.0+8c27801dc8d42ccc00997f25c0b8f45f8d4a233e")]
 	public partial class ProductCreatedIntegrationEvent : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""ProductCreatedIntegrationEvent"",""namespace"":""IntegrationEvents"",""fields"":[{""name"":""Id"",""type"":""string""},{""name"":""Name"",""type"":""string""},{""name"":""Price"",""type"":""float""},{""name"":""CatalogBrandId"",""type"":""string""},{""name"":""CatalogBrandName"",""type"":""string""},{""name"":""CatalogTypeId"",""type"":""string""},{""name"":""CatalogTypeName"",""type"":""string""},{""name"":""Description"",""type"":""string""}]}");
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""ProductCreatedIntegrationEvent"",""namespace"":""IntegrationEvents"",""fields"":[{""name"":""Id"",""type"":""string""},{""name"":""Name"",""type"":""string""},{""name"":""Price"",""type"":""float""},{""name"":""CatalogBrandId"",""type"":""string""},{""name"":""CatalogBrandName"",""type"":""string""},{""name"":""CatalogTypeId"",""type"":""string""},{""name"":""CatalogTypeName"",""type"":""string""},{""name"":""Description"",""type"":""string""},{""name"":""Images"",""type"":""string""}]}");
 		private string _Id;
 		private string _Name;
 		private float _Price;
@@ -25,6 +25,7 @@ namespace IntegrationEvents
 		private string _CatalogTypeId;
 		private string _CatalogTypeName;
 		private string _Description;
+		private string _Images;
 		public virtual global::Avro.Schema Schema
 		{
 			get
@@ -120,6 +121,17 @@ namespace IntegrationEvents
 				this._Description = value;
 			}
 		}
+		public string Images
+		{
+			get
+			{
+				return this._Images;
+			}
+			set
+			{
+				this._Images = value;
+			}
+		}
 		public virtual object Get(int fieldPos)
 		{
 			switch (fieldPos)
@@ -132,6 +144,7 @@ namespace IntegrationEvents
 			case 5: return this.CatalogTypeId;
 			case 6: return this.CatalogTypeName;
 			case 7: return this.Description;
+			case 8: return this.Images;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Get()");
 			};
 		}
@@ -147,6 +160,7 @@ namespace IntegrationEvents
 			case 5: this.CatalogTypeId = (System.String)fieldValue; break;
 			case 6: this.CatalogTypeName = (System.String)fieldValue; break;
 			case 7: this.Description = (System.String)fieldValue; break;
+			case 8: this.Images = (System.String)fieldValue; break;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Put()");
 			};
 		}

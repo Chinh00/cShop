@@ -40,7 +40,6 @@ public static class Extensions
 
     }
     public static Expression<Func<TEntity, bool>> BuildFilter<TEntity>(string field, string comparision, string value)
-        where TEntity : EntityBase
     {
         var parameter = Expression.Parameter(typeof(TEntity), "x");
         var property = field.Split(".").Aggregate((Expression)parameter, Expression.Property);
@@ -50,7 +49,6 @@ public static class Extensions
 
 
     public static Expression<Func<TEntity, bool>> And<TEntity>(this Expression<Func<TEntity, bool>> left, Expression<Func<TEntity, bool>> right)
-        where TEntity : EntityBase
     {
         var param = left.Parameters[0];
         var subExpressionVisitor = new SubExpressionVisitor()

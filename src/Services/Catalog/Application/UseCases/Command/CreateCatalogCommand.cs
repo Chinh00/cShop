@@ -95,7 +95,8 @@ public record CreateCatalogCommand(
                             CatalogTypeId = catalogItem.CatalogTypeId.ToString(),
                             CatalogBrandName = catalogItem.CatalogBrand.BrandName,
                             CatalogTypeName = catalogItem.CatalogType.Name,
-                            Description = catalogItem.Description
+                            Description = catalogItem.Description,
+                            Images = string.Join(",", catalogItem.Pictures.Select(e => e.PictureUrl))
                         }, 
                     "catalog_cdc_events"), cancellationToken);
             

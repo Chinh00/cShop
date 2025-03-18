@@ -1,8 +1,6 @@
 using Application.UseCases.Commands;
-using Application.UseCases.Dtos;
 using Application.UseCases.Queries;
 using Asp.Versioning.Builder;
-using cShop.Core.Domain;
 using cShop.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

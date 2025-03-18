@@ -7,7 +7,7 @@ namespace WebApi.Apis;
 
 public static class SearchApi
 {
-    private const string BaseUrl = "/api/v{version:apiVersion}/search";
+    private const string BaseUrl = "/api/v{version:apiVersion}/search/catalogs";
     public static IVersionedEndpointRouteBuilder MapSearchApiV1(this IVersionedEndpointRouteBuilder endpoints)
     {
         var group = endpoints.MapGroup(BaseUrl).HasApiVersion(1);

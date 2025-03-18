@@ -48,9 +48,9 @@ export const Navbar = () =>  {
         storeToken();
     }, []);
    
-    return <div className={"p-5 flex justify-between align-items-center w-full pl-10 pr-10"}>
+    return <div className={"p-5 flex justify-between align-items-center w-full pl-10 pr-10 sticky top-0 z-20 bg-red-500 bg-opacity-25 backdrop-blur"}>
         <div>
-            <Link href={"/"}>Home</Link>
+            <Link href={"/"} className={"font-bold text-xl"}>cShop</Link>
         </div>    
         <div className={"w-max flex flex-row gap-5 justify-center justify-items-center"}>
             

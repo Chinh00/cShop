@@ -11,7 +11,6 @@ using cShop.Infrastructure.Validation;
 using GrpcService.Implements;
 using Infrastructure;
 using Infrastructure.Data;
-using Microsoft.AspNetCore.Http.HttpResults;
 using WebApi.Apis;
 
 var builder = WebApplication.CreateBuilder(args);

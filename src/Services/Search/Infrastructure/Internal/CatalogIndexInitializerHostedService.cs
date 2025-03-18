@@ -1,7 +1,6 @@
 using Core;
 using Infrastructure.Catalog;
 using Infrastructure.Constants;
-using Nest;
 
 namespace Infrastructure.Internal;
 

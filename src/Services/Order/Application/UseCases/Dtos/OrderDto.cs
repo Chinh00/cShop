@@ -1,5 +1,3 @@
-using cShop.Contracts.Services.Order;
-
 namespace Application.UseCases.Dtos;
 
 public class OrderDto

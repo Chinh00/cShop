@@ -94,6 +94,20 @@ jobs:
           file: src/Services/Payment/WebApi/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_PAYMENT_SERVICE_NAME}}:latest
+      - name: Build and push Docker image Search Service
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: src/Services/Search/WebApi/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_SEARCH_SERVICE_NAME}}:latest
+      - name: Build and push Docker image Comment Service
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: src/Services/Comment/WebApi/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_COMMENT_SERVICE_NAME}}:latest
   
   build:
     name: Build and analyze

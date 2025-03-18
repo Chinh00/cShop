@@ -11,4 +11,5 @@ public class CatalogIndexModel : ElasticEntity<Guid>
     public Guid CatalogBrandId { get; set; }
     public string CatalogTypeName { get; set; }
     public string CatalogBrandName { get; set; }
+    public List<string> Pictures { get; set; }
 }

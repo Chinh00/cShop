@@ -1,8 +1,7 @@
 'use client';
 import {useQuery} from "@tanstack/react-query";
-import {getCatalogs} from "../services/home.service"
-import {XQuery} from "@/utils/xQuery";
-export const useGetProducts = (xQuery: XQuery) => {
+import {CatalogQuery, getCatalogs} from "../services/home.service"
+export const useGetProducts = (xQuery: CatalogQuery) => {
     return useQuery({
         queryKey: ["catalogs", xQuery],
         queryFn: () => getCatalogs(xQuery),

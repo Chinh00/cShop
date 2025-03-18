@@ -44,4 +44,21 @@ public interface IListSpecification<TEntity> : ISpecificationRoot<TEntity> where
 }
 
 
+public class MongoUpdateEntity<TEntity>
+{
+    public Expression<Func<TEntity, object>> UpdateExpression { get; set; }
+    public object Value { get; set; }
+    
+}
+
+public interface IMongoSpecification<TEntity> where TEntity : MongoEntityBase
+{
+    Expression<Func<TEntity, bool>> Filter { get; }
+    Expression<Func<TEntity, object>> Sorting { get; }
+    Expression<Func<TEntity, object>> SortingDesc { get; }
+    bool IsPagingEnabled { get; set; }
+    int Take { get; }
+    int Skip { get; }
+
+}
 

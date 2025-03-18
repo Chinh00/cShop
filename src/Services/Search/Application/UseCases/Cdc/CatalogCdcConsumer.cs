@@ -8,7 +8,6 @@ public class CatalogCdcConsumer(ICatalogIndexManager catalogIndexManager) : INot
 {
     public async Task Handle(ProductCreatedIntegrationEvent notification, CancellationToken cancellationToken)
     {
-        Console.WriteLine("Catalog catalog index started");
         var catalogIndexModel = new CatalogIndexModel()
         {
             Id = Guid.Parse(notification.Id),
@@ -18,7 +17,8 @@ public class CatalogCdcConsumer(ICatalogIndexManager catalogIndexManager) : INot
             CatalogTypeId = Guid.Parse(notification.CatalogTypeId),
             CatalogBrandId = Guid.Parse(notification.CatalogBrandId),
             CatalogTypeName = notification.CatalogTypeName,
-            CatalogBrandName = notification.CatalogBrandName
+            CatalogBrandName = notification.CatalogBrandName,
+            Pictures = notification.Images.Split(",").ToList()
         };
         await catalogIndexManager.AddOrUpdateAsync(catalogIndexModel);
     }

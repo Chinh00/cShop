@@ -4,6 +4,22 @@ import {CatalogPicture} from "@/models/catalogPicture";
 
 export type Product =  {
     id: string;
+    catalogName: string,
+    price: number,
+    imageUrl: string,
+    isActive: boolean,
+    catalogTypeId: string,
+    catalogTypeName?: string,
+    catalogBrandId: string,
+    catalogBrandName?: string
+    description: string,
+    pictures: string[],
+}
+
+
+
+export type Catalog =  {
+    id: string;
     name: string,
     price: number,
     imageUrl: string,

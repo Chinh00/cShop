@@ -2,6 +2,7 @@ using Application;
 using cShop.Infrastructure.Auth;
 using cShop.Infrastructure.Logging;
 using cShop.Infrastructure.Mediator;
+using cShop.Infrastructure.Ole;
 using cShop.Infrastructure.SchemaRegistry;
 using cShop.Infrastructure.Swagger;
 using cShop.Infrastructure.Validation;
@@ -18,7 +19,8 @@ builder.Services.AddLoggingCustom(builder.Configuration, "search-service")
     .AddSwaggerCustom()
     .AddSchemaRegistry(builder.Configuration)
     .AddCdcConsumer()
-    .AddElasticSearchService(builder.Configuration);
+    .AddElasticSearchService(builder.Configuration)
+    .AddOpenTelemetryCustom(builder.Configuration, "search-service");
 var app = builder.Build();
 
 app.NewVersionedApi("Search").MapSearchApiV1();

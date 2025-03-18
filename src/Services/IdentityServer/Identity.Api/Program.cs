@@ -1,7 +1,5 @@
-﻿using Confluent.Kafka;
-using cShop.Infrastructure.Ole;
+﻿using cShop.Infrastructure.Ole;
 using cShop.Infrastructure.ServiceDiscovery;
-using Duende.IdentityServer.Configuration;
 using Identity.Api.Middlewares;
 using MassTransit;
 using Config = Identity.Api.Config;
