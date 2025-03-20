@@ -3,7 +3,7 @@ using cShop.Core.Domain;
 
 namespace cShop.Core.Specifications;
 
-public interface ISpecificationRoot<TEntity> where TEntity : EntityBase { }
+public interface ISpecificationRoot<TEntity>  { }
 
 
 public interface ISpecification<TEntity> : ISpecificationRoot<TEntity> where TEntity : EntityBase
@@ -51,7 +51,7 @@ public class MongoUpdateEntity<TEntity>
     
 }
 
-public interface IMongoSpecification<TEntity> where TEntity : MongoEntityBase
+public interface IMongoSpecification<TEntity> : ISpecificationRoot<TEntity> where TEntity : MongoEntityBase
 {
     Expression<Func<TEntity, bool>> Filter { get; }
     Expression<Func<TEntity, object>> Sorting { get; }

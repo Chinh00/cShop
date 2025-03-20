@@ -46,8 +46,8 @@ public class MongoRepositoryBase<TEntity> : IMongoCommandRepository<TEntity>, IM
     {
         var aggregate = _mongoCollection.Aggregate();
         if (specification.Filter is not null) aggregate = aggregate.Match(specification.Filter);
-        if (specification.Sorting is not null) aggregate = aggregate.Sort(specification.Sorting.ToString());
-        if (specification.SortingDesc is not null) aggregate = aggregate.Sort(specification.SortingDesc.ToString());
+        if (specification.Sorting is not null) aggregate = aggregate.Sort(Builders<TEntity>.Sort.Ascending(specification.Sorting));
+        if (specification.SortingDesc is not null) aggregate = aggregate.Sort(Builders<TEntity>.Sort.Descending(specification.SortingDesc));
         if (!specification.IsPagingEnabled) return aggregate;
         if (specification.Skip > 0) aggregate = aggregate.Skip(specification.Take);
         if (specification.Take > 0) aggregate = aggregate.Limit(specification.Take);

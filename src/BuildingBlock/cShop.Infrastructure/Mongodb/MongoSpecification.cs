@@ -18,6 +18,13 @@ public class MongoSpecification<TEntity> : IMongoSpecification<TEntity> where TE
         Filter = Core.Specifications.Extensions.BuildFilter<TEntity>(filterModel.Field, filterModel.Operator,
             filterModel.Value);
     }
+    public void ApplyOrderAsc(Expression<Func<TEntity, object>> orderBy) => Sorting = orderBy;
+    public void ApplyOrderDesc(Expression<Func<TEntity, object>> orderBy) => SortingDesc = orderBy;
+
+    public void ApplySort(string orderBy)
+    {
+        this.ApplySorting(orderBy, nameof(ApplyOrderAsc), nameof(ApplyOrderDesc));
+    }
     
     protected void ApplyFilters(List<FilterModel> filterModels)
     {

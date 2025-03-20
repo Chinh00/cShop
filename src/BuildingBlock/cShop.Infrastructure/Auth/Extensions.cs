@@ -29,6 +29,17 @@ public static class Extensions
             options.TokenValidationParameters.ValidateIssuer = false;
             options.TokenValidationParameters.ValidateAudience = false;
             options.TokenValidationParameters.SignatureValidator = (token, parameters) => new JsonWebToken(token);
+            options.Events = new JwtBearerEvents
+            {
+                OnMessageReceived = context =>
+                {
+                    var accessToken = context.Request.Query["access_token"];
+
+                    if (!string.IsNullOrEmpty(accessToken))
+                        context.Token = accessToken;
+                    return Task.CompletedTask;
+                }
+            };
         });
         services.AddAuthorization();
         

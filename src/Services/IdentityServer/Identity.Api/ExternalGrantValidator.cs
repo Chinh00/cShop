@@ -22,7 +22,6 @@ public class ExternalGrantValidator(
             context.Result = new GrantValidationResult(TokenRequestErrors.InvalidGrant, "Invalid token");
             return;
         }
-        // Verify id_token after client login google 
         var payload = await GoogleJsonWebSignature.ValidateAsync(token);
         if (payload == null)
         {
@@ -33,7 +32,7 @@ public class ExternalGrantValidator(
         var user = await userManager.FindByEmailAsync(payload.Email);
         if (user == null)
         {
-            user = new ApplicationUser() { UserName = payload.Email, Email = payload.Email };
+            user = new ApplicationUser() { UserName = payload.Email, Email = payload.Email, AvatarUrl = payload.Picture};
             var result = await userManager.CreateAsync(user);
             if (!result.Succeeded)
             {

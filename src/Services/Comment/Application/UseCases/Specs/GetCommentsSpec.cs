@@ -10,5 +10,6 @@ public class GetCommentsSpec : MongoSpecification<CommentLine>
     public GetCommentsSpec(IQuery<ListResultModel<CommentLineDto>> request)
     {
         ApplyFilters(request.Filters);
+        ApplySort(request.Sorts?.FirstOrDefault());
     }
 }

@@ -22,4 +22,16 @@ public class ClaimContextAccessor : IClaimContextAccessor
     {
         throw new NotImplementedException();
     }
+
+    public string GetAvatar()
+    {
+        if (_httpContextAccessor.HttpContext != null) return _httpContextAccessor.HttpContext.User.FindFirst("avatar")?.Value;
+        throw new UnauthorizedAccessException();
+    }
+
+    public string GetUsername()
+    {
+        if (_httpContextAccessor.HttpContext != null) return _httpContextAccessor.HttpContext.User.FindFirst("username")?.Value;
+        throw new UnauthorizedAccessException();
+    }
 }

@@ -7,8 +7,11 @@ public static class Config
 {
     public static IEnumerable<IdentityResource> IdentityResources =>
     [
-        new IdentityResources.OpenId(),
-            new IdentityResources.Profile()
+        new IdentityResources.OpenId(), 
+        new IdentityResources.Profile()
+        {
+            UserClaims = { "avatar" }
+        },
     ];
 
     public static IEnumerable<ApiScope> ApiScopes =>
@@ -28,13 +31,15 @@ public static class Config
             AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
             AllowedScopes = { "openid", "profile", "api" },
             AccessTokenLifetime = int.MaxValue,
+            AlwaysIncludeUserClaimsInIdToken = true, 
         },
         new Client
         {
             ClientId = "google",
             AllowedGrantTypes = new List<string> { "external" },
             ClientSecrets = { new Secret("secret".Sha256()) },
-            AllowedScopes =  { "openid", "profile", "api" }
+            AllowedScopes =  { "openid", "profile", "api" },
+            AlwaysIncludeUserClaimsInIdToken = true, 
         },
         new Client
             {

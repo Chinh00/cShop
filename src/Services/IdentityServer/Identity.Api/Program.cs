@@ -1,6 +1,7 @@
 ﻿using cShop.Infrastructure.Ole;
 using cShop.Infrastructure.ServiceDiscovery;
 using Identity.Api.Middlewares;
+using Identity.Api.Profiles;
 using MassTransit;
 using Config = Identity.Api.Config;
 
@@ -90,7 +91,7 @@ try
             options.Events.RaiseInformationEvents = true;
             options.Events.RaiseFailureEvents = true;
             options.Events.RaiseSuccessEvents = true;
-            
+
             // see https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/
             options.EmitStaticAudienceClaim = true;
             options.KeyManagement.Enabled = false;
@@ -101,7 +102,8 @@ try
         .AddTestUsers(Config.TestUsers)
         .AddAspNetIdentity<ApplicationUser>()
         .AddExtensionGrantValidator<ExternalGrantValidator>()
-        .AddDeveloperSigningCredential();
+        .AddDeveloperSigningCredential()
+        .AddProfileService<ProfileService>();
     builder.Services.ConfigureApplicationCookie(options => { options.Cookie.SameSite = SameSiteMode.Lax;
         options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
     });

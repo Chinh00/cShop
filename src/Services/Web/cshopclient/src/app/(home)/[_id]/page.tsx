@@ -5,7 +5,6 @@ import useGetProductDetail from "../hooks/useGetProductDetail";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import {Button, Card, Image, Spin} from "antd"
 import useAddBasketItem from "@/app/(basket)/hooks/useAddBasketItem";
-import { CiDroplet } from "react-icons/ci";
 import { CiSignpostR1 } from "react-icons/ci";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
@@ -44,7 +43,7 @@ const ProductDetail = () => {
                         </Card>
                     </div>
                 </div>
-                <div className={"col-span-2 flex flex-col gap-5 h-[250vh]"}>
+                <div className={"col-span-2 flex flex-col gap-5"}>
                     <div className={"p-5 bg-green-500 bg-opacity-30 backdrop-blur rounded-lg flex flex-col gap-5"}>
                         <div>Loại: <span className={"font-bold"}>{data?.data?.catalogType?.name}</span></div>
                         <div>Hãng sản xuất: <span className={"font-bold"}>{data?.data?.catalogBrand?.brandName}</span>

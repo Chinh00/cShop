@@ -5,7 +5,10 @@ const nextConfig: NextConfig = {
     eslint: {
         ignoreDuringBuilds: true, 
     },
-    pageExtensions: ['ts', 'tsx']
+    pageExtensions: ['ts', 'tsx'],
+    images: {
+        domains: ["lh3.googleusercontent.com"],
+    },
 };
 
 export default nextConfig;

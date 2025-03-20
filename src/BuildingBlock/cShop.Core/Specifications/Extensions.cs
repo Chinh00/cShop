@@ -8,14 +8,14 @@ public static class Extensions
 {
 
     public static void ApplySorting<TEntity>(this ISpecificationRoot<TEntity> specification, string sort, string sortAsc, string sortDesc)
-        where TEntity : EntityBase
     { 
         var specType = specification.GetType().BaseType;     
 
         var endsWith = sort.EndsWith("Desc");
 
-        var propertyName = string.Concat(sort[..1].ToUpperInvariant(), endsWith ? sort[1..(sort.Length - 1 - "Desc".Length)] : sort[1..]);
-        
+        const string descendingSuffix = "Desc";
+        var propertyName = endsWith ? sort[..^4] : sort; 
+        propertyName = char.ToUpperInvariant(propertyName[0]) + propertyName[1..];
         
         var property = specType?.GetGenericArguments()[0].GetRuntimeProperty(propertyName) ?? throw new NullReferenceException();
         

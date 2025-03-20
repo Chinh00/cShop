@@ -6,13 +6,13 @@ import {ReactNode, useEffect} from "react";
 import {Spin} from "antd";
 
 const ClientComponentAuth =  ({children}: {children: ReactNode}) => {
-    const {status} = useSession()
+    const {status, data} = useSession()
 
     const router = useRouter();
 
     useEffect(() => {
         if (status === "unauthenticated") {
-            router.push("/auth"); 
+            router.push("/auth");
         }
     }, [status, router]);
     return status == "loading" ? <Spin size={"large"} /> : <>{children}</> 
