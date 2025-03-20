@@ -21,7 +21,6 @@ try
     });
     builder.Host.UseSerilog((ctx, lc) => lc
         .WriteTo.Console());
-    builder.Services.AddConsulService(builder.Configuration);
     builder.Services.AddOpenTelemetryCustom(builder.Configuration, "identity-service");
 
     builder.Services.AddMassTransit(c =>
