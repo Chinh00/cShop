@@ -15,7 +15,6 @@ using WebApi.Apis;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddLoggingCustom(builder.Configuration, "Catalog")
-    .AddConsulService(builder.Configuration)
     .AddOpenTelemetryCustom(builder.Configuration,"catalog-service")
     .AddValidation(typeof(Anchor))
     .AddAuthenticationDefault(builder.Configuration)

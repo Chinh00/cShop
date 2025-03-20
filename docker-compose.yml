@@ -17,11 +17,15 @@ services:
       ASPNETCORE_Kestrel__Endpoints__Http__Url: http://+:80
       ASPNETCORE_Kestrel__Endpoints__Http__Protocols: Http1
       ASPNETCORE_Kestrel__Certificates__Default__Path: /https.pfx
-      ASPNETCORE_Kestrel__Certificates__Default__Password: "P@ssw0rd02"
+      ASPNETCORE_Kestrel__Certificates__Default__Password: "@P@ssw0rd02"
       Jaeger__Protocol: http
       Jaeger__Host: jaeger
       Jaeger__Port: 4317
       Oltp__Endpoint: http://otel-collector:4321
+      Consul__Address: http://consul:8500
+      Consul__ServiceName: catalog-service
+      Consul__ServiceAddress: http://catalogservice:7009
+      
     ports:
       - "7009:80"
       - "7001:443"
@@ -34,6 +38,7 @@ services:
       - schema-registry
       - mongodb
       - sqlserver
+      - consul
     networks:
       cshop-network:
   #####################################
@@ -58,7 +63,7 @@ services:
       Redis__Server: redis
       Redis__Port: 6379
       Cert__Path: /https.pfx
-      Cert__Password: "P@ssw0rd02"
+      Cert__Password: "@P@ssw0rd02"
       Jaeger__Protocol: http
       Jaeger__Host: jaeger
       Jaeger__Port: 4317
@@ -74,11 +79,12 @@ services:
   orderservice:
     restart: always
     ports:
-      - "7003:80" 
+      - "7003:80"
     image: chinhval/cshoporderservice
     environment:
       Kafka__BootstrapServers: broker1:9092,broker2:9093,broker3:9094
       Kafka__SchemaRegistryServer: ${SchemaRegistry__Url:-http://schema-registry:8085}
+      SchemaRegistry__Url: ${SchemaRegistry__Url:-http://schema-registry}
       ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver,1434;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
       MongoDb__Username: root
       MongoDb__Password: "%40P%40ssw0rd02"
@@ -159,7 +165,13 @@ services:
     environment:
       Kafka__BootstrapServers: broker1:9092,broker2:9093,broker3:9094
       Kafka__SchemaRegistryServer: ${SchemaRegistry__Url:-http://schema-registry:8085}
+      SchemaRegistry__Url: ${SchemaRegistry__Url:-http://schema-registry}
       ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver,1434;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
+      MongoDb__Username: root
+      MongoDb__Password: "%40P%40ssw0rd02"
+      MongoDb__DatabaseName: orderdb
+      MongoDb__CollectionName: ordercollection
+      MongoDb__ServerName: mongodb
       Jaeger__Protocol: http
       Jaeger__Host: jaeger
       Jaeger__Port: 4317
@@ -171,7 +183,7 @@ services:
       - broker3
       - schema-registry
     networks:
-      cshop-network: 
+      cshop-network:
   #####################################
   #           Identity service        #
   #####################################
@@ -186,7 +198,7 @@ services:
       Kafka__SchemaRegistryServer: ${SchemaRegistry__Url:-http://schema-registry:8085}
       ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver,1434;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
       SchemaRegistry__Url: ${SchemaRegistry__Url:-http://schema-registry:8085}
-      Nextjs__Domain: http://localhost:3000
+      Nextjs__Domain: https://c-shop-woad.vercel.app/
       Identity__IssuerUri: identityservice:5001
       Jaeger__Protocol: http
       Jaeger__Host: jaeger
@@ -202,8 +214,8 @@ services:
       - schema-registry
     networks:
       cshop-network:
-        
-        
+  
+  
   #####################################
   #           Payment service         #
   #####################################
@@ -223,7 +235,7 @@ services:
       Vnpay__vnp_TmnCode: "48FVW9FU"
       Vnpay__vnp_HashSecret: "89TAQZ7WFK1BTART5KR5XVFXNGUJTC2M"
       Vnpay__vnpay_url: "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"
-      Vnpay__vnp_ReturnUrl: "http://localhost:3000/myorders"
+      Vnpay__vnp_ReturnUrl: "https://c-shop-woad.vercel.app/myorders"
       Jaeger__Protocol: http
       Jaeger__Host: jaeger
       Jaeger__Port: 4317
@@ -236,7 +248,104 @@ services:
       - schema-registry
     networks:
       cshop-network:
-        
+  
+  #####################################
+  #           Comment service         #
+  #####################################
+
+  commentservice:
+    container_name: commentservice
+    restart: always
+    ports:
+      - "8008:80"
+    image: chinhval/cshopcommentservice
+    environment:
+      Kafka__BootstrapServers: broker1:9092,broker2:9093,broker3:9094
+      Kafka__SchemaRegistryServer: ${SchemaRegistry__Url:-http://schema-registry:8085}
+      ConnectionStrings__Db: ${ConnectionStrings__Db:-Server=sqlserver,1434;Database=Db;Encrypt=false;User Id=sa;Password=@P@ssw0rd02}
+      SchemaRegistry__Url: ${SchemaRegistry__Url:-http://schema-registry:8085}
+      Jaeger__Protocol: http
+      Jaeger__Host: jaeger
+      Jaeger__Port: 4317
+      Oltp__Endpoint: http://otel-collector:4321
+      MongoDb__Username: root
+      MongoDb__Password: "%40P%40ssw0rd02"
+      MongoDb__DatabaseName: commentdb
+      MongoDb__CollectionName: ordercollection
+      MongoDb__ServerName: mongodb
+    depends_on:
+      - mongodb
+      - broker1
+      - broker2
+      - broker3
+      - schema-registry
+    networks:
+      cshop-network:
+  
+  #####################################
+  #           Search service          #
+  #####################################
+
+  searchservice:
+    container_name: searchservice
+    restart: always
+    ports:
+      - "8009:80"
+    image: chinhval/cshopsearchservice
+    environment:
+      Kafka__BootstrapServers: broker1:9092,broker2:9093,broker3:9094
+      Kafka__SchemaRegistryServer: ${SchemaRegistry__Url:-http://schema-registry:8085}
+      Elastic__ConnectionString: http://elasticsearch:9200
+      SchemaRegistry__Url: ${SchemaRegistry__Url:-http://schema-registry:8085}
+      Jaeger__Protocol: http
+      Jaeger__Host: jaeger
+      Jaeger__Port: 4317
+      Oltp__Endpoint: http://otel-collector:4321
+    depends_on:
+      - mongodb
+      - broker1
+      - broker2
+      - broker3
+      - schema-registry
+    networks:
+      cshop-network:
+  
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.4.0
+    container_name: elasticsearch
+    restart: always
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - data_elasticsearch:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      cshop-network:
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:7.4.0
+    restart: always
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      cshop-network:
+  
+  
   #####################################
   #           Gateway service         #
   #####################################
@@ -246,60 +355,77 @@ services:
       - "11111:80"
     image: chinhval/cshopgatewayservice
     environment:
-#      Basket service
+      #      Basket service
       ReverseProxy__Routes__basketservice__ClusterId: basketservice
       ReverseProxy__Routes__basketservice__Match__Path: /basketservice/{**catch-all}
       ReverseProxy__Routes__basketservice__Transforms_0__PathRemovePrefix: /catalogservice
       ReverseProxy__Routes__basketservice__Transforms_1__PathPrefix: /
       
-#      Catalog service
+      #      Catalog service
       ReverseProxy__Routes__catalogservice__ClusterId: catalogservice
       ReverseProxy__Routes__catalogservice__Match__Path: /catalogservice/{**catch-all}
       ReverseProxy__Routes__catalogservice__Transforms_0__PathRemovePrefix: /catalogservice
       ReverseProxy__Routes__catalogservice__Transforms_1__PathPrefix: /
-
-#      Identity service
+      
+      #      Identity service
       ReverseProxy__Routes__identityservice__ClusterId: identityservice
       ReverseProxy__Routes__identityservice__Match__Path: /identityservice/{**catch-all}
       ReverseProxy__Routes__identityservice__Transforms_0__PathRemovePrefix: /identityservice
       ReverseProxy__Routes__identityservice__Transforms_1__PathPrefix: /
-        
-#      Notification service
+      
+      #      Notification service
       ReverseProxy__Routes__notificationservice__ClusterId: notificationservice
       ReverseProxy__Routes__notificationservice__Match__Path: /notificationservice/{**catch-all}
       ReverseProxy__Routes__notificationservice__Transforms_0__PathRemovePrefix: /notificationservice
       ReverseProxy__Routes__notificationservice__Transforms_1__PathPrefix: /
-        
-#      Order service  
+      
+      #      Order service  
       ReverseProxy__Routes__orderservice__ClusterId: orderservice
       ReverseProxy__Routes__orderservice__Match__Path: /orderservice/{**catch-all}
       ReverseProxy__Routes__orderservice__Transforms_0__PathRemovePrefix: /orderservice
       ReverseProxy__Routes__orderservice__Transforms_1__PathPrefix: /
-        
-#      Payment service
+      
+      #      Payment service
       ReverseProxy__Routes__paymentservice__ClusterId: paymentservice
       ReverseProxy__Routes__paymentservice__Match__Path: /paymentservice/{**catch-all}
       ReverseProxy__Routes__paymentservice__Transforms_0__PathRemovePrefix: /paymentservice
       ReverseProxy__Routes__paymentservice__Transforms_1__PathPrefix: /
-        
-#      Shipping service
+      
+      #      Shipping service
       ReverseProxy__Routes__shippingservice__ClusterId: shippingservice
       ReverseProxy__Routes__shippingservice__Match__Path: /shippingservice/{**catch-all}
       ReverseProxy__Routes__shippingservice__Transforms_0__PathRemovePrefix: /shippingservice
       ReverseProxy__Routes__shippingservice__Transforms_1__PathPrefix: /
       
-#      User service
+      #      User service
       ReverseProxy__Routes__userservice__ClusterId: userservice
       ReverseProxy__Routes__userservice__Match__Path: /userservice/{**catch-all}
       ReverseProxy__Routes__userservice__Transforms_0__PathRemovePrefix: /userservice
       ReverseProxy__Routes__userservice__Transforms_1__PathPrefix: /
-        
+      
       #      Connector
       ReverseProxy__Routes__connector__ClusterId: connector
       ReverseProxy__Routes__connector__Match__Path: /connector/{**catch-all}
       ReverseProxy__Routes__connector__Transforms_0__PathRemovePrefix: /connector
       ReverseProxy__Routes__connector__Transforms_1__PathPrefix: /
       
+      #      Comment service
+      ReverseProxy__Routes__commentservice__ClusterId: commentservice
+      ReverseProxy__Routes__commentservice__Match__Path: /commentservice/{**catch-all}
+      ReverseProxy__Routes__commentservice__Transforms_0__PathRemovePrefix: /commentservice
+      ReverseProxy__Routes__commentservice__Transforms_1__PathPrefix: /
+      #      Search service
+      ReverseProxy__Routes__searchservice__ClusterId: searchservice
+      ReverseProxy__Routes__searchservice__Match__Path: /searchservice/{**catch-all}
+      ReverseProxy__Routes__searchservice__Transforms_0__PathRemovePrefix: /searchservice
+      ReverseProxy__Routes__searchservice__Transforms_1__PathPrefix: /
+      #      Connector
+      ReverseProxy__Routes__signalr-route__ClusterId: commentservice
+      ReverseProxy__Routes__signalr-route__Match__Path: /hubs/{**catch-all}
+      ReverseProxy__Routes__signalr-route__Transforms_0__RequestHeader: Connection
+      ReverseProxy__Routes__signalr-route__Transforms_0__Set: Upgrade
+      ReverseProxy__Routes__signalr-route__Transforms_1__RequestHeader: Upgrade
+      ReverseProxy__Routes__signalr-route__Transforms_1__Set: websocket
       
       
       #      Cluster ip
@@ -329,6 +455,15 @@ services:
       
       ReverseProxy__Clusters__connector__ClusterId: connector
       ReverseProxy__Clusters__connector__Destinations__destination1__Address: http://debezium:8083
+      
+      ReverseProxy__Clusters__commentservice__ClusterId: commentservice
+      ReverseProxy__Clusters__commentservice__Destinations__destination1__Address: http://commentservice:8008
+      
+      ReverseProxy__Clusters__searchservice__ClusterId: searchservice
+      ReverseProxy__Clusters__searchservice__Destinations__destination1__Address: http://searchservice:8009
+
+
+
     depends_on:
       - orderservice
       - basketservice
@@ -339,6 +474,9 @@ services:
       - paymentservice
       - identityservice
       - debezium
+      - grafana
+      - commentservice
+      - searchservice
     networks:
       cshop-network:
   
@@ -444,7 +582,7 @@ services:
       - schema-registry
     networks:
       cshop-network:
-    
+  
   #####################################
   #   Schema registry service         #
   #####################################
@@ -602,9 +740,15 @@ services:
     volumes:
       - grafana-data:/var/lib/grafana
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
     networks:
       cshop-network:
+  consul:
+    image: consul:1.15.4
+    container_name: consul
+    restart: always
+    ports:
+      - "8500:8500"
 
 networks:
   cshop-network:
@@ -612,3 +756,4 @@ volumes:
   grafana-data:
   smtp4dev-data:
   sqlserver-data:
+  data_elasticsearch:

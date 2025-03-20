@@ -11,7 +11,6 @@ public static class Extensions
         {  
             return new ConsulClient(config =>  
             {  
-                config.Address = new Uri("http://localhost:8500");  
             });  
         });
         services.AddHostedService<ConsulStartedService>();
