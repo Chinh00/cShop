@@ -35,6 +35,9 @@ export const Comment = ({ productId }: CommentProps) => {
         }
     }, [session?.user?.access_token, productId]);
     useEffect(() => {
+        console.log(socketRef.current)
+    }, [socketRef.current]);
+    useEffect(() => {
         if (socketRef.current) {
             socketRef.current.Subscribe("ReceiveMessage", async (m: any) => {
                 const res = await JSON.parse(m)?.Value?.Data as CommentDto;

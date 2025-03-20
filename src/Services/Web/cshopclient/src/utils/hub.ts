@@ -10,7 +10,7 @@ class CommentSignalr {
 
     constructor(productId: string, access_token: string) {
         this.connection = new HubConnectionBuilder().withUrl(
-            `ws://localhost:5182/hubs/comments?group-id=${productId}`
+            `ws://localhost:9998/hubs/comments?group-id=${productId}`
             , {
                 skipNegotiation: true,
                 transport: HttpTransportType.WebSockets,
