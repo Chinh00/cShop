@@ -1,0 +1,16 @@
+{
+  "name": "dotnet9-dev-container",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "workspaceFolder": "/workspace",
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "bash"
+  },
+  "extensions": [
+    "ms-dotnettools.csharp",
+    "editorconfig.editorconfig"
+  ],
+  "postCreateCommand": "dotnet restore",
+  "remoteUser": "root"
+}

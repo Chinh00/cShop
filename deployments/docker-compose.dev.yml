@@ -104,7 +104,7 @@ services:
 
   broker1:
     restart: always
-    image: confluentinc/cp-kafka
+    image: confluentinc/cp-kafka:3.2.1
     hostname: broker1
     container_name: broker1
     depends_on:
@@ -119,7 +119,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
   broker2:
     restart: always
-    image: confluentinc/cp-kafka
+    image: confluentinc/cp-kafka:3.2.1
     hostname: broker2
     container_name: broker2
     depends_on:
@@ -134,7 +134,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
   broker3:
     restart: always
-    image: confluentinc/cp-kafka
+    image: confluentinc/cp-kafka:3.2.1
     hostname: broker3
     container_name: broker3
     depends_on:
