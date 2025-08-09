@@ -12,5 +12,6 @@
     "editorconfig.editorconfig"
   ],
   "postCreateCommand": "dotnet restore",
-  "remoteUser": "root"
+  "remoteUser": "root",
+  "privileged": true
 }
