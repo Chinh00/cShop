@@ -1,0 +1,44 @@
+name: 🚀 Build cshop client app
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  main:
+    name: 📦 Build and Push Services
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout Context
+        uses: actions/checkout@v4
+
+      - name: 🛠️ Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: 🔧 Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: 🔑 Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Create .env
+        run: |
+          echo "VITE_URL=${{ secrets.NEXTAUTH_SECRET }}" > src/Web/cshopclient/.env.production
+          echo "VITE_CLIENT_ID=${{ secrets.NEXT_GOOGLE_CLIENTID }}" >> src/Web/cshopclient/.env.production
+          echo "VITE_TENANT_ID=${{ secrets.NEXT_GOOGLE_SECRET }}" >> src/Web/cshopclient/.env.production
+          echo "VITE_TENANT_ID=${{ secrets.NEXT_PUBLIC_APIURL }}" >> src/Web/cshopclient/.env.production
+
+      - name: 🏗️ Build and push Docker image daotao client service
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: src/Web/cshopclient/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_CSHOP_CLIENT_WEBAPP}}:latest
+
+      
