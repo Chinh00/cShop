@@ -28,16 +28,16 @@ jobs:
 
       - name: Create .env
         run: |
-          echo "VITE_URL=${{ secrets.NEXTAUTH_SECRET }}" > src/Web/cshopclient/.env.production
-          echo "VITE_CLIENT_ID=${{ secrets.NEXT_GOOGLE_CLIENTID }}" >> src/Web/cshopclient/.env.production
-          echo "VITE_TENANT_ID=${{ secrets.NEXT_GOOGLE_SECRET }}" >> src/Web/cshopclient/.env.production
-          echo "VITE_TENANT_ID=${{ secrets.NEXT_PUBLIC_APIURL }}" >> src/Web/cshopclient/.env.production
+          echo "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}" > src/Services/Web/cshopclient/.env.production
+          echo "NEXT_GOOGLE_CLIENTID=${{ secrets.NEXT_GOOGLE_CLIENTID }}" >> src/Services/Web/cshopclient/.env.production
+          echo "NEXT_GOOGLE_SECRET=${{ secrets.NEXT_GOOGLE_SECRET }}" >> src/Services/Web/cshopclient/.env.production
+          echo "NEXT_PUBLIC_APIURL=${{ secrets.NEXT_PUBLIC_APIURL }}" >> src/Services/Web/cshopclient/.env.production
 
       - name: 🏗️ Build and push Docker image daotao client service
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: src/Web/cshopclient/Dockerfile
+          file: src/Services/Web/cshopclient/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_CSHOP_CLIENT_WEBAPP}}:latest
 
