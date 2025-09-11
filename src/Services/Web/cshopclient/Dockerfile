@@ -7,8 +7,13 @@ RUN yarn install
 COPY src/Services/Web/cshopclient ./
 RUN yarn run build
 
-FROM nginx:alpine as prod
-EXPOSE 80
-COPY ../src/Services/Web/cshopclient/nginx.conf /etc/nginx/nginx.conf
-COPY --from=builder /app/dist /usr/share/nginx/html
-CMD ["nginx", "-g", "daemon off;"]
+FROM node:lts-alpine as runner
+WORKDIR /app
+ENV NODE_ENV=production
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+
+EXPOSE 3000
+CMD ["yarn", "start"]
