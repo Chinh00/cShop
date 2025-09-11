@@ -28,10 +28,10 @@ jobs:
 
       - name: Create .env
         run: |
-          echo "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}" > src/Services/Web/cshopclient/.env.production
-          echo "NEXT_GOOGLE_CLIENTID=${{ secrets.NEXT_GOOGLE_CLIENTID }}" >> src/Services/Web/cshopclient/.env.production
-          echo "NEXT_GOOGLE_SECRET=${{ secrets.NEXT_GOOGLE_SECRET }}" >> src/Services/Web/cshopclient/.env.production
-          echo "NEXT_PUBLIC_APIURL=${{ secrets.NEXT_PUBLIC_APIURL }}" >> src/Services/Web/cshopclient/.env.production
+          echo "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}" > src/Services/Web/cshopclient/.env
+          echo "NEXT_GOOGLE_CLIENTID=${{ secrets.NEXT_GOOGLE_CLIENTID }}" >> src/Services/Web/cshopclient/.env
+          echo "NEXT_GOOGLE_SECRET=${{ secrets.NEXT_GOOGLE_SECRET }}" >> src/Services/Web/cshopclient/.env
+          echo "NEXT_PUBLIC_APIURL=${{ secrets.NEXT_PUBLIC_APIURL }}" >> src/Services/Web/cshopclient/.env
 
       - name: 🏗️ Build and push Docker image daotao client service
         uses: docker/build-push-action@v5
