@@ -1,5 +1,9 @@
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
+using Yarp.ReverseProxy.Configuration;
 
 namespace AppGateway.Tests;
 
@@ -13,8 +17,8 @@ public class AppGatewayIntegrationTests
         await downstreamApp.StartAsync();
 
         var destinationAddress = downstreamApp.Urls.Single().TrimEnd('/') + "/";
-        await using var factory = CreateFactory(destinationAddress);
-        using var client = factory.CreateClient();
+        await using var proxyApp = await BuildProxyApp(destinationAddress);
+        using var client = proxyApp.GetTestClient();
 
         using var response = await client.GetAsync("/proxy-test/catalog/items?id=42");
         response.EnsureSuccessStatusCode();
@@ -36,23 +40,46 @@ public class AppGatewayIntegrationTests
         return app;
     }
 
-    private static WebApplicationFactory<Program> CreateFactory(string destinationAddress)
+    private static async Task<WebApplication> BuildProxyApp(string destinationAddress)
     {
-        return new WebApplicationFactory<Program>()
-            .WithWebHostBuilder(builder =>
-            {
-                builder.ConfigureAppConfiguration((_, configurationBuilder) =>
-                {
-                    configurationBuilder.Sources.Clear();
-                    configurationBuilder.AddInMemoryCollection(new Dictionary<string, string?>
+        var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+        {
+            EnvironmentName = "Testing"
+        });
+
+        builder.WebHost.UseTestServer();
+        builder.Services
+            .AddReverseProxy()
+            .LoadFromMemory(
+                [
+                    new RouteConfig
                     {
-                        ["ReverseProxy:Routes:test-route:ClusterId"] = "test-cluster",
-                        ["ReverseProxy:Routes:test-route:Match:Path"] = "/proxy-test/{**catch-all}",
-                        ["ReverseProxy:Routes:test-route:Transforms:0:PathRemovePrefix"] = "/proxy-test",
-                        ["ReverseProxy:Routes:test-route:Transforms:1:PathPrefix"] = "/",
-                        ["ReverseProxy:Clusters:test-cluster:Destinations:destination1:Address"] = destinationAddress
-                    });
-                });
-            });
+                        RouteId = "test-route",
+                        ClusterId = "test-cluster",
+                        Match = new RouteMatch { Path = "/proxy-test/{**catch-all}" },
+                        Transforms =
+                        [
+                            new Dictionary<string, string> { ["PathRemovePrefix"] = "/proxy-test" },
+                            new Dictionary<string, string> { ["PathPrefix"] = "/" }
+                        ]
+                    }
+                ],
+                [
+                    new ClusterConfig
+                    {
+                        ClusterId = "test-cluster",
+                        Destinations = new Dictionary<string, DestinationConfig>
+                        {
+                            ["destination1"] = new() { Address = destinationAddress }
+                        }
+                    }
+                ]);
+
+        var app = builder.Build();
+        app.UseWebSockets();
+        app.UseRouting();
+        app.MapReverseProxy();
+        await app.StartAsync();
+        return app;
     }
 }
