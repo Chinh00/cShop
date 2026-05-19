@@ -36,7 +36,7 @@
 
         <!-- Schema Registry -->
         <PackageReference Include="Confluent.SchemaRegistry.Serdes.Avro" Version="2.6.0" />
-        <PackageReference Include="Confluent.SchemaRegistry" Version="2.6.0" />
+        <PackageReference Include="Confluent.SchemaRegistry" Version="2.14.0" />
 
         <!-- Masstransit -->
 
